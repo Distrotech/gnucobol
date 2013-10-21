@@ -1,5 +1,12 @@
 NEWS - user visible changes				-*- outline -*-
 
+* 20130927 GNU Cobol 1.1 announced. GNU-ification of source code commencing
+
+* 20130510 Retagging OpenCOBOL 1.1 pre-rel as OpenCOBOL 1.1
+           OpenCOBOL 1.1 CE announced
+
+* 20090206 OpenCOBOL 1.1 pre-rel released
+
 * OpenCOBOL 1.0 released
 
 * Changes in OpenCOBOL 0.33
@@ -44,7 +51,7 @@ NEWS - user visible changes				-*- outline -*-
    are checked against the OC library version/patch level.
 
 ** Libtool is not required for systems that support native dynamic
-   loading. This includes Linux, Cygwin and MingW amongst others.
+   loading. This includes GNU/Linux, Cygwin and MingW amongst others.
 
 ** Note to developers : See README for required software versions.
 
@@ -91,7 +98,7 @@ Otherwise, libdb will not be linked, and indexed files and
 SORT/MERGE statements will not work.
 
 *** New subdirectory `config' will be installed under
-$prefix/share/open-cobol.
+$prefix/share/gnucobol.
 
 ** Compatibility changes
 
@@ -380,7 +387,7 @@ The default value of COB_CONFIG_FILE has been changed appropriately.
 * Changes in OpenCOBOL 0.9.7
 
 ** The default value of COB_CONFIG_FILE has been changed to
-"$PREFIX/etc/open-cobol/libcob.conf".
+"$PREFIX/etc/gnucobol/libcob.conf".
 
 ** SORT and MERGE statements have been impelemented.
 
@@ -400,7 +407,7 @@ See manual for details.
 ** Run-time configuration file: libcob.conf
 
 The environment variable `COB_CONFIG_FILE' specifies the file name
-(default: "${prefix}/share/open-cobol/libcob.conf").
+(default: "${prefix}/share/gnucobol/libcob.conf").
 
 ** Use gettext for international messages.
 

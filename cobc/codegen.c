@@ -4596,8 +4596,8 @@ output_header (FILE *fp, const char *locbuff)
 			PACKAGE_VERSION, PATCH_LEVEL);
 		fprintf (fp, "/* Generated from          %s */\n", cb_source_file);
 		fprintf (fp, "/* Generated at            %s */\n", locbuff);
-		fprintf (fp, "/* OpenCOBOL build date    %s */\n", cb_oc_build_stamp);
-		fprintf (fp, "/* OpenCOBOL package date  %s */\n", octardate);
+		fprintf (fp, "/* GNU Cobol build date    %s */\n", cb_oc_build_stamp);
+		fprintf (fp, "/* GNU Cobol package date  %s */\n", octardate);
 		fprintf (fp, "/* Compile command         ");
 		for (i = 0; i < cb_saveargc; i++) {
 			fprintf (fp, "%s ", cb_saveargv[i]);

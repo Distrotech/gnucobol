@@ -1,4 +1,8 @@
-2012-09-05  Simon 'human' Sobisch
+2013-09-29  Brian Tiffin & Simon  Sobisch
+
+	* Change package name, and project to GNU Cobol
+
+2012-09-05  Simon 'sf-mensch/human' Sobisch
 
 	* Change package name to OpenCOBOL CE
 
@@ -324,7 +328,7 @@
 2005-05-21  Roger While <simrw@sim-basis.de>
 
 	* Allow configure option --with-dl for native dynamic
-	  linking instead of ltdl. This is a win eg. on Linux
+	  linking instead of ltdl. This is a win eg. on GNU/Linux
 	  as native dl is anyway used.
 
 2005-05-17  Roger While <simrw@sim-basis.de>
@@ -453,7 +457,7 @@
 2002-10-14  Keisuke Nishida  <knishida@netlab.jp>
 
 	* Makefile.am: Install libcob.conf in $(sysconfdir), not in
-	$(sysconfdir)/open-cobol.
+	$(sysconfdir)/gnucobol.
 	* configure.ac (COB_CONFIG_FILE): Updated.
 
 2002-09-30  Keisuke Nishida  <knishida@netlab.jp>

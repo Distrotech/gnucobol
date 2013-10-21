@@ -1,8 +1,8 @@
-			       OpenCOBOL
+			          GNU Cobol
 		       http://www.opencobol.org/
 		http://sourceforge.net/projects/open-cobol/
 
-OpenCOBOL is an open-source COBOL compiler, which translates COBOL
+GNU Cobol is an open-source COBOL compiler, which translates COBOL
 programs to C code and compiles it using GCC.
 
 This package contains the following subdirectories:
@@ -41,7 +41,7 @@ Requirements
 	ALWAYS install the distro packages when available !!
   ***
 
-OpenCOBOL requires the following external libraries to be installed:
+GNU Cobol requires the following external libraries to be installed:
 
   o GNU MP (libgmp) 4.1.2 or later
     http://gmplib.org
@@ -129,12 +129,12 @@ Installation
   **
 	NOTE
 	Due to deficiencies in the tools used to prepare
-	OpenCOBOL (autoconf/automake/libtool), it is
+	GNU Cobol (autoconf/automake/libtool), it is
 	NOT generally possible to use path names with
 	spaces embedded within them (Mainly Cygwin/MingW/Windows ports).
   **
  
-To generate/install OpenCOBOL :
+To generate/install GNU Cobol :
 
 **************************************
 
@@ -143,7 +143,7 @@ To generate/install OpenCOBOL :
 
  Here you may run
     make check
- to run a series of OpenCOBOL test programs (must do!)
+ to run a series of GNU Cobol test programs (must do!)
  This MUST succeed - If not, please report.
 
     make install
@@ -247,11 +247,11 @@ There are the following configure options:
 Development
 ============
 
-If you wish to hack the OpenCOBOL source code, proceed
+If you wish to hack the GNU Cobol source code, proceed
 as follows.
 
 You need to install the following extra packages with specified
-minimum version before changing/building OpenCOBOL:
+minimum version before changing/building GNU Cobol:
 
 For compiling :
   o Bison 1.875
