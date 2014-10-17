@@ -2150,6 +2150,11 @@ alphabet_lits:
 | LOW_VALUE			{ $$ = cb_norm_low; }
 ;
 
+space_or_zero:
+  SPACE				{ $$ = cb_space; }
+| ZERO				{ $$ = cb_zero; }
+;
+
 
 /* SYMBOLIC characters clause */
 
@@ -2722,7 +2727,7 @@ access_mode:
 /* ALTERNATIVE RECORD KEY clause */
 
 alternative_record_key_clause:
-  ALTERNATE _record _key _is opt_splitk flag_duplicates
+  ALTERNATE _record _key _is opt_splitk flag_duplicates suppress_clause
   {
 	struct cb_alt_key *p;
 	struct cb_alt_key *l;
@@ -2742,6 +2747,20 @@ alternative_record_key_clause:
 		}
 		l->next = p;
 	}
+  }
+;
+
+suppress_clause:
+  /* empty */                   { }
+|
+  SUPPRESS WHEN ALL basic_value
+  {
+	PENDING ("SUPPRESS WHEN ALL");
+  }
+|
+  SUPPRESS WHEN space_or_zero
+  {
+	PENDING ("SUPPRESS WHEN SPACE/ZERO");
   }
 ;
 
