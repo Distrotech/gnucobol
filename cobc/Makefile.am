@@ -3,6 +3,7 @@
 #
 # Copyright (C) 2003,2004,2005,2006,2007 Keisuke Nishida
 # Copyright (C) 2008-2012 Roger While
+# Copyright (C) 2014 Simon Sobisch
 #
 # This file is part of GNU Cobol.
 #
@@ -24,9 +25,14 @@ cobc_SOURCES = cobc.c cobc.h config.c tree.c tree.h reserved.c error.c \
 	parser.c parser.h scanner.c field.c typeck.c codegen.c ppparse.c \
 	ppparse.h pplex.c config.def flag.def warning.def codeoptim.def \
 	ppparse.def codeoptim.c
+dist_man_MANS = cobc.1
 
 cobc_CFLAGS = -I$(top_srcdir)
 cobc_LDADD = $(COBC_LIBS) $(top_builddir)/libcob/libcob.la $(top_builddir)/lib/libsupport.a
+
+cobc.1: cobc.c flag.def warning.def $(top_srcdir)/configure.ac
+	$(MAKE) $(AM_MAKEFLAGS) cobc$(EXEEXT)
+	help2man --output=cobc.1  --info-page=gnucobol ./cobc$(EXEEXT)
 
 BUILT_SOURCES = parser.c parser.h scanner.c ppparse.c ppparse.h pplex.c
 EXTRA_DIST = ppparse.y pplex.l parser.y scanner.l
@@ -37,3 +43,4 @@ CLEANFILES = parser.output ppparse.output
 
 .y.c:
 	bison -o $@ $<
+

@@ -22,11 +22,17 @@
 lib_LTLIBRARIES = libcob.la
 libcob_la_SOURCES = common.c move.c numeric.c strings.c \
 	fileio.c call.c intrinsic.c termio.c screenio.c cobgetopt.c
+#ToDo Man Page
+#dist_man_MANS = libcob.3
 
 libcob_la_CFLAGS = $(AM_CFLAGS) -I$(top_srcdir)
 libcob_la_LIBADD = $(LIBCOB_LIBS)
 libcob_la_LDFLAGS = $(COB_FIX_LIBTOOL) -version-info 4:0:0 -no-undefined
 AM_LDFLAGS = $(COB_FIX_LIB)
+
+#libcob.3: cobcrun.c $(top_srcdir)/configure.ac
+#	$(MAKE) $(AM_MAKEFLAGS) cobcrun$(EXEEXT)
+#	help2man --output=libcob.3  --info-page=gnucobol ./cobcrun$(EXEEXT)
 
 EXTRA_DIST = coblocal.h system.def
 pkgincludedir = $(includedir)/libcob

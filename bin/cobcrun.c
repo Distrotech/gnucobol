@@ -87,16 +87,21 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."));
 }
 
 static void
-cobcrun_print_usage (void)
+cobcrun_print_usage (char * prog)
 {
-	puts (_("Usage: cobcrun PROGRAM [param ...]"));
-	puts (_("or   : cobcrun options"));
+	printf (_("Usage: %s PROGRAM [param ...]"), prog);
+	putchar ('\n');
+	printf (_("  or:  %s options"), prog);
+	putchar ('\n');
+	putchar ('\n');
+	printf (_("COBOL driver program for %s modules"), PACKAGE_NAME);
+	putchar ('\n');
 	putchar ('\n');
 	puts (_("Options:"));
-	puts (_("  -help                 Display this message"));
-	puts (_("  -version, -V          Display runtime version"));
-	puts (_("  -info, -i             Display runtime information (build/environment)"));
-	puts (_("  -runtime-env, -r             Display runtime information (build/environment)"));
+	puts (_("  -h, -help             Display this help and exit"));
+	puts (_("  -V, -version          Display runtime version"));
+	puts (_("  -i, -info             Display runtime information (build/environment)"));
+	puts (_("  -r, -runtime-env             Display runtime information (build/environment)"));
 }
 
 static int
@@ -106,7 +111,7 @@ process_command_line (int argc, char *argv[])
 
 	/* At least one option or module name needed */
 	if (argc <= 1) {
-		cobcrun_print_usage ();
+		cobcrun_print_usage (argv[0]);
 		return 1;
 	}
 
@@ -132,7 +137,7 @@ process_command_line (int argc, char *argv[])
 
 		case 'h':
 			/* --help */
-			cobcrun_print_usage ();
+			cobcrun_print_usage (argv[0]);
 			return 0;
 
 		case 'i':

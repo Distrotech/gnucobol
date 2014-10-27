@@ -651,7 +651,7 @@ cobc_malloc (const size_t size)
 	return mptr;
 }
 
-COB_INLINE void
+void
 cobc_free(void * mptr)
 {
 #ifdef	COB_TREE_DEBUG
@@ -1751,18 +1751,22 @@ cobc_print_flag (const char *name, const char *doc,
 }
 
 static void
-cobc_print_usage (void)
+cobc_print_usage (char * prog)
 {
-	puts (_("Usage: cobc [options] file ..."));
+	printf (_("Usage: %s [options]... file..."), prog);
+	putchar ('\n');
+	putchar ('\n');
+	printf (_("%s compiler for most COBOL dialects with lots of extensions"), PACKAGE_NAME);
+	putchar ('\n');
 	putchar ('\n');
 	puts (_("Options:"));
-	puts (_("  -help                 Display this message"));
-	puts (_("  -version, -V          Display compiler version"));
-	puts (_("  -info, -i             Display compiler information (build/environment)"));
+	puts (_("  -h, -help             Display this help and exit"));
+	puts (_("  -V, -version          Display compiler version"));
+	puts (_("  -i, -info             Display compiler information (build/environment)"));
 	puts (_("  -v                    Display the commands invoked by the compiler"));
 	puts (_("  -x                    Build an executable program"));
 	puts (_("  -m                    Build a dynamically loadable module (default)"));
-	puts (_("  -std=<dialect>        Warnings/features for a specific dialect :"));
+	puts (_("  -std=<dialect>        Warnings/features for a specific dialect:"));
 	puts (_("                          cobol2002   Cobol 2002"));
 	puts (_("                          cobol85     Cobol 85"));
 	puts (_("                          ibm         IBM Compatible"));
@@ -1915,7 +1919,7 @@ process_command_line (const int argc, char **argv)
 
 		case 'h':
 			/* --help */
-			cobc_print_usage ();
+			cobc_print_usage (argv[0]);
 			cobc_free_mem ();
 			exit (0);
 
