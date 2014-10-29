@@ -1773,6 +1773,7 @@ cobc_print_usage (char * prog)
 	puts (_("                          mvs         MVS Compatible"));
 	puts (_("                          bs2000      BS2000 Compatible"));
 	puts (_("                          mf          Micro Focus Compatible"));
+	puts (_("                          acu         ACUCOBOL-GT Compatible"));
 	puts (_("                          default     When not specified"));
 	puts (_("                        See config/default.conf and config/*.conf"));
 	puts (_("  -free                 Use free source format"));
@@ -4288,7 +4289,8 @@ main (int argc, char **argv)
 	}
 
 	if (verbose_output) {
-		fputs (_("Command line:\t"), stderr);
+		fputs (_("Command line:"), stderr);
+		putc ('\t', stderr);
 		for (i = 0; i < argc; ++i) {
 			fprintf (stderr, "%s ", argv[i]);
 		}
