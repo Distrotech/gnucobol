@@ -1,7 +1,9 @@
 
 2014-10-29  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
-	* config.c (cb_config_entry): allow/remove inline comments from entry
+	* config.c (cb_config_entry): remove inline comments from entry
+	* config.def, scanner.l : check maximum word length depending on new
+	  configuration word-length
 
 2014-10-17  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
