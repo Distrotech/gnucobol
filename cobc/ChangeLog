@@ -1,4 +1,8 @@
 
+2014-10-29  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
+
+	* config.c (cb_config_entry): allow/remove inline comments from entry
+
 2014-10-17  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
 	* parser.y : added SUPPRESS clause as PENDING, see request #23

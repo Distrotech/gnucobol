@@ -165,11 +165,16 @@ cb_config_entry (char *buff, const char *fname, const int line)
 	}
 
 	/* Get value */
+	/* Move pointer to beginning of value */
 	for (s++; *s && strchr (" \t:=", *s); s++) {
 		;
 	}
-	e = s + strlen (s) - 1;
-	for (; e >= s && strchr (" \t\r\n", *e); e--) {
+	/* Set end pointer to first # (comment) or end of value */
+	for (e = s + 1; *e && !strchr ("#", *e); e++) {
+		;
+	}
+	/* Remove trailing white-spaces */
+	for (--e; e >= s && strchr (" \t\r\n", *e); e--) {
 		;
 	}
 	e[1] = 0;
@@ -328,7 +333,7 @@ cb_load_conf (const char *fname, const int check_nodef, const int prefix_dir)
 	while (fgets (buff, COB_SMALL_BUFF, fp)) {
 		line++;
 
-		/* Skip comments */
+		/* Skip line comments, empty lines */
 		if (buff[0] == '#' || buff[0] == '\n') {
 			continue;
 		}
