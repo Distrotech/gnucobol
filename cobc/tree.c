@@ -1958,7 +1958,7 @@ cb_build_constant (cb_tree name, cb_tree value)
 
 /* Add new field to hold data from given field */
 cb_tree
-cb_field_dup(struct cb_field *f)
+cb_field_dup(struct cb_field *f, struct cb_reference *ref)
 {
 	cb_tree		x;
 	struct cb_field *s;
@@ -1967,6 +1967,11 @@ cb_field_dup(struct cb_field *f)
 
 	snprintf (buff, (size_t)COB_MINI_MAX, "COPY OF %s", f->name);
 	x = cb_build_field (cb_build_reference (buff));
+	if(ref
+	&& ref->length
+	&& CB_LITERAL_P(ref->length)) {
+		sprintf(pic,"X(%d)",cb_get_int(ref->length));
+	} else
 	if(f->pic->category == CB_CATEGORY_NUMERIC
 	|| f->pic->category == CB_CATEGORY_NUMERIC_EDITED) {
 		dig = f->pic->digits;
@@ -2500,9 +2505,9 @@ finalize_report (struct cb_report *r, struct cb_field *records)
 			if(CB_TREE_TAG (p->report_source) == CB_TAG_REFERENCE) {
 				struct cb_reference     *ref;
 				ref = CB_REFERENCE (p->report_source); 
-				if(ref->offset || ref->subs || f->flag_local) {
+				if(ref->offset || ref->length || ref->subs || f->flag_local) {
 					p->report_from = p->report_source;
-					p->report_source = cb_field_dup(f);
+					p->report_source = cb_field_dup(f, ref);
 				}
 			}
 		}

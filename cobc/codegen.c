@@ -2781,6 +2781,11 @@ output_initialize_uniform (cb_tree x, const int c, const int size)
 	} else {
 		output ("memset (");
 		output_data (x);
+		if(size <= 0) {
+			output (", %d, ", c);
+			output_size (x);
+			output (");\n");
+		} else
 		if (CB_REFERENCE_P(x) && CB_REFERENCE(x)->length) {
 			output (", %d, ", c);
 			output_size (x);

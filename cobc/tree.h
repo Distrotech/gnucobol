@@ -2,20 +2,20 @@
    Copyright (C) 2001,2002,2003,2004,2005,2006,2007 Keisuke Nishida
    Copyright (C) 2007-2012 Roger While
 
-   This file is part of GNU Cobol.
+   This file is part of OpenCOBOL.
 
-   The GNU Cobol compiler is free software: you can redistribute it
+   The OpenCOBOL compiler is free software: you can redistribute it
    and/or modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of the
    License, or (at your option) any later version.
 
-   GNU Cobol is distributed in the hope that it will be useful,
+   OpenCOBOL is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with GNU Cobol.  If not, see <http://www.gnu.org/licenses/>.
+   along with OpenCOBOL.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
@@ -1416,7 +1416,7 @@ extern struct cb_picture	*cb_build_binary_picture (const char *,
 extern cb_tree			cb_build_field (cb_tree);
 extern cb_tree			cb_build_implicit_field (cb_tree, const int);
 extern cb_tree			cb_build_constant (cb_tree, cb_tree);
-extern cb_tree			cb_field_dup(struct cb_field *f);
+extern cb_tree			cb_field_dup(struct cb_field *f, struct cb_reference *ref);
 
 extern void			cb_build_symbolic_chars (const cb_tree,
 							 const cb_tree);
