@@ -501,6 +501,111 @@ global_check (struct cb_reference *r, cb_tree items, size_t *ambiguous)
 	return candidate;
 }
 
+static int
+iso_8601_func (const enum cb_intr_enum intr)
+{
+	return intr == CB_INTR_FORMATTED_CURRENT_DATE
+		|| intr == CB_INTR_FORMATTED_DATE
+		|| intr == CB_INTR_FORMATTED_DATETIME
+		|| intr == CB_INTR_FORMATTED_TIME
+		|| intr == CB_INTR_INTEGER_OF_FORMATTED_DATE
+		|| intr == CB_INTR_SECONDS_FROM_FORMATTED_TIME
+		|| intr == CB_INTR_TEST_FORMATTED_DATETIME;
+}
+
+static int
+valid_format (const enum cb_intr_enum intr, const char *format)
+{
+        /* Precondition: iso_8601_func (intr) */
+
+	if (intr == CB_INTR_FORMATTED_CURRENT_DATE) {
+		return cob_valid_datetime_format (format);
+	} else if(intr == CB_INTR_FORMATTED_DATE) {
+		return cob_valid_date_format (format);
+	} else if(intr == CB_INTR_FORMATTED_DATETIME) {
+		return cob_valid_datetime_format (format);
+	} else if(intr == CB_INTR_FORMATTED_TIME) {
+		return cob_valid_time_format (format);
+	} else if(intr == CB_INTR_INTEGER_OF_FORMATTED_DATE) {
+		return cob_valid_date_format (format)
+			|| cob_valid_datetime_format (format);
+	} else if(intr == CB_INTR_SECONDS_FROM_FORMATTED_TIME) {
+		return cob_valid_time_format (format)
+			|| cob_valid_datetime_format (format);
+	} else { /* CB_INTR_TEST_FORMATTED_DATETIME */
+		return cob_valid_time_format (format)
+			|| cob_valid_date_format (format)
+			|| cob_valid_datetime_format (format);
+	}
+}
+
+static const char *
+try_get_constant_data (cb_tree val)
+{
+	if (val == NULL) {
+		return NULL;
+	} else if (CB_LITERAL_P (val)) {
+		return (char *) CB_LITERAL (val)->data;
+	} else if (CB_CONST_P (val)) {
+		return CB_CONST (val)->val;
+	} else {
+		return NULL;
+	}
+}
+
+static int
+offset_time_format (const char *format)
+{
+        if (cob_valid_time_format (format)
+		   || cob_valid_datetime_format (format)) {
+		/* Only offset time formats contain a '+'. */
+		return strchr (format, '+') !=  NULL;
+	} else {
+		return 0;
+	}
+}	
+
+static int
+offset_arg_param_num (const enum cb_intr_enum intr)
+{
+	if (intr == CB_INTR_FORMATTED_TIME) {
+		return 3;
+	} else if (intr == CB_INTR_FORMATTED_DATETIME) {
+		return 4;
+	} else {
+		return 0;
+	}
+}
+
+static int
+valid_const_date_time_args (const cb_tree tree, const struct cb_intrinsic_table *intr,
+			    cb_tree args)
+{
+	cb_tree		arg = CB_VALUE (args);
+	const char	*data;
+	int		error_found = 0;
+
+	/* Precondition: iso_8601_func (intr->intr_enum) */
+
+	data = try_get_constant_data (arg);
+	if (data != NULL) {
+		if(!valid_format (intr->intr_enum, data)) {
+			cb_error_x (tree, _("FUNCTION '%s' has invalid date/time format"),
+				    intr->name);
+			error_found = 1;
+		} else if (offset_time_format (data)
+			   && cb_list_length (args) < offset_arg_param_num (intr->intr_enum)) {
+			cb_error_x (tree, _("FUNCTION '%s' does not have an offset time"),
+				    intr->name);
+		}
+	} else {
+		cb_warning_x (tree, _("FUNCTION '%s' has format in variable"),
+			      intr->name);
+	}
+
+	return !error_found;
+}
+
 /* Global functions */
 
 char *
@@ -3051,6 +3156,12 @@ cb_build_intrinsic (cb_tree name, cb_tree args, cb_tree refmod,
 		if (CB_PAIR_Y(refmod) && CB_LITERAL_P(CB_PAIR_Y(refmod)) &&
 		    cb_get_int (CB_PAIR_Y(refmod)) < 1) {
 			cb_error_x (name, _("FUNCTION '%s' has invalid reference modification"), cbp->name);
+			return cb_error_node;
+		}
+	}
+
+	if (iso_8601_func (cbp->intr_enum)) {
+		if (!valid_const_date_time_args (name, cbp, args)) {
 			return cb_error_node;
 		}
 	}

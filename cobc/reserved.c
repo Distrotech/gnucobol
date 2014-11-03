@@ -2062,22 +2062,22 @@ static const struct cb_intrinsic_table function_list[] = {
   { "FORMATTED-CURRENT-DATE",		"cob_intr_formatted_current_date",
 					1, 0, CB_INTR_FORMATTED_CURRENT_DATE,
 					CB_CATEGORY_ALPHANUMERIC, 1, 1,
-					FORMATTED_CURRENT_FUNC
+				        FUNCTION_NAME
   },
   { "FORMATTED-DATE",			"cob_intr_formatted_date",
-					2, 0, CB_INTR_FORMATTED_DATE,
+					2, 1, CB_INTR_FORMATTED_DATE,
 					CB_CATEGORY_ALPHANUMERIC, 1, 2,
-					FORMATTED_DATE_FUNC
+				        FORMATTED_DATE_FUNC
   },
   { "FORMATTED-DATETIME",		"cob_intr_formatted_datetime",
-					-1, 0, CB_INTR_FORMATTED_DATE,
+					-1, 1, CB_INTR_FORMATTED_DATETIME,
 					CB_CATEGORY_ALPHANUMERIC, 1, 3,
-					FORMATTED_DATETIME_FUNC
+				        FORMATTED_DATETIME_FUNC
   },
   { "FORMATTED-TIME",			"cob_intr_formatted_time",
-					-1, 0, CB_INTR_FORMATTED_DATE,
+					-1, 1, CB_INTR_FORMATTED_TIME,
 					CB_CATEGORY_ALPHANUMERIC, 1, 2,
-					FORMATTED_TIME_FUNC
+				        FORMATTED_TIME_FUNC
   },
   { "FRACTION-PART",			"cob_intr_fraction_part",
 					1, 1, CB_INTR_FRACTION_PART,

@@ -1,3 +1,14 @@
+2014-09-17  Edward Hart <edward.dan.hart@gmail.com>
+
+	* intrinsic.c: implemented (cob_intr_formatted_date),
+          (cob_intr_formatted_datetime) and (cob_intr_formatted_time)
+	* intrinsic.c: moved common date/time checks into functions
+	  (valid_integer_date), (valid_year) and (valid_time)
+	* intrinsic.c: split main algorithms of (cob_intr_day_of_integer) and
+	  (cob_intr_date_of_integer) into (day_of_integer) and (date_of_integer)
+	* common.c, common.h: added date/time format validation functions
+	  (cob_valid_date_format), (cob_valid_datetime_format) and
+	  (cob_valid_time_format)
 
 2014-09-12  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 

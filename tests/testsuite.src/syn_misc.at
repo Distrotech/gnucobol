@@ -506,6 +506,70 @@ prog.cob: 8: Error: Unknown statement 'This'
 
 AT_CLEANUP
 
+AT_SETUP([Formatted date/time funcs with invalid args])
+AT_KEYWORDS([functions])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01  format-str         PIC X(8) VALUE "YYYYMMDD".
+       01  Date-Format        CONSTANT "YYYYMMDD".
+       01  Time-Format        CONSTANT "hhmmss".
+       01  Datetime-Format    CONSTANT "YYYYMMDDThhmmss".
+       PROCEDURE        DIVISION.
+      *>   Test wrong formats
+           DISPLAY FUNCTION FORMATTED-DATE ( "YYYYWWWD", 1 )
+           DISPLAY FUNCTION FORMATTED-TIME ( "HHMMSS", 1)
+           DISPLAY FUNCTION FORMATTED-DATETIME
+                ( "YYYYWWWDTHHMMSS", 1, 1)
+
+      *>   Test format in variable
+           DISPLAY FUNCTION FORMATTED-DATE ( format-str, 1)
+
+      *>   Test incompatible formats
+      *>   Uncomment these when they are implemented!
+      *>   DISPLAY FUNCTION FORMATTED-CURRENT-DATE (Date-Format, 1)
+      *>   DISPLAY FUNCTION FORMATTED-CURRENT-DATE (Time-Format, 1)
+
+           DISPLAY FUNCTION FORMATTED-DATE ( Time-Format, 1)
+           DISPLAY FUNCTION FORMATTED-DATE ( Datetime-Format, 1)
+
+           DISPLAY FUNCTION FORMATTED-TIME ( Date-Format, 1)
+           DISPLAY FUNCTION FORMATTED-TIME ( Datetime-Format, 1)
+
+           DISPLAY FUNCTION FORMATTED-DATETIME ( Date-Format, 1, 1)
+           DISPLAY FUNCTION FORMATTED-DATETIME ( Time-Format, 1, 1)
+
+      *>   DISPLAY INTEGER-OF-FORMATTED-DATE ( Time-Format, 1)
+
+      *>   DISPLAY SECONDS-FROM-FORMATTED-TIME ( Date-Format, 1)
+
+      *>   Test offset time formats without offset parameter.
+	   DISPLAY FUNCTION FORMATTED-TIME ( "hhmmss+hhmm", 1)
+	   DISPLAY FUNCTION FORMATTED-DATETIME
+	       ( "YYYYMMDDThhmmss+hhmm", 1, 1)
+
+	   STOP RUN.
+])
+
+AT_CHECK([$COMPILE -o prog prog.cob], [1], [],
+[prog.cob: 12: Error: FUNCTION 'FORMATTED-DATE' has invalid date/time format
+prog.cob: 13: Error: FUNCTION 'FORMATTED-TIME' has invalid date/time format
+prog.cob: 14: Error: FUNCTION 'FORMATTED-DATETIME' has invalid date/time format
+prog.cob: 18: Warning: FUNCTION 'FORMATTED-DATE' has format in variable
+prog.cob: 25: Error: FUNCTION 'FORMATTED-DATE' has invalid date/time format
+prog.cob: 26: Error: FUNCTION 'FORMATTED-DATE' has invalid date/time format
+prog.cob: 28: Error: FUNCTION 'FORMATTED-TIME' has invalid date/time format
+prog.cob: 29: Error: FUNCTION 'FORMATTED-TIME' has invalid date/time format
+prog.cob: 31: Error: FUNCTION 'FORMATTED-DATETIME' has invalid date/time format
+prog.cob: 32: Error: FUNCTION 'FORMATTED-DATETIME' has invalid date/time format
+prog.cob: 39: Error: FUNCTION 'FORMATTED-TIME' does not have an offset time
+prog.cob: 40: Error: FUNCTION 'FORMATTED-DATETIME' does not have an offset time
+])
+
+AT_CLEANUP
 
 AT_SETUP([Continuation Indicator - Literal too long])
 AT_KEYWORDS([misc fixed])

@@ -15,6 +15,12 @@
 	* pplex.l : bug #96 prevent line overflow, add warning "Source text too long"
 	* pplex.l : only show warning "Source text after column ..." if no comment was
 	  started in this line before
+2014-09-17  Edward Hart <edward.dan.hart@gmail.com>
+
+	* reserved.c: Set FORMATTED-DATE/DATETIME/TIME functions to implemented
+	* reserved.c, parser.y: replaced FORMATTED_CURRENT_FUNC with FUNCTION_NAME
+	* tree.c: added compile time checking of date/time formats and offset
+	  time presence.
 
 2014-09-12  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
