@@ -3561,7 +3561,7 @@ process_module_direct (struct filename *fn)
 	cobc_check_action (cobc_buffer);
 	sprintf (cobc_buffer, "%s.lib", name);
 	cobc_check_action (cobc_buffer);
-	sprintf (cobc_buffer, "%s.obj", name);
+	sprintf (cobc_buffer, "%s.%s", name, COB_OBJECT_EXT);
 	if(strstr(fn->source, cobc_buffer) == NULL)	cobc_check_action (cobc_buffer);
 #else	/* _MSC_VER */
 #ifdef	__OS400__
@@ -3747,11 +3747,11 @@ process_library (struct filename *l)
 		sprintf (cobc_buffer, "%s.dll.manifest", name);
 		cobc_check_action (cobc_buffer);
 	}
+#endif
 	sprintf (cobc_buffer, "%s.exp", name);
 	cobc_check_action (cobc_buffer);
 	sprintf (cobc_buffer, "%s.lib", name);
 	cobc_check_action (cobc_buffer);
-#endif
 #else	/* _MSC_VER */
 #ifdef	__WATCOMC__
 	sprintf (cobc_buffer, "%s %s %s %s -fe=\"%s\" %s %s %s %s",

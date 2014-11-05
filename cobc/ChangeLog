@@ -53,6 +53,11 @@
 	* cobc.c : Changed output of --help for help2man
 	* Makefile.am : Added manpage generation + install
 
+2014-07-31  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
+
+	* pplex.l, flag.def: new flag acucomment:
+	  '$' in indicator area treated as '*', '|' treated as floating comment
+
 2014-07-29  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
 	* cobc.c, config.c: new option -cb_conf for overriding configuration

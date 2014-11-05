@@ -4760,7 +4760,7 @@ start:
 	if (buff[n - 1] != '\n') {
 		/* FIXME: cb_source_line is one too low when CB_FORMAT_FREE is used
 		   [but only during ppinput() in pplex.l ?] - Workaround for now:
-		   Temporary newline_fixme
+		   Temporary newline_count + 1
 		*/
 		if (cb_source_format == CB_FORMAT_FREE) {
 			if (line_overflow == 0) {
