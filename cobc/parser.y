@@ -4167,9 +4167,9 @@ occurs_clause:
 | OCCURS DYNAMIC capacity_in occurs_from_integer
   occurs_to_integer occurs_initialized occurs_keys occurs_indexed
   {
-	current_field->occurs_min = $4 ? cb_get_int ($4) : cb_int0;
+	current_field->occurs_min = $4 ? cb_get_int ($4) : 0;
 	PENDING("OCCURS with DYNAMIC capacity");
-	current_field->occurs_max = $5 ? cb_get_int ($5) : cb_int0;
+	current_field->occurs_max = $5 ? cb_get_int ($5) : 0;
 	current_field->indexes++;
 	if (current_field->indexes > COB_MAX_SUBSCRIPTS) {
 		cb_error (_("Maximum OCCURS depth exceeded (%d)"),
