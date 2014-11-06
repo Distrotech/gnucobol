@@ -404,7 +404,7 @@ AT_CHECK([./prog], [0], [0   ])
 AT_CLEANUP
 
 
-AT_SETUP([Check for equality of FLOAT-SHORT/FLOAT-LONG])
+AT_SETUP([Check for equality of FLOAT-SHORT / FLOAT-LONG])
 AT_KEYWORDS([fundamental])
 
 AT_DATA([prog.cob], [
@@ -1534,7 +1534,7 @@ AT_CLEANUP
 
 
 AT_SETUP([Context sensitive words (1)])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental byte-length])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION   DIVISION.
@@ -1557,7 +1557,7 @@ AT_CLEANUP
 
 
 AT_SETUP([Context sensitive words (2)])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental yyyymmdd])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION   DIVISION.
@@ -1581,7 +1581,7 @@ AT_CLEANUP
 
 
 AT_SETUP([Context sensitive words (3)])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental yyyyddd])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION   DIVISION.
@@ -1605,7 +1605,7 @@ AT_CLEANUP
 
 
 AT_SETUP([Context sensitive words (4)])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental intrinsic])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION   DIVISION.
@@ -1630,7 +1630,7 @@ AT_CLEANUP
 
 
 AT_SETUP([Context sensitive words (5)])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental recursive])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION   DIVISION.
@@ -1653,7 +1653,7 @@ AT_CLEANUP
 
 
 AT_SETUP([Context sensitive words (6)])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental normal])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION   DIVISION.
@@ -1676,7 +1676,7 @@ AT_CLEANUP
 
 
 AT_SETUP([Context sensitive words (7)])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental compute away-from-zero])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION   DIVISION.
@@ -1703,7 +1703,7 @@ AT_CLEANUP
 
 
 AT_SETUP([ROUNDED AWAY-FROM-ZERO])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental compute])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION DIVISION. 
@@ -1766,7 +1766,7 @@ AT_CLEANUP
 
 
 AT_SETUP([ROUNDED NEAREST-AWAY-FROM-ZERO])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental compute])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION DIVISION. 
@@ -1829,7 +1829,7 @@ AT_CLEANUP
 
 
 AT_SETUP([ROUNDED NEAREST-EVEN])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental compute])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION DIVISION. 
@@ -1892,7 +1892,7 @@ AT_CLEANUP
 
 
 AT_SETUP([ROUNDED NEAREST-TOWARD-ZERO])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental compute])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION DIVISION. 
@@ -1955,7 +1955,7 @@ AT_CLEANUP
 
 
 AT_SETUP([ROUNDED TOWARD-GREATER])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental compute])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION DIVISION. 
@@ -2018,7 +2018,7 @@ AT_CLEANUP
 
 
 AT_SETUP([ROUNDED TOWARD-LESSER])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental compute])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION DIVISION. 
@@ -2081,7 +2081,7 @@ AT_CLEANUP
 
 
 AT_SETUP([ROUNDED TRUNCATION])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental compute])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION DIVISION. 
@@ -2144,7 +2144,7 @@ AT_CLEANUP
 
 
 AT_SETUP([Numeric operations (1)])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental add subtract])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION   DIVISION.
@@ -2188,71 +2188,71 @@ AT_CLEANUP
 
 
 AT_SETUP([Numeric operations (2)])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental add subtract])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION   DIVISION.
        PROGRAM-ID.      prog.
        DATA             DIVISION.
        WORKING-STORAGE  SECTION.
-       01  FELD         PIC S9(1)V9(1).
+       01  FIELD        PIC S9(1)V9(1).
        01  FELD2        PIC S9(5)V9(5).
        01  FELD3        PIC 9(1)V9(1).
        01  FELD4        PIC S9(1).
        PROCEDURE        DIVISION.
-           MOVE 0.2 TO FELD
-           ADD 1 TO FELD
-           IF FELD  NOT = 1.2
-              DISPLAY "Test  1 " FELD
+           MOVE 0.2 TO FIELD
+           ADD 1 TO FIELD
+           IF FIELD  NOT = 1.2
+              DISPLAY "Test  1 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE 0.2 TO FELD
-           ADD -1 TO FELD
-           IF FELD  NOT = -0.8
-              DISPLAY "Test  2 " FELD
+           MOVE 0.2 TO FIELD
+           ADD -1 TO FIELD
+           IF FIELD  NOT = -0.8
+              DISPLAY "Test  2 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE -0.2 TO FELD
-           ADD 1 TO FELD
-           IF FELD  NOT = 0.8
-              DISPLAY "Test  3 " FELD
+           MOVE -0.2 TO FIELD
+           ADD 1 TO FIELD
+           IF FIELD  NOT = 0.8
+              DISPLAY "Test  3 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE -0.2 TO FELD
-           ADD -1 TO FELD
-           IF FELD  NOT = -1.2
-              DISPLAY "Test  4 " FELD
+           MOVE -0.2 TO FIELD
+           ADD -1 TO FIELD
+           IF FIELD  NOT = -1.2
+              DISPLAY "Test  4 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE 0.2 TO FELD
-           SUBTRACT 1 FROM FELD
-           IF FELD  NOT = -0.8
-              DISPLAY "Test  5 " FELD
+           MOVE 0.2 TO FIELD
+           SUBTRACT 1 FROM FIELD
+           IF FIELD  NOT = -0.8
+              DISPLAY "Test  5 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE 0.2 TO FELD
-           SUBTRACT -1 FROM FELD
-           IF FELD  NOT = 1.2
-              DISPLAY "Test  6 " FELD
+           MOVE 0.2 TO FIELD
+           SUBTRACT -1 FROM FIELD
+           IF FIELD  NOT = 1.2
+              DISPLAY "Test  6 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE -0.2 TO FELD
-           SUBTRACT 1 FROM FELD
-           IF FELD  NOT = -1.2
-              DISPLAY "Test  7 " FELD
+           MOVE -0.2 TO FIELD
+           SUBTRACT 1 FROM FIELD
+           IF FIELD  NOT = -1.2
+              DISPLAY "Test  7 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE -0.2 TO FELD
-           SUBTRACT -1 FROM FELD
-           IF FELD  NOT = 0.8
-              DISPLAY "Test  8 " FELD
+           MOVE -0.2 TO FIELD
+           SUBTRACT -1 FROM FIELD
+           IF FIELD  NOT = 0.8
+              DISPLAY "Test  8 " FIELD
               END-DISPLAY
            END-IF.
 
@@ -2494,71 +2494,71 @@ AT_CLEANUP
 
 
 AT_SETUP([Numeric operations (3)])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental add subtract])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION   DIVISION.
        PROGRAM-ID.      prog.
        DATA             DIVISION.
        WORKING-STORAGE  SECTION.
-       01  FELD         PIC S9(1)V9(1) COMP-3.
+       01  FIELD        PIC S9(1)V9(1) COMP-3.
        01  FELD2        PIC S9(5)V9(5) COMP-3.
        01  FELD3        PIC 9(1)V9(1)  COMP-3.
        01  FELD4        PIC S9(1)      COMP-3.
        PROCEDURE        DIVISION.
-           MOVE 0.2 TO FELD
-           ADD 1 TO FELD
-           IF FELD  NOT = 1.2
-              DISPLAY "Test  1 " FELD
+           MOVE 0.2 TO FIELD
+           ADD 1 TO FIELD
+           IF FIELD  NOT = 1.2
+              DISPLAY "Test  1 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE 0.2 TO FELD
-           ADD -1 TO FELD
-           IF FELD  NOT = -0.8
-              DISPLAY "Test  2 " FELD
+           MOVE 0.2 TO FIELD
+           ADD -1 TO FIELD
+           IF FIELD  NOT = -0.8
+              DISPLAY "Test  2 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE -0.2 TO FELD
-           ADD 1 TO FELD
-           IF FELD  NOT = 0.8
-              DISPLAY "Test  3 " FELD
+           MOVE -0.2 TO FIELD
+           ADD 1 TO FIELD
+           IF FIELD  NOT = 0.8
+              DISPLAY "Test  3 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE -0.2 TO FELD
-           ADD -1 TO FELD
-           IF FELD  NOT = -1.2
-              DISPLAY "Test  4 " FELD
+           MOVE -0.2 TO FIELD
+           ADD -1 TO FIELD
+           IF FIELD  NOT = -1.2
+              DISPLAY "Test  4 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE 0.2 TO FELD
-           SUBTRACT 1 FROM FELD
-           IF FELD  NOT = -0.8
-              DISPLAY "Test  5 " FELD
+           MOVE 0.2 TO FIELD
+           SUBTRACT 1 FROM FIELD
+           IF FIELD  NOT = -0.8
+              DISPLAY "Test  5 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE 0.2 TO FELD
-           SUBTRACT -1 FROM FELD
-           IF FELD  NOT = 1.2
-              DISPLAY "Test  6 " FELD
+           MOVE 0.2 TO FIELD
+           SUBTRACT -1 FROM FIELD
+           IF FIELD  NOT = 1.2
+              DISPLAY "Test  6 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE -0.2 TO FELD
-           SUBTRACT 1 FROM FELD
-           IF FELD  NOT = -1.2
-              DISPLAY "Test  7 " FELD
+           MOVE -0.2 TO FIELD
+           SUBTRACT 1 FROM FIELD
+           IF FIELD  NOT = -1.2
+              DISPLAY "Test  7 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE -0.2 TO FELD
-           SUBTRACT -1 FROM FELD
-           IF FELD  NOT = 0.8
-              DISPLAY "Test  8 " FELD
+           MOVE -0.2 TO FIELD
+           SUBTRACT -1 FROM FIELD
+           IF FIELD  NOT = 0.8
+              DISPLAY "Test  8 " FIELD
               END-DISPLAY
            END-IF.
 
@@ -2800,71 +2800,71 @@ AT_CLEANUP
 
 
 AT_SETUP([Numeric operations (4)])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental add subtract])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION   DIVISION.
        PROGRAM-ID.      prog.
        DATA             DIVISION.
        WORKING-STORAGE  SECTION.
-       01  FELD         PIC S9(1)V9(1) COMP.
+       01  FIELD        PIC S9(1)V9(1) COMP.
        01  FELD2        PIC S9(5)V9(5) COMP.
        01  FELD3        PIC 9(1)V9(1)  COMP.
        01  FELD4        PIC S9(1)      COMP.
        PROCEDURE        DIVISION.
-           MOVE 0.2 TO FELD
-           ADD 1 TO FELD
-           IF FELD  NOT = 1.2
-              DISPLAY "Test  1 " FELD
+           MOVE 0.2 TO FIELD
+           ADD 1 TO FIELD
+           IF FIELD  NOT = 1.2
+              DISPLAY "Test  1 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE 0.2 TO FELD
-           ADD -1 TO FELD
-           IF FELD  NOT = -0.8
-              DISPLAY "Test  2 " FELD
+           MOVE 0.2 TO FIELD
+           ADD -1 TO FIELD
+           IF FIELD  NOT = -0.8
+              DISPLAY "Test  2 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE -0.2 TO FELD
-           ADD 1 TO FELD
-           IF FELD  NOT = 0.8
-              DISPLAY "Test  3 " FELD
+           MOVE -0.2 TO FIELD
+           ADD 1 TO FIELD
+           IF FIELD  NOT = 0.8
+              DISPLAY "Test  3 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE -0.2 TO FELD
-           ADD -1 TO FELD
-           IF FELD  NOT = -1.2
-              DISPLAY "Test  4 " FELD
+           MOVE -0.2 TO FIELD
+           ADD -1 TO FIELD
+           IF FIELD  NOT = -1.2
+              DISPLAY "Test  4 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE 0.2 TO FELD
-           SUBTRACT 1 FROM FELD
-           IF FELD  NOT = -0.8
-              DISPLAY "Test  5 " FELD
+           MOVE 0.2 TO FIELD
+           SUBTRACT 1 FROM FIELD
+           IF FIELD  NOT = -0.8
+              DISPLAY "Test  5 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE 0.2 TO FELD
-           SUBTRACT -1 FROM FELD
-           IF FELD  NOT = 1.2
-              DISPLAY "Test  6 " FELD
+           MOVE 0.2 TO FIELD
+           SUBTRACT -1 FROM FIELD
+           IF FIELD  NOT = 1.2
+              DISPLAY "Test  6 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE -0.2 TO FELD
-           SUBTRACT 1 FROM FELD
-           IF FELD  NOT = -1.2
-              DISPLAY "Test  7 " FELD
+           MOVE -0.2 TO FIELD
+           SUBTRACT 1 FROM FIELD
+           IF FIELD  NOT = -1.2
+              DISPLAY "Test  7 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE -0.2 TO FELD
-           SUBTRACT -1 FROM FELD
-           IF FELD  NOT = 0.8
-              DISPLAY "Test  8 " FELD
+           MOVE -0.2 TO FIELD
+           SUBTRACT -1 FROM FIELD
+           IF FIELD  NOT = 0.8
+              DISPLAY "Test  8 " FIELD
               END-DISPLAY
            END-IF.
 
@@ -3106,71 +3106,71 @@ AT_CLEANUP
 
 
 AT_SETUP([Numeric operations (5)])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental add subtract])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION   DIVISION.
        PROGRAM-ID.      prog.
        DATA             DIVISION.
        WORKING-STORAGE  SECTION.
-       01  FELD         PIC S9(1)V9(1) COMP-5.
+       01  FIELD        PIC S9(1)V9(1) COMP-5.
        01  FELD2        PIC S9(5)V9(5) COMP-5.
        01  FELD3        PIC 9(1)V9(1)  COMP-5.
        01  FELD4        PIC S9(1)      COMP-5.
        PROCEDURE        DIVISION.
-           MOVE 0.2 TO FELD
-           ADD 1 TO FELD
-           IF FELD  NOT = 1.2
-              DISPLAY "Test  1 " FELD
+           MOVE 0.2 TO FIELD
+           ADD 1 TO FIELD
+           IF FIELD  NOT = 1.2
+              DISPLAY "Test  1 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE 0.2 TO FELD
-           ADD -1 TO FELD
-           IF FELD  NOT = -0.8
-              DISPLAY "Test  2 " FELD
+           MOVE 0.2 TO FIELD
+           ADD -1 TO FIELD
+           IF FIELD  NOT = -0.8
+              DISPLAY "Test  2 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE -0.2 TO FELD
-           ADD 1 TO FELD
-           IF FELD  NOT = 0.8
-              DISPLAY "Test  3 " FELD
+           MOVE -0.2 TO FIELD
+           ADD 1 TO FIELD
+           IF FIELD  NOT = 0.8
+              DISPLAY "Test  3 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE -0.2 TO FELD
-           ADD -1 TO FELD
-           IF FELD  NOT = -1.2
-              DISPLAY "Test  4 " FELD
+           MOVE -0.2 TO FIELD
+           ADD -1 TO FIELD
+           IF FIELD  NOT = -1.2
+              DISPLAY "Test  4 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE 0.2 TO FELD
-           SUBTRACT 1 FROM FELD
-           IF FELD  NOT = -0.8
-              DISPLAY "Test  5 " FELD
+           MOVE 0.2 TO FIELD
+           SUBTRACT 1 FROM FIELD
+           IF FIELD  NOT = -0.8
+              DISPLAY "Test  5 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE 0.2 TO FELD
-           SUBTRACT -1 FROM FELD
-           IF FELD  NOT = 1.2
-              DISPLAY "Test  6 " FELD
+           MOVE 0.2 TO FIELD
+           SUBTRACT -1 FROM FIELD
+           IF FIELD  NOT = 1.2
+              DISPLAY "Test  6 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE -0.2 TO FELD
-           SUBTRACT 1 FROM FELD
-           IF FELD  NOT = -1.2
-              DISPLAY "Test  7 " FELD
+           MOVE -0.2 TO FIELD
+           SUBTRACT 1 FROM FIELD
+           IF FIELD  NOT = -1.2
+              DISPLAY "Test  7 " FIELD
               END-DISPLAY
            END-IF.
 
-           MOVE -0.2 TO FELD
-           SUBTRACT -1 FROM FELD
-           IF FELD  NOT = 0.8
-              DISPLAY "Test  8 " FELD
+           MOVE -0.2 TO FIELD
+           SUBTRACT -1 FROM FIELD
+           IF FIELD  NOT = 0.8
+              DISPLAY "Test  8 " FIELD
               END-DISPLAY
            END-IF.
 
@@ -3412,7 +3412,7 @@ AT_CLEANUP
 
 
 AT_SETUP([Numeric operations (6)])
-AT_KEYWORDS([fundamental])
+AT_KEYWORDS([fundamental add])
 
 AT_DATA([dump.c], [
 #include <stdio.h>
@@ -3444,14 +3444,14 @@ AT_DATA([prog.cob], [
             DISPLAY "Error: Add 5 to PIC 99PPP."
             END-DISPLAY
         END-IF
-        CALL "dump" USING P-FIELD1 END-CALL        
+        CALL "dump" USING P-FIELD1 END-CALL
 
         ADD 5000 TO P-FIELD1 END-ADD
         IF P-FIELD1 NOT = 10000
             DISPLAY "Error: Add 5000 to PIC 99PPP."
             END-DISPLAY
         END-IF
-        CALL "dump" USING P-FIELD1 END-CALL        
+        CALL "dump" USING P-FIELD1 END-CALL
 
         MOVE 0.00055 TO P-FIELD2.
         ADD 0.00033 TO P-FIELD2 END-ADD
@@ -3467,7 +3467,7 @@ AT_DATA([prog.cob], [
             DISPLAY "Error: Add 0.00300 to PIC PPP99."
             END-DISPLAY
         END-IF
-        CALL "dump" USING P-FIELD2 END-CALL        
+        CALL "dump" USING P-FIELD2 END-CALL
 
         STOP RUN.
 
@@ -3476,5 +3476,297 @@ AT_DATA([prog.cob], [
 AT_CHECK([$COMPILE_MODULE dump.c])
 AT_CHECK([$COMPILE prog.cob], [0], [])
 AT_CHECK([./prog], [0], [05108855], [])
+
+AT_CLEANUP
+
+
+AT_SETUP([Numeric operations (7)])
+AT_KEYWORDS([fundamental add compute])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01  FIELD         PIC S9(4)V9(2) COMP-5.
+       01  FIELD-DISP    PIC S9(4)V9(2) DISPLAY.
+       PROCEDURE        DIVISION.
+           MOVE 0.2 TO FIELD.
+           ADD 1
+               2
+               3
+               4
+               5
+               6
+               7
+               8
+               9
+               10
+               11
+               12
+               13
+               14
+               15
+               16
+               17
+               18
+               19
+               20
+               21
+               22
+               23
+               24
+               25
+               26
+               27
+               28
+               29
+               30
+               31
+               32
+               33
+               34
+               35
+               36
+               37
+               38
+               39
+               40
+               41
+               42
+               43
+               44
+               45
+               46
+               47
+               48
+               49
+               50
+               51
+               52
+               53
+               54
+               55
+               56
+               57
+               58
+               59
+               60
+               61
+               62
+               63
+               64
+               65
+               66
+               67
+               68
+               69
+               70
+               71
+               72
+               73
+               74
+               75
+               76
+               77
+               78
+               79
+               80
+               81
+               82
+               83
+               84
+               85
+               86
+               87
+               88
+               89
+               90
+               91
+               92
+               93
+               94
+               95
+               96
+               97
+               98
+               99
+               100
+               101
+               102
+               103
+               104
+               105
+               106
+               107
+               108
+               109
+               110
+               111
+               112
+               113
+               114
+               115
+               116
+               117
+               118
+               119
+               120
+               121
+               122
+               123
+               124
+               125
+               126
+               127
+               128
+               129
+               TO FIELD
+           END-ADD.
+           IF FIELD NOT = 8385.2
+              MOVE FIELD TO FIELD-DISP
+              DISPLAY 'ADD with wrong result: ' FIELD-DISP
+              END-DISPLAY
+           END-IF.
+           COMPUTE FIELD = (0.2
+                         + 2
+                         + 3
+                         + 4
+                         + 5
+                         + 6
+                         + 7
+                         + 8
+                         + 9
+                         + 10
+                         + 11
+                         + 12
+                         + 13
+                         + 14
+                         + 15
+                         + 16
+                         + 17
+                         + 18
+                         + 19
+                         + 20
+                         + 21
+                         + 22
+                         + 23
+                         + 24
+                         + 25
+                         + 26
+                         + 27
+                         + 28
+                         + 29
+                         + 30
+                         + 31
+                         + 32
+                         + 33
+                         + 34
+                         + 35
+                         + 36
+                         + 37
+                         + 38
+                         + 39
+                         + 40
+                         + 41
+                         + 42
+                         + 43
+                         + 44
+                         + 45
+                         + 46
+                         + 47
+                         + 48
+                         + 49
+                         + 50
+                         + 51
+                         + 52
+                         + 53
+                         + 54
+                         + 55
+                         + 56
+                         + 57
+                         + 58
+                         - 59
+                         - 60
+                         - 61
+                         - 62
+                         - 63
+                         - 64
+                         - 65
+                         - 66
+                         - 67
+                         - 68
+                         - 69
+                         - 70
+                         - 71
+                         - 72
+                         - 73
+                         - 74
+                         - 75
+                         - 76
+                         - 77
+                         - 78
+                         - 79
+                         - 80
+                         - 81
+                         - 82
+                         - 83
+                         - 84
+                         - 85
+                         - 86
+                         - 87
+                         - 88
+                         - 89
+                         - 90
+                         - 91
+                         - 92
+                         - 93
+                         - 94
+                         - 95
+                         - 96
+                         - 97
+                         - 98
+                         - 99
+                         - 100
+                         - 101
+                         - 102
+                         - 103
+                         - 104
+                         - 105
+                         - 106
+                         - 107
+                         - 108
+                         - 109
+                         - 110
+                         - 111
+                         - 112
+                         - 113
+                         - 114
+                         - 115
+                         - 116
+                         - 117
+                         - 118
+                         - 119
+                         - 120
+                         - 121
+                         - 122
+                         - 123
+                         - 124
+                         - 125
+                         - 126
+                         - 127)
+                         * 12800000000
+                         / 12900000000
+           END-COMPUTE.
+           IF FIELD NOT = -4670.31
+              MOVE FIELD TO FIELD-DISP
+              DISPLAY 'COMPUTE with wrong result: ' FIELD-DISP
+              END-DISPLAY
+           END-IF.
+           GOBACK.
+])
+
+AT_CHECK([$COMPILE -std=mf prog.cob], [0], [], [])
+AT_CHECK([./prog], [0])
 
 AT_CLEANUP

@@ -3158,6 +3158,10 @@ decimal_alloc (void)
 	if (current_program->decimal_index >= COB_MAX_DEC_STRUCT) {
 		cobc_abort_pr (_("Internal decimal structure size exceeded - %d"),
 				COB_MAX_DEC_STRUCT);
+		if (strcmp(current_statement->name, "COMPUTE") == 0) {
+			cobc_abort_pr (_("Try to minimize the number of parenthesis "
+							 "or split into multiple computations."));
+		}
 		COBC_ABORT ();
 	}
 	if (current_program->decimal_index > current_program->decimal_index_max) {
@@ -3261,8 +3265,8 @@ decimal_expand (cb_tree d, cb_tree x)
 		 * Set t, Y
 		 * OP d, t */
 		p = CB_BINARY_OP (x);
-		t = decimal_alloc ();
 		decimal_expand (d, p->x);
+		t = decimal_alloc ();
 		decimal_expand (t, p->y);
 		decimal_compute (p->op, d, t);
 		decimal_free ();
