@@ -363,6 +363,8 @@ do_cancel_module (struct call_hash *p, struct call_hash **base_hash,
 {
 	struct struct_handle	*dynptr;
 	int	(*cancel_func)(const int, void *, void *, void *, void *);
+	int nocancel;
+	nocancel = 0;
 
 	if (!p->module) {
 		return;
@@ -370,23 +372,28 @@ do_cancel_module (struct call_hash *p, struct call_hash **base_hash,
 	if (!p->module->module_cancel.funcvoid) {
 		return;
 	}
+	if (p->module->flag_no_phys_canc) {
+		nocancel = 1;
+	}
+	/* This should be impossible */
+	if (p->module->module_active) {
+		nocancel = 1;
+	}
+	if (p->module->module_ref_count &&
+	    *(p->module->module_ref_count)) {
+		nocancel = 1;
+	}
 	cancel_func = p->module->module_cancel.funcint;
 	(void)cancel_func (-1, NULL, NULL, NULL, NULL);
+	p->module = NULL;
+
+	if (nocancel) {
+		return;
+	}
 	if (!physical_cancel) {
 		return;
 	}
 	if (p->no_phys_cancel) {
-		return;
-	}
-	if (p->module->flag_no_phys_canc) {
-		return;
-	}
-	/* This should be impossible */
-	if (p->module->module_active) {
-		return;
-	}
-	if (p->module->module_ref_count &&
-	    *(p->module->module_ref_count)) {
 		return;
 	}
 	if (!p->handle) {

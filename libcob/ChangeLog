@@ -1,3 +1,10 @@
+
+2014-11-17  Philipp Böhme  <phi.boehme@googlemail.com>
+
+	* call.c (do_cancel_module): bugfix for cancel, 
+		The bug was a crash in some situations, if the same module 
+        is cancelled more than once. (Solution as suggested by Sergey)
+
 2014-09-17  Edward Hart <edward.dan.hart@gmail.com>
 
 	* intrinsic.c: implemented (cob_intr_formatted_date),
