@@ -7279,6 +7279,16 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 			output_file_initialization (CB_FILE (CB_VALUE (l)));
 		}
 		output_newline ();
+		/* Do Reports again here */
+		if(prog->report_list) {
+			optimize_defs[COB_SET_REPORT] = 1;
+			output_line ("\n/* Init Reports for INITIAL program */\n");
+			for (l = prog->report_list; l; l = CB_CHAIN (l)) {
+				rep = CB_REPORT(CB_VALUE(l));
+				output_report_init (rep);
+			}
+			output_newline ();
+		}
 	}
 
 	/* Allocate / initialize LOCAL storage */
