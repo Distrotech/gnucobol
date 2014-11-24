@@ -19,7 +19,7 @@
  
 ### ISO+IEC+1989-2002 REPORT WRITER module
 
-AT_SETUP([Check REPORT error/warning])
+AT_SETUP([Missing report])
 AT_KEYWORDS([report])
 
 AT_DATA([prog.cob], [
@@ -38,10 +38,11 @@ AT_DATA([prog.cob], [
        DATA             DIVISION.
        FILE             SECTION.
        FD TRANSACTION-DATA
-          LABEL RECORDS ARE OMITTED
-          BLOCK CONTAINS 0 RECORDS
-          RECORD CONTAINS 80 CHARACTERS
-          DATA RECORD IS TRANSACTION-RECORD.
+      *   LABEL RECORDS ARE OMITTED
+      *   BLOCK CONTAINS 0 RECORDS
+      *   RECORD CONTAINS 80 CHARACTERS
+      *   DATA RECORD IS TRANSACTION-RECORD
+          .
        01 TRANSACTION-RECORD.
           03 TR-CUSTOMER-NUMBER     PIC 9(04).
           03 FILLER                 PIC X(01).
@@ -55,7 +56,7 @@ AT_DATA([prog.cob], [
           03 TR-ITEM-COST           PIC 9(03)V99.
           03 FILLER                 PIC X(47).
        FD REPORT-FILE
-          LABEL RECORDS ARE OMITTED
+      *   LABEL RECORDS ARE OMITTED
           REPORT IS NO-REPORT.
        WORKING-STORAGE  SECTION.
        01 END-OF-FILE-SWITCH        PIC X(1)    VALUE 'N'.
@@ -115,25 +116,21 @@ AT_DATA([prog.cob], [
            STOP RUN.
 ])
 
-AT_CHECK([$COMPILE_ONLY -std=mf -Wall prog.cob], [1], [],
-[prog.cob: 17: Warning: LABEL RECORDS is obsolete in Micro Focus COBOL
-prog.cob: 19: Warning: RECORD clause ignored for LINE SEQUENTIAL
-prog.cob: 20: Warning: DATA RECORDS is obsolete in Micro Focus COBOL
-prog.cob: 34: Warning: LABEL RECORDS is obsolete in Micro Focus COBOL
-prog.cob: 71: Error: 'CUSTOMER-REPORT' is not defined
-prog.cob: 71: Error: 'CUSTOMER-REPORT' is not a valid report name
-prog.cob: 78: Error: syntax error, unexpected FOREVER
-prog.cob: 79: Error: syntax error, unexpected Identifier
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], [],
+[prog.cob: 72: Error: 'CUSTOMER-REPORT' is not defined
+prog.cob: 72: Error: 'CUSTOMER-REPORT' is not a valid report name
+prog.cob: 79: Error: syntax error, unexpected FOREVER
 prog.cob: 80: Error: syntax error, unexpected Identifier
-prog.cob: 83: Error: syntax error, unexpected END-READ
-prog.cob: 86: Error: 'CUSTOMER-REPORT' is not defined
-prog.cob: 86: Error: 'CUSTOMER-REPORT' is not a valid report name
+prog.cob: 81: Error: syntax error, unexpected Identifier
+prog.cob: 84: Error: syntax error, unexpected END-READ
+prog.cob: 87: Error: 'CUSTOMER-REPORT' is not defined
+prog.cob: 87: Error: 'CUSTOMER-REPORT' is not a valid report name
 ])
 
 AT_CLEANUP
 
 
-AT_SETUP([REPORT not positive integers in COL / LINE [PLUS]])
+AT_SETUP([Check report integers in COL / LINE PLUS])
 AT_KEYWORDS([report])
 
 AT_DATA([prog.cob], [
@@ -166,19 +163,61 @@ AT_DATA([prog.cob], [
        PROCEDURE DIVISION.
            OPEN OUTPUT out-file
            INITIATE rp
+           TERMINATE rp
+           CLOSE out-file
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], [],
+[prog.cob: 18: Error: Invalid COLUMN integer; Must be > 0
+prog.cob: 20: Warning: LINE PLUS 0 not implemented
+prog.cob: 23: Warning: LINE PLUS 0 not implemented
+prog.cob: 24: Error: Positive Integer value expected
+prog.cob: 24: Error: Invalid COLUMN integer; Must be > 0
+prog.cob: 25: Error: Positive Integer value expected
+])
+
+AT_CLEANUP
+
+
+AT_SETUP([Missing DETAIL line in report])
+AT_KEYWORDS([report])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. prog.
+
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+       SELECT out-file ASSIGN "blah.txt"
+           ORGANIZATION LINE SEQUENTIAL.
+
+       DATA DIVISION.
+       FILE SECTION.
+       FD  out-file REPORT rp.
+
+       REPORT SECTION.
+       RD  rp.
+       01  rp-head TYPE PH.
+          02  LINE 1, COL 2 VALUE "Hello!".
+          02  LINE PLUS 1.
+              03 COLUMN 01      PIC X(09) VALUE 'CUST. NO.'.
+              03 COLUMN PLUS 20 PIC X(09) VALUE 'ITEM'.
+
+
+       PROCEDURE DIVISION.
+           OPEN OUTPUT out-file
+           INITIATE rp
            GENERATE rp-detail
            TERMINATE rp
            CLOSE out-file
            STOP RUN.
 ])
 
-AT_CHECK([$COMPILE_ONLY -std=mf -Wall prog.cob], [1], [],
-[prog.cob: 18: Error: Invalid COLUMN integer; Must be > 0
-prog.cob: 20: Warning: LINE PLUS 0 not implemented
-prog.cob: 23: Warning: LINE PLUS 0 not implemented
-prog.cob: 24: Error: Positive Integer value expected
-prog.cob: 25: Error: Positive Integer value expected
-prog.cob: 31: Error: 'rp-detail' is not defined
+AT_CHECK([$COMPILE_ONLY prog.cob], [1], [],
+[prog.cob: 13: Warning: NO DETAIL line defined in report rp
+prog.cob: 27: Error: 'rp-detail' is not defined
 ])
 
 AT_CLEANUP
