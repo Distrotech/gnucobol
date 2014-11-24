@@ -314,9 +314,9 @@ reportInitialize()
 		return;
 	bDidReportInit = 1;
 #ifdef DEBUG
-	if (env = getenv("OCREPORTDEBUG")) {
-		if (toupper(*env) == 'Y')) {
-			fdbg = fopen("/tmp/ocreport.log","w");
+	if ((env = getenv("OCREPORTDEBUG")) &&
+		(toupper(*env) == 'Y')) {
+		fdbg = fopen("/tmp/ocreport.log","w");
 	}
 #endif
 }
