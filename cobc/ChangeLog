@@ -1,7 +1,7 @@
 
 2014-11-18  Sergey Kashyrin <ska@kiska.net>
 
-	* field.cpp : fix bug #89 incorrect LENGTH OF redefined
+	* field.c : fix bug #89 incorrect LENGTH OF redefined
 
 2014-11-06  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 

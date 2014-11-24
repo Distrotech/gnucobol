@@ -1092,6 +1092,9 @@ compute_size (struct cb_field *f)
 	int		align_size;
 	int		pad;
 
+	int maxsz;
+	struct cb_field *c0;
+
 	if (f->level == 66) {
 		/* Rename */
 		if (f->rename_thru) {
@@ -1120,18 +1123,16 @@ compute_size (struct cb_field *f)
 				    c->size * c->occurs_max >
 				    c->redefines->size * c->redefines->occurs_max) {
 					if (cb_larger_redefines_ok) {
-						int maxsz;
-						struct cb_field * c0;
 						cb_warning_x (CB_TREE (c),
 							      _("Size of '%s' larger than size of '%s'"),
 							      c->name, c->redefines->name);
 						maxsz = c->redefines->size * c->redefines->occurs_max;
-						for(c0 = c->redefines->sister; c0 != c; c0 = c0->sister) {
-							if(c0->size * c0->occurs_max > maxsz) {
+						for (c0 = c->redefines->sister; c0 != c; c0 = c0->sister) {
+							if (c0->size * c0->occurs_max > maxsz) {
 								maxsz = c0->size * c0->occurs_max;
 							}
 						}
-						if(c->size * c->occurs_max > maxsz) {
+						if (c->size * c->occurs_max > maxsz) {
 							size_check += (c->size * c->occurs_max) - maxsz;
 						}
 					} else {

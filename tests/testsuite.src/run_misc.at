@@ -552,7 +552,8 @@ AT_DATA([prog.cob], [
       -    "89abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345
       -    "6789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123
       -    "456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01
-      -    "23456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+      -     "23456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXY
+      -                                                               "Z
       -             "0123456789" TO X.
            DISPLAY X NO ADVANCING
            END-DISPLAY.
@@ -2343,58 +2344,6 @@ AT_DATA([prog.cob], [
 ])
 
 AT_CHECK([$COMPILE prog.cob], [0], , [])
-AT_CHECK([./prog], [0])
-
-AT_CLEANUP
-
-
-AT_SETUP([Larger REDEFINES lengths])
-AT_KEYWORDS([runmisc])
-
-AT_DATA([prog.cob], [
-       IDENTIFICATION   DIVISION.
-       PROGRAM-ID.      prog.
-       DATA             DIVISION.
-       WORKING-STORAGE  SECTION.
-       01  Z            PIC 99.
-       01  XMAIN        PIC X(8).
-       01  XMAINRED REDEFINES XMAIN.
-           03  FILLER         PIC X(4).
-           03  XMAIN03.
-               05  XMAIN0501  PIC X(4).
-               05  XMAIN0502 REDEFINES XMAIN0501 PIC X(5).
-       PROCEDURE        DIVISION.
-           MOVE    LENGTH OF XMAIN       TO Z.                          FIXFORM
-           IF Z NOT = 8
-              DISPLAY "Test 1 " Z
-              END-DISPLAY
-           END-IF.
-           MOVE    LENGTH OF XMAINRED    TO Z.                          FIXFORM
-           IF Z NOT = 9
-              DISPLAY "Test 2 " Z
-              END-DISPLAY
-           END-IF.
-           MOVE    LENGTH OF XMAIN03     TO Z.                          FIXFORM
-           IF Z NOT = 5
-              DISPLAY "Test 3 " Z
-              END-DISPLAY
-           END-IF.
-           MOVE    LENGTH OF XMAIN0501   TO Z.                          FIXFORM
-           IF Z NOT = 4
-              DISPLAY "Test 4 " Z
-              END-DISPLAY
-           END-IF.
-           MOVE    LENGTH OF XMAIN0502   TO Z.                          FIXFORM
-           IF Z NOT = 5
-              DISPLAY "Test 5 " Z
-              END-DISPLAY
-           END-IF.
-           STOP RUN.                                                    FIXFORM
-])
-
-AT_CHECK([$COMPILE -std=mf -o prog prog.cob], [0], ,
-[prog.cob: 12: Warning: Size of 'XMAIN0502' larger than size of 'XMAIN0501'
-])
 AT_CHECK([./prog], [0])
 
 AT_CLEANUP

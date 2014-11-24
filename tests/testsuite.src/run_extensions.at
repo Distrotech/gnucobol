@@ -1951,7 +1951,7 @@ AT_DATA([prog.cob], [
    DATA             DIVISION.
    WORKING-STORAGE  SECTION.
    >>SOURCE FIXED
-       PROCEDURE        DIVISION.                                       DISPLAY
+       PROCEDURE        DIVISION.                                       FIXED
              DISPLAY "OK"
              END-DISPLAY.
        >>SOURCE FREE
@@ -1961,11 +1961,96 @@ AT_DATA([prog.cob], [
              STOP RUN.
 ])
 
-AT_CHECK([$COMPILE -std=mf prog.cob], [0], , [])
+AT_CHECK([$COMPILE prog.cob], [0], , [])
 AT_CHECK([./prog], [0],
 [OK
 OK
 ])
+
+AT_CLEANUP
+
+
+AT_SETUP([Larger REDEFINES lengths])
+AT_KEYWORDS([extensions])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01  Z            PIC 99.
+       01  XMAIN        PIC X(8).
+       01  XMAINRED REDEFINES XMAIN.
+           03  FILLER         PIC X(4).
+           03  XMAIN03.
+               05  XMAIN0501  PIC X(4).
+               05  XMAIN0502 REDEFINES XMAIN0501 PIC X(5).
+       01 USE-VARS.
+          05 USE-VALUE                PIC 9
+                                      VALUE ZERO.
+             88 USE-ACTIVE-FIRST      VALUE 1.
+             88 USE-ACTIVE-SECOND     VALUE 2.
+          05 USE-FIRST.
+             10 FIRST-DATA.
+                20 FIRST-DATA-VAR     PIC X(033).
+             10 FIRST-VARIANT-A REDEFINES FIRST-DATA.
+                20 PART-A-FIRST       PIC X(33211).
+             10 FIRST-VARIANT-B REDEFINES FIRST-DATA.
+                20 PART-B-FIRST       PIC X(24561).
+             10 FIRST-VARIANT-C REDEFINES FIRST-DATA.
+                20 PART-C-FIRST       PIC X(3421).
+         05 USE-SECOND REDEFINES USE-FIRST.
+            10 SECOND-HEADER.
+               20 SECOND-DATA         PIC 9(015).
+               20 SECOND-CONTROL-SUM  PIC 9(015)V9(003).
+            10 SECOND-VARIANT-A REDEFINES SECOND-HEADER.
+               20 PART-A-SECOND       PIC X(27241).
+            10 SECOND-VARIANT-B REDEFINES SECOND-HEADER.
+               20 PART-B-SECOND       PIC X(3879).
+       PROCEDURE        DIVISION.
+           MOVE    LENGTH OF XMAIN       TO Z.
+           IF Z NOT = 8
+              DISPLAY "Test 1 " Z
+              END-DISPLAY
+           END-IF.
+           MOVE    LENGTH OF XMAINRED    TO Z.
+           IF Z NOT = 9
+              DISPLAY "Test 2 " Z
+              END-DISPLAY
+           END-IF.
+           MOVE    LENGTH OF XMAIN03     TO Z.
+           IF Z NOT = 5
+              DISPLAY "Test 3 " Z
+              END-DISPLAY
+           END-IF.
+           MOVE    LENGTH OF XMAIN0501   TO Z.
+           IF Z NOT = 4
+              DISPLAY "Test 4 " Z
+              END-DISPLAY
+           END-IF.
+           MOVE    LENGTH OF XMAIN0502   TO Z.
+           IF Z NOT = 5
+              DISPLAY "Test 5 " Z
+              END-DISPLAY
+           END-IF.
+           IF LENGTH OF USE-FIRST  NOT = 33211
+              DISPLAY LENGTH OF USE-FIRST   END-DISPLAY
+           END-IF.
+           IF LENGTH OF USE-SECOND NOT = 27241
+              DISPLAY LENGTH OF USE-SECOND  END-DISPLAY
+           END-IF.
+           STOP RUN.                          
+])
+
+AT_CHECK([$COMPILE -frelax-syntax -o prog prog.cob], [0], ,
+[prog.cob: 12: Warning: Size of 'XMAIN0502' larger than size of 'XMAIN0501'
+prog.cob: 21: Warning: Size of 'FIRST-VARIANT-A' larger than size of 'FIRST-DATA'
+prog.cob: 23: Warning: Size of 'FIRST-VARIANT-B' larger than size of 'FIRST-DATA'
+prog.cob: 25: Warning: Size of 'FIRST-VARIANT-C' larger than size of 'FIRST-DATA'
+prog.cob: 31: Warning: Size of 'SECOND-VARIANT-A' larger than size of 'SECOND-HEADER'
+prog.cob: 33: Warning: Size of 'SECOND-VARIANT-B' larger than size of 'SECOND-HEADER'
+])
+AT_CHECK([./prog], [0])
 
 AT_CLEANUP
 
