@@ -353,7 +353,7 @@ cob_set_library_path (const char *path)
 
 		if (!flag) {
 			resolve_path[resolve_size++] = p;
-        }
+		}
 	}
 }
 

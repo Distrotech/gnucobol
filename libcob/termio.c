@@ -298,7 +298,8 @@ cob_accept (cob_field *f)
 			memset (COB_MODULE_PTR->crt_status->data, '0', (size_t)4);
 		}
 	}
-	if (!f) {
+	/* extension: ACCEPT OMITTED */
+	if (unlikely(!f)) {
 		for (; ; ) {
 			ipchr = getchar ();
 			if (ipchr == '\n' || ipchr == EOF) {

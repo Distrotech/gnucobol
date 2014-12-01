@@ -1577,7 +1577,7 @@ num_leading_nonspace (const char *str)
 	int i;
 	int str_len = strlen (str);
 
-	for (i = 0; i < str_len && !isspace (str[i]); ++i);
+	for (i = 0; i < str_len && !isspace ((int)str[i]); ++i);
 	return i;
 }
 

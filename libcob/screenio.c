@@ -1421,7 +1421,8 @@ cob_field_accept (cob_field *f, cob_field *line, cob_field *column,
 			break;
 		}
 
-		if (!f) {
+		/* extension: ACCEPT OMITTED */
+		if (unlikely(!f)) {
 			(void)flushinp ();
 			cob_beep ();
 			continue;

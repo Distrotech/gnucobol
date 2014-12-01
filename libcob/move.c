@@ -990,9 +990,9 @@ cob_move_edited_to_display (cob_field *f1, cob_field *f2)
 	int		scale = 0;
 	int		count = 0;
 	int		have_point = 0;
-	int		cp;
 	int		n;
 	unsigned char	c;
+	unsigned char	cp;
 	unsigned char	dec_pt;
 
 	dec_pt = COB_MODULE_PTR->decimal_point;

@@ -1,4 +1,9 @@
 
+2014-12-01  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
+
+	* testsuite.src/syn_screen.at : Added first testsuite entries for
+	  SCREEN section
+
 2014-09-12  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
 	* support spaces in testsuite
@@ -17,6 +22,11 @@
 2014-14-04  Philipp Böhme <phi.boehme@googlemail.com>
 
 	* testsuite.src/run_extensions.at : Added tests for getopt.
+
+2014-01-14  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
+
+	* testsuite.src/run_reportwriter.at, testsuite.src/syn_reportwriter.at :
+	  Added first testsuite entries for REPORT WRITER
 
 2010-06-28  Roger While <simrw@sim-basis.de>
 

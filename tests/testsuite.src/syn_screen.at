@@ -1,0 +1,46 @@
+## Copyright (C) 2014 Simon Sobisch
+## 
+## This file is part of GNU Cobol.
+## 
+## The GNU Cobol compiler is free software: you can redistribute it
+## and/or modify it under the terms of the GNU General Public License
+## as published by the Free Software Foundation, either version 3 of the
+## License, or (at your option) any later version.
+## 
+## GNU Cobol is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+## 
+## You should have received a copy of the GNU General Public License
+## along with GNU Cobol.  If not, see <http://www.gnu.org/licenses/>.
+
+### GNU Cobol Test Suite
+
+### ISO+IEC+1989-2014 13.9 SCREEN section
+
+
+AT_SETUP([FROM clause])
+AT_KEYWORDS([screen])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01 X             PIC X.
+       SCREEN  SECTION.
+       01 SG.
+          05 SI1   LINE 1 COL 1 PIC X FROM X.
+          05 SI2   LINE 2 COL 1 PIC X FROM SPACE.
+          05 SI2-2 LINE 2 COL 5 PIC X(03) FROM ALL SPACES.
+          05 SI3   LINE 3 COL 1 PIC 9 FROM ZERO.
+          05 SI3-2 LINE 3 COL 5 PIC X(03) FROM ALL ZEROES.
+       PROCEDURE        DIVISION.
+           DISPLAY SG END-DISPLAY.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY prog.cob], [0], [], [])
+
+AT_CLEANUP

@@ -1,4 +1,8 @@
 
+2014-12-01  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
+
+	* parser.y : fix bug #108 figurative constants not accepted in screen items
+
 2014-11-18  Sergey Kashyrin <ska@kiska.net>
 
 	* field.c : fix bug #89 incorrect LENGTH OF redefined
@@ -23,6 +27,7 @@
 	* pplex.l : bug #96 prevent line overflow, add warning "Source text too long"
 	* pplex.l : only show warning "Source text after column ..." if no comment was
 	  started in this line before
+	  
 2014-09-17  Edward Hart <edward.dan.hart@gmail.com>
 
 	* reserved.c: Set FORMATTED-DATE/DATETIME/TIME functions to implemented

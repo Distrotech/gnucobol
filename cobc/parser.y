@@ -1,6 +1,7 @@
 /*
    Copyright (C) 2001,2002,2003,2004,2005,2006,2007 Keisuke Nishida
    Copyright (C) 2007-2012 Roger While
+   Copyright (C) 2014 Simon Sobisch
 
    This file is part of GNU Cobol.
 
@@ -5038,7 +5039,7 @@ screen_option:
 	current_field->screen_to = $2;
 	current_field->screen_flag |= COB_SCREEN_INPUT;
   }
-| FROM id_or_lit_or_func
+| FROM from_parameter
   {
 	check_pic_repeated ("FROM", SYN_CLAUSE_21);
 	current_field->screen_from = $2;

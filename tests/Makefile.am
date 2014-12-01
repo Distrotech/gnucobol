@@ -33,6 +33,7 @@ testsuite_sources = \
 	testsuite.src/syn_occurs.at \
 	testsuite.src/syn_redefines.at \
 	testsuite.src/syn_reportwriter.at \
+	testsuite.src/syn_screen.at \
 	testsuite.src/syn_set.at \
 	testsuite.src/syn_subscripts.at \
 	testsuite.src/syn_value.at \

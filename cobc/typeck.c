@@ -1816,12 +1816,12 @@ cb_validate_collating (struct cb_program *prog)
 	}
 	if (CB_ALPHABET_NAME (x)->low_val_char) {
 		cb_low = cb_build_alphanumeric_literal ("\0", (size_t)1);
-		CB_LITERAL(cb_low)->data[0] = CB_ALPHABET_NAME (x)->low_val_char;
+		CB_LITERAL(cb_low)->data[0] = (unsigned char)CB_ALPHABET_NAME (x)->low_val_char;
 		CB_LITERAL(cb_low)->all = 1;
 	}
 	if (CB_ALPHABET_NAME (x)->high_val_char != 255){
 		cb_high = cb_build_alphanumeric_literal ("\0", (size_t)1);
-		CB_LITERAL(cb_high)->data[0] = CB_ALPHABET_NAME (x)->high_val_char;
+		CB_LITERAL(cb_high)->data[0] = (unsigned char)CB_ALPHABET_NAME (x)->high_val_char;
 		CB_LITERAL(cb_high)->all = 1;
 	}
 }
