@@ -1115,8 +1115,18 @@ cob_file_open (cob_file *f, char *filename, const int mode, const int sharing)
 		/* Possible Solutions: */
 		/* a) Create the file and reopen it with a+ */
 		/* b) Check this stuff in EINVAL and just go on */
+#ifdef _MSC_VER
+		/* 
+		 * In MSC a+ is causing problems... 
+		 * According to the programmers guide only writing is allowed in append mode...
+		 * So we use mode "a" instead which is working properly.
+		 */
+		if (!cobglobptr->cob_unix_lf) {
+			fmode = "a";
+#else
 		if (!cobglobptr->cob_unix_lf) {
 			fmode = "a+";
+#endif
 		} else {
 			fmode = "ab+";
 		}

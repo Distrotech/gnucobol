@@ -2026,6 +2026,7 @@ cb_build_field (cb_tree name)
 	p->usage = CB_USAGE_DISPLAY;
 	p->storage = CB_STORAGE_WORKING;
 	p->occurs_max = 1;
+	p->source_line = name->source_line;
 	return CB_TREE (p);
 }
 

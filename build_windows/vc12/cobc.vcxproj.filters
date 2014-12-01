@@ -63,6 +63,12 @@
     <ClCompile Include="..\..\cobc\scanner.c">
       <Filter>Auto Generated Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\debugger_sources\animod.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\debugger_sources\printani.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\cobc\codeoptim.def">
@@ -111,6 +117,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\libcob\cobgetopt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\debugger_sources\animod.c.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\debugger_sources\animod.c.l.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\debugger_sources\printani.c.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\debugger_sources\printani.c.l.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

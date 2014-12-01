@@ -9,7 +9,7 @@
 #define COB_CFLAGS       "-I \"" COB_MAIN_DIR "\\include\""
 #define COB_LDFLAGS      "/LIBPATH:\"" COB_MAIN_DIR "\\libs\""
 #else  // no MAKE_DIST
-#define COB_MAIN_DIR     "C:\\GnuCobol"
+#define COB_MAIN_DIR     "C:\\Workspaces\\workspace\\gnu-cobol-2.0-debugger"
 #define COB_CFLAGS       "-I \"" COB_MAIN_DIR "\" -I \"" COB_MAIN_DIR "\\build_windows\""
 
 #ifdef _WIN64

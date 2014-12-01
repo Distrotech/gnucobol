@@ -207,6 +207,16 @@ struct cb_exception cb_exception_table[] = {
 #undef	CB_WARNDEF
 #undef	CB_NOWARNDEF
 
+
+/* EB START */
+char	module_ext[8];
+int	animflag_set = 0;
+int	anim_source_lines = 0;
+char	animcb[100];
+extern	void animod(char *animcb);
+/* EB END */
+
+
 /* Local variables */
 
 #if	defined(HAVE_SIGNAL_H) && defined(HAVE_SIG_ATOMIC_T)
@@ -383,7 +393,7 @@ static const char	*const cob_csyns[] = {
 
 #define COB_NUM_CSYNS	sizeof(cob_csyns) / sizeof(char *)
 
-static const char short_options[] = "hVivECScbmxOPgwo:I:L:l:D:K:k:";
+static const char short_options[] = "ahVivECScbmxOPgwo:I:L:l:D:K:k:";
 
 #define	CB_NO_ARG	no_argument
 #define	CB_RQ_ARG	required_argument
@@ -1371,6 +1381,13 @@ cobc_clean_up (const int status)
 	struct local_filename	*lf;
 	cob_u32_t		i;
 
+/* EB START */
+	if (status != 1 && animflag_set) {
+		animcb[0] = 'C';
+		animod(animcb);         // close ani file
+	}
+/* EB END */
+
 	if (cb_listing_file) {
 		fclose (cb_listing_file);
 		cb_listing_file = NULL;
@@ -2072,6 +2089,12 @@ process_command_line (const int argc, char **argv)
 #endif
 			break;
 
+/* EB START */
+		case 'a':
+			animflag_set = 1;
+			break;
+/* EB END */
+
 		case '$':
 			/* -std=<xx> : Specify dialect */
 			snprintf (ext, (size_t)COB_MINI_MAX, "%s.conf", cob_optarg);
@@ -2687,25 +2710,26 @@ process_filename (const char *filename)
  */
 static int 
 line_contains(char* line_start, char* line_end, char* search_patterns) {
-	int pattern_end, pattern_start;
 	char* line_pos;
+	char *pattern, *tmp_pattern_list;
 	
-	if(search_patterns[strlen(search_patterns) - 1] != '#') return -1;
+	if(memcmp(search_patterns + strlen(search_patterns) - 3, "|?|", 3) != 0) return -1;
 
-	pattern_start = 0;
-	for(pattern_end = 0; pattern_end < (int) strlen(search_patterns); pattern_end++) {
-		if(search_patterns[pattern_end] == '#') {
-			for (line_pos = line_start; line_pos + pattern_end - pattern_start <= line_end; line_pos++) {
+	tmp_pattern_list = strdup(search_patterns);
+	pattern = strtok(tmp_pattern_list, "|?|");
+	while(pattern != NULL) {
+		for (line_pos = line_start; line_pos + strlen(pattern) <= line_end; line_pos++) {
 				/* Find matching substring */
-				if (memcmp (line_pos, search_patterns + pattern_start, pattern_end - pattern_start) == 0) {
+			if (memcmp (line_pos, pattern, strlen(pattern)) == 0) {
+				cobc_free(tmp_pattern_list);
 					return 1;
 				}
 			}
 
-			pattern_start = pattern_end + 1;
-		}
+		pattern = strtok(NULL, "|?|");
 	}
 
+	cobc_free(tmp_pattern_list);
 	return 0;
 }
 #endif
@@ -2958,7 +2982,7 @@ process (const char *cmd, struct filename *fn)
 	FILE* pipe;
 	char* read_buffer;
 	char *line_start, *line_end;
-	char* search_pattern, *search_pattern2;
+	char* search_pattern;
 	char* output_name_temp;
 	int i;
 
@@ -2978,10 +3002,8 @@ process (const char *cmd, struct filename *fn)
 	if(output_name) output_name_temp = file_basename(output_name);
 	else output_name_temp = (char *) fn->demangle_source;
 
-	search_pattern = (char*) cobc_malloc(fn->translate_len - i + strlen (sep));
-	snprintf(search_pattern, fn->translate_len - i, "%s%s", fn->translate + i + 1, sep); 
-	search_pattern2 = (char*) cobc_malloc(2 * (strlen(output_name_temp) + 4) + 2 * strlen (sep) + 1);
-	sprintf(search_pattern2, "%s.lib%s%s.exp%s", output_name_temp, sep, output_name_temp, sep);
+	search_pattern = (char*) cobc_malloc(2 * (strlen(output_name_temp) + 4) + 3 * strlen(sep) + fn->translate_len - i + 1);
+	sprintf(search_pattern, "%s\n%s%s.lib%s%s.exp%s", fn->translate + i + 1, sep, output_name_temp, sep, output_name_temp, sep);
 
 	/* Open pipe to catch output of cl.exe */
 	pipe = _popen(cmd, "r");
@@ -2994,37 +3016,28 @@ process (const char *cmd, struct filename *fn)
 		line_end = 0;
 		
 		/* reading two lines to filter unnecessary outputs */
-		for(i = 0; i < 2; i++) {
-			line_start = fgets(read_buffer, COB_FILE_BUFF - 1, pipe);
-
+		while(fgets(read_buffer, COB_FILE_BUFF - 1, pipe) != NULL) {
 			if (line_start == NULL) {
 				return !!_pclose(pipe);
 			}
 
 			/* read one line from buffer, returning line end position */
-			line_end = line_start + strlen(line_start) - 1;
+			line_end = line_start + strlen(line_start);
 
 			/* if non of the patterns was found, print line */
-			if(!line_contains(line_start, line_end, search_pattern)
-			   && !line_contains(line_start, line_end, search_pattern2)) 
+			if(!line_contains(line_start, line_end, search_pattern)) 
 			{
 				fprintf(stdout, "%*s", line_end - line_start + 2, line_start);
 			}
 		}
 
 		/* print rest of buffer */
-		fprintf(stdout, line_end + 1);
+		if(line_end) fprintf(stdout, line_end + 1);
 		fflush(stdout);
-
-		while(fgets(read_buffer, COB_FILE_BUFF - 1, pipe) != NULL) {
-			fprintf(stdout, read_buffer);
-			fflush(stdout);
-		}
 
 		cobc_free(read_buffer);
 	}
 	cobc_free(search_pattern);
-	cobc_free(search_pattern2);
 
 	/* close pipe and get return code of cl.exe */
 	return !!_pclose(pipe);
@@ -3231,6 +3244,9 @@ process_translate (struct filename *fn)
 	struct local_filename	*lf;
 	int			ret;
 	int			i;
+/* EB START */
+	char			tmp[256];
+/* EB END */
 
 	/* Initialize */
 	cb_source_file = NULL;
@@ -3307,6 +3323,24 @@ process_translate (struct filename *fn)
 		fflush (stderr);
 	}
 
+/* EB START */
+    if (animflag_set) {
+		sprintf(tmp, "%s.ani", fn->demangle_source);
+		unlink(tmp);
+		cob_init(0, NULL);
+		animcb[0] = 'O';
+		animcb[1] = 'O';
+		animcb[2] = 'O';
+		(void) strcpy(animcb + 3, tmp);
+		animod(animcb); 	// create ani file
+		if (animcb[1] != '0' || animcb[2] != '0')
+		{
+			fprintf(stderr, "Create ani error: %c%c\n", animcb[1], animcb[2]);
+			exit (1);
+		}
+	}
+/* EB END */
+
 	/* Open the output file */
 	yyout = fopen (fn->translate, "w");
 	if (!yyout) {
@@ -3363,6 +3397,15 @@ process_translate (struct filename *fn)
 	if(unlikely(fclose (cb_storage_file) != 0)) {
 		cobc_terminate (cb_storage_file_name);
 	}
+
+	/* Remove temporary animator/debugger files */
+	if(animflag_set) { /* EB */
+		sprintf(tmp, "%s.ani.dat", fn->demangle_source); /* EB */
+		unlink(tmp); /* EB */
+		sprintf(tmp, "%s.ani.idx", fn->demangle_source); /* EB */
+		unlink(tmp); /* EB */
+	}
+
 	cb_storage_file = NULL;
 	if(unlikely(fclose (yyout) != 0)) {
 		cobc_terminate (fn->translate);

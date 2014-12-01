@@ -244,6 +244,9 @@ typedef struct runtime_env {
 	char* cob_extended_status_env;
 	char* cob_use_esc_env;
 
+	/* Debugger */
+	char* cob_anim_env;
+
 } runtime_env;
 
 /* Local function prototypes */

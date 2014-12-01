@@ -200,6 +200,8 @@
     <ClCompile Include="..\..\cobc\pplex.c" />
     <ClCompile Include="..\..\cobc\ppparse.c" />
     <ClCompile Include="..\..\cobc\scanner.c" />
+    <ClCompile Include="..\debugger_sources\animod.c" />
+    <ClCompile Include="..\debugger_sources\printani.c" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\cobc\parser.y">
@@ -285,6 +287,10 @@
     <None Include="..\..\cobc\ChangeLog" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\debugger_sources\animod.c.h" />
+    <ClInclude Include="..\debugger_sources\animod.c.l.h" />
+    <ClInclude Include="..\debugger_sources\printani.c.h" />
+    <ClInclude Include="..\debugger_sources\printani.c.l.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="defaults.h" />
     <ClInclude Include="..\..\libcob.h" />

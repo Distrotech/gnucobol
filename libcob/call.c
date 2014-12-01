@@ -182,6 +182,9 @@ static unsigned int		cob_jmp_primed;
 static unsigned int		physical_cancel;
 static char*			physical_cancel_env;
 
+static char		module_ext[8];		/* EB */
+static int		cob_anim_logging;	/* EB */
+
 #undef	COB_SYSTEM_GEN
 #if 0
 #define	COB_SYSTEM_GEN(x,y,z)		{ x, {(void *(*)())z} },
@@ -613,6 +616,8 @@ cob_resolve_internal (const char *name, const char *dirent,
 	lt_dlhandle		handle;
 	size_t			i;
 
+	FILE* anilog; /* Animator logging for debug purposes */
+
 	if (unlikely(!cobglobptr)) {
 		cob_fatal_error (COB_FERROR_INITIALIZED);
 	}
@@ -774,8 +779,17 @@ cob_resolve_internal (const char *name, const char *dirent,
 				   (const char *)s);
 		return NULL;
 	}
+
+	if(cob_anim_logging) { /* EB */
+		anilog = fopen("animator.log", "a"); /* EB */
+	} /* EB */
 	for (i = 0; i < resolve_size; ++i) {
 		call_filename_buff[COB_NORMAL_MAX] = 0;
+		if(cob_anim_logging) { /* EB */
+        	fprintf(anilog, "Module Extension: %s\n", module_ext); /* EB */
+        	fprintf(anilog, "cob_anim: %i\n", cobglobptr->cob_anim); /* EB */
+		} /* EB */
+
 		if (resolve_path[i] == NULL) {
 			snprintf (call_filename_buff, (size_t)COB_NORMAL_MAX,
 				  "%s.%s", (char *)s, COB_MODULE_EXT);
@@ -786,6 +800,11 @@ cob_resolve_internal (const char *name, const char *dirent,
 				  (char *)s,
 				  COB_MODULE_EXT);
 		}
+
+		if(cob_anim_logging) {
+        	fprintf(anilog, "Looping. Filename: %s\n", call_filename_buff);
+		}
+
 		if (access (call_filename_buff, R_OK) == 0) {
 			handle = lt_dlopen (call_filename_buff);
 			if (handle != NULL) {
@@ -796,11 +815,23 @@ cob_resolve_internal (const char *name, const char *dirent,
 					insert (name, func, handle, NULL,
 						call_filename_buff, 0);
 					resolve_error = NULL;
+					if(cob_anim_logging) {
+        				fprintf(anilog, "Loaded module %s ...\n", call_filename_buff);
+        				fflush(anilog);
+        				fclose(anilog);
+					}
 					return func;
 				}
 			}
 			set_resolve_error (_("Cannot find entry point"),
 					   (const char *)s);
+
+			if(cob_anim_logging) {
+				fprintf(anilog, "Cannot find module '%s'\n", name);
+				fflush(anilog);
+				fclose(anilog);
+			}
+
 			return NULL;
 		}
 	}
@@ -1329,6 +1360,12 @@ cob_init_call (cob_global *lptr, runtime_env* runtimeptr)
 #ifndef	COB_ALT_HASH
 	call_table = cob_malloc (sizeof (struct call_hash *) * HASH_SIZE);
 #endif
+
+	s = getenv("COB_ANIM_LOGGING"); /* EB */
+	if(s && (*s == 'Y' || *s == 'y' || *s == '1')) /* EB */
+		cob_anim_logging = 1; /* EB */
+	else /* EB */
+		cob_anim_logging = 0; /* EB */
 
 	call_filename_buff = cob_malloc ((size_t)COB_NORMAL_BUFF);
 	call_entry_buff = cob_malloc ((size_t)COB_SMALL_BUFF);

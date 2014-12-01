@@ -957,7 +957,7 @@ typedef union {
 	int           dataint;
 } cob_content;
 
-typedef union {
+typedef union cob_call_union {
 	void		*(*funcptr)();	/* Function returning "void *" */
 	void		(*funcnull)();	/* Function returning nothing */
 	cob_field	*(*funcfld)();	/* Function returning "cob_field *" */
@@ -1178,6 +1178,8 @@ typedef struct __cob_global {
 	int			cob_max_y;		/* Screen max y */
 	int			cob_max_x;		/* Screen max x */
 
+	int cob_anim; /* Animator/Debugger mode flag (0 = No Debugging, 1 = Debugging */
+
 } cob_global;
 
 
@@ -1200,6 +1202,30 @@ struct cobjmp_buf {
 	jmp_buf	cbj_jmp_buf;
 	void	*cbj_ptr_rest[2];
 };
+
+
+/* Animator/Debugger interface block structure */
+typedef struct interface_block {
+    char anim_state;
+    char cobol_src_name[30];
+    char first_stmt_if[6];
+    char current_line_if[6];
+    char active_line_if[6];
+    char no_code_lines_if[6];
+    char dtf_line[6];
+    char dtf_usage[2];
+    char dtf_length[3];
+    char dtf_value[280];
+} interface_block;
+
+/* Animator/Debugger cobol field representation */
+typedef struct anim_field {
+	const char		*field_name;
+	unsigned char	*data;
+	size_t		size;
+	size_t		usage;
+	void		*previous;
+} anim_field;
 
 /*******************************/
 
@@ -1329,7 +1355,7 @@ COB_EXPIMP void	cob_set_location	(const char *, const unsigned int,
 					 const char *);
 COB_EXPIMP void	cob_trace_section	(const char *, const char *, const int);
 
-COB_EXPIMP void			*cob_external_addr	(const char *, const int);
+COB_EXPIMP void			*cob_external_addr	(const char *, const int, int); /* EB */
 COB_EXPIMP unsigned char	*cob_get_pointer	(const void *);
 COB_EXPIMP void			*cob_get_prog_pointer	(const void *);
 COB_EXPIMP void			cob_ready_trace		(void);

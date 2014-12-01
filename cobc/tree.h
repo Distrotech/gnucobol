@@ -654,6 +654,7 @@ struct cb_field {
 	int			occurs_max;	/* or OCCURS <min> TO <max> */
 	int			indexes;	/* Indices count (OCCURS) */
 
+	int			source_line; /* source line number */ /* EB */
 	int			count;		/* Reference count */
 	int			mem_offset;	/* Memory offset */
 	int			nkeys;		/* Number of keys */

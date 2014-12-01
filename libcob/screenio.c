@@ -648,7 +648,7 @@ cob_screen_puts (cob_screen *s, cob_field *f, const cob_u32_t is_input)
 		for (size = 0; size < f->size; size++, p++) {
 			if (s->attr & COB_SCREEN_SECURE) {
 				addch (COB_CH_AS);
-			} else if (*p <= ' ') {
+			} else if (*p < ' ') {
 				addch (promptchar);
 			} else {
 				addch ((const chtype)*p);

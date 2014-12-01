@@ -112,6 +112,7 @@ struct cob_external {
 	void			*ext_alloc;	/* Pointer to malloced space */
 	char			*ename;		/* External name */
 	int			esize;		/* Item size */
+	int			source_line;	/* EB */
 };
 
 #define COB_ERRBUF_SIZE		1024
@@ -2380,9 +2381,12 @@ cob_check_ref_mod (const int offset, const int length,
 }
 
 void *
-cob_external_addr (const char *exname, const int exlength)
+cob_external_addr (const char *exname, const int exlength, int source_line)
 {
+	static struct cob_external *basext = NULL;	/* EB */	
+	
 	struct cob_external *eptr;
+	int     _animdata_line;         /* EB */
 
 	/* Locate or allocate EXTERNAL item */
 	for (eptr = basext; eptr; eptr = eptr->next) {
@@ -2393,12 +2397,14 @@ cob_external_addr (const char *exname, const int exlength)
 				cob_stop_run (1);
 			}
 			cobglobptr->cob_initial_external = 0;
+			_animdata_line = eptr->source_line;     /* EB */
 			return eptr->ext_alloc;
 		}
 	}
 	eptr = cob_malloc (sizeof (struct cob_external));
 	eptr->next = basext;
 	eptr->esize = exlength;
+	eptr->source_line = source_line;        /* EB */
 	eptr->ename = cob_malloc (strlen (exname) + 1U);
 	strcpy (eptr->ename, exname);
 	eptr->ext_alloc = cob_malloc ((size_t)exlength);
@@ -2718,11 +2724,14 @@ cob_accept_environment (cob_field *f)
 	if (cob_local_env) {
 		p = getenv (cob_local_env);
 	}
-	if (!p) {
-		cob_set_exception (COB_EC_IMP_ACCEPT);
-		p = " ";
-	}
-	cob_memcpy (f, p, strlen (p));
+
+	// TODO: Is this really necessary? Philipp
+	//if (!p) {
+	//	cob_set_exception (COB_EC_IMP_ACCEPT);
+	//	p = " ";
+	//}
+	if(p)
+		cob_memcpy (f, p, strlen (p));
 }
 
 void
@@ -4428,6 +4437,14 @@ cob_init (const int argc, char **argv)
 			cobglobptr->cob_env_mangle = 1;
 		}
 	}
+
+	/* Are we in debugger mode? */
+	s = getenv ("COB_ANIM");		/* EB */
+	if (s) {	/* EB */
+		runtimeptr->cob_anim_env = cob_save_env_value(runtimeptr->cob_anim_env, s);
+		cobglobptr->cob_anim = 1;			/* EB */
+	}					/* EB */
+
 
 	/* Get user name */
 	s = getenv ("USERNAME");

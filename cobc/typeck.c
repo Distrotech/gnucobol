@@ -4903,9 +4903,8 @@ cb_emit_delete (cb_tree file)
 			    _("Operation not allowed on SORT files"));
 		return;
 	} else if (f->organization == COB_ORG_LINE_SEQUENTIAL) {
-		cb_error_x (CB_TREE (current_statement),
+		cb_warning_x (CB_TREE (current_statement),
 			    _("Operation not allowed on LINE SEQUENTIAL files"));
-		return;
 	}
 
 	/* Check for file debugging */
@@ -7247,9 +7246,11 @@ cb_emit_open (cb_tree file, cb_tree mode, cb_tree sharing)
 		return;
 	} else if (f->organization == COB_ORG_LINE_SEQUENTIAL &&
 		   mode == cb_int (COB_OPEN_I_O)) {
-		cb_error_x (CB_TREE (current_statement),
+		cb_warning_x(CB_TREE (current_statement),
 			    _("OPEN I-O not allowed on LINE SEQUENTIAL files"));
-		return;
+		/*cb_error_x (CB_TREE (current_statement),
+			    _("OPEN I-O not allowed on LINE SEQUENTIAL files"));*/
+		//return;
 	}
 	if (sharing == NULL) {
 		if (f->sharing) {
@@ -7509,9 +7510,8 @@ cb_emit_rewrite (cb_tree record, cb_tree from, cb_tree lockopt)
 		_("Operation not allowed on SORT files"));
 		return;
 	} else if (f->organization == COB_ORG_LINE_SEQUENTIAL) {
-		cb_error_x (CB_TREE (current_statement),
+		cb_warning_x (CB_TREE (current_statement),
 			    _("Operation not allowed on LINE SEQUENTIAL files"));
-		return;
 	} else if (current_statement->handler_id == COB_EC_I_O_INVALID_KEY &&
 		  (f->organization != COB_ORG_RELATIVE &&
 		   f->organization != COB_ORG_INDEXED)) {
