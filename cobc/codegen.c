@@ -6362,25 +6362,6 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 		output_newline ();
 	}
 
-	/* Implicit CANCEL for INITIAL program */
-	if (prog->flag_initial) {
-		output_line ("/* CANCEL for INITIAL program */");
-		output_prefix ();
-		if (!prog->nested_level) {
-			output ("%s_ (-1", prog->program_id);
-		} else {
-			output ("%s_%d_ (-1", prog->program_id,
-				prog->toplev_count);
-		}
-		if (!prog->flag_chained) {
-			for (l = parameter_list; l; l = CB_CHAIN (l)) {
-				output (", NULL");
-			}
-		}
-		output (");\n");
-		output_newline ();
-	}
-
 	if (gen_dynamic) {
 		output_line ("/* Deallocate dynamic FUNCTION-ID fields */");
 		for (inc = 0; inc < gen_dynamic; inc++) {
@@ -6457,6 +6438,25 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 #else
 		output_line ("cob_free (module);");
 #endif
+		output_newline ();
+	}
+
+	/* Implicit CANCEL for INITIAL program */
+	if (prog->flag_initial) {
+		output_line ("/* CANCEL for INITIAL program */");
+		output_prefix ();
+		if (!prog->nested_level) {
+			output ("%s_ (-1", prog->program_id);
+		} else {
+			output ("%s_%d_ (-1", prog->program_id,
+				prog->toplev_count);
+		}
+		if (!prog->flag_chained) {
+			for (l = parameter_list; l; l = CB_CHAIN (l)) {
+				output (", NULL");
+			}
+		}
+		output (");\n");
 		output_newline ();
 	}
 

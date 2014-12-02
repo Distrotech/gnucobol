@@ -1,4 +1,8 @@
 
+2014-12-02  Sergey Kashyrin <ska@kiska.net>
+
+	* codegen.c : fix for bug #52 incorrect premature memory release (CANCEL) of INITIAL programs
+
 2014-12-01  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
 	* parser.y : fix bug #108 figurative constants not accepted in screen items
