@@ -1,4 +1,8 @@
 
+2014-12-04  Edward Hart <edward-h@users.sf.net>
+
+	* configure.ac : #44 Disable optimisation with --enable-debug
+
 2014-09-09  Philipp Böhme <phi.boehme@googlemail.com>
 
 	* configure.ac : new check for mp_get_memory_functions in 

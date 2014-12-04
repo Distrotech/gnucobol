@@ -4,6 +4,7 @@
 #
 # Copyright (C) 2001,2002,2003,2004,2005,2006,2007 Keisuke Nishida
 # Copyright (C) 2007-2012 Roger While
+# Copyright (C) 2014 Simon Sobisch
 #
 # This file is part of GNU Cobol.
 #
@@ -94,6 +95,19 @@ AH_TEMPLATE([HAVE_FINITE_IEEEFP_H],
 	[Declaration of finite function in ieeefp.h instead of math.h])
 
 save_libs="$LIBS"
+
+enable_cflags_setting=no
+if test "$enable_debug" = "yes"
+then
+	AC_MSG_CHECKING([whether CFLAGS can be modified])
+	# Enable setting if the user has not specified the optimisation in CFLAGS.
+	echo "$CFLAGS" | grep "\-O.*\( \|$\)" 1>/dev/null 2>/dev/null
+	if test $? != 0
+	then
+		enable_cflags_setting=yes
+	fi
+	AC_MSG_RESULT([$enable_cflags_setting])
+fi
 
 # Basic capability tests
 
@@ -925,6 +939,18 @@ COB_PIC_FLAGS=`echo "$lt_prog_compiler_pic" | sed -e 's/^ //'`
 COB_SHARED_OPT="-shared"
 COB_EXEEXT="$EXEEXT"
 
+if test "$enable_cflags_setting" = yes
+then
+	# Remove -O2 option added by AC_PROG_CC and add -O0 
+	CFLAGS=`echo "$CFLAGS" | sed -e 's/ *-O@<:@0-9a-zA-Z@:>@* */ /g' -e 's/ $//' -e 's/^ //'`
+	if test "$COB_USES_GCC_ICC" = "yes"
+	then
+		CFLAGS="$CFLAGS -O0"
+	fi
+fi
+
+unset enable_cflags_setting
+
 if test "$enable_debug" != "yes" -a "x$CFLAGS" != "x"
 then
 	CFLAGS=`echo "$CFLAGS" | sed -e 's/-g//' -e 's/^ //' -e 's/ $//'`
@@ -1007,12 +1033,20 @@ case $host_os in
 		${CC} ${CFLAGS} +Olit=all -o hptest hptest.c > hptest.out 2>&1
 		if test $? -ne 0 -o -s hptest.out
 		then
-			CFLAGS="$CFLAGS +ESlit +O2"
+			CFLAGS="$CFLAGS +ESlit"
 			COB_CFLAGS="$COB_CFLAGS +ESlit -w"
 		else
-			CFLAGS="$CFLAGS +Olit=all +O2"
+			CFLAGS="$CFLAGS +Olit=all"
 			COB_CFLAGS="$COB_CFLAGS +Olit=all -w"
 		fi
+
+		if test "$enable_debug" = "yes"
+		then
+			CFLAGS="$CFLAGS +O0"
+		else
+			CFLAGS="$CFLAGS +O2"
+		fi
+
 		rm -f hptest*
 	fi
 	;;
@@ -1020,7 +1054,14 @@ case $host_os in
 	COB_EXPORT_DYN="-Wl,-bexpfull -Wl,-brtl"
 	if test "$COB_USES_GCC_ICC" != "yes"
 	then
-		CFLAGS="$CFLAGS -O2 -Q -qro -qroconst"
+		CFLAGS="$CFLAGS -Q -qro -qroconst"
+		if test "$enable_debug" = "yes"
+		then
+			CFLAGS="$CFLAGS -qnoopt"
+		else
+			CFLAGS="$CFLAGS -O2"
+		fi
+
 		COB_SHARED_OPT="-G"
 		COB_FIX_LIB=""
 		# COB_FIX_LIB="-Wc,-G $COB_EXPORT_DYN"
@@ -1032,7 +1073,11 @@ case $host_os in
   solaris*)
 	if test "$COB_USES_GCC_ICC" != "yes"
 	then
-		CFLAGS="$CFLAGS -xO2 -xstrconst"
+		CFLAGS="$CFLAGS -xstrconst"
+		if test "$enable_debug" != "yes"
+		then
+			CFLAGS="$CFLAGS -xO2"
+		fi
 		COB_CFLAGS="$COB_CFLAGS -xstrconst"
 		COB_SHARED_OPT="-G"
 	fi
@@ -1049,14 +1094,22 @@ then
 		[LDFLAGS=$MYOLDLDFLAGS
 		 AC_MSG_RESULT([no])])
 	unset MYOLDLDFLAGS
-	CFLAGS="$CFLAGS -finline-functions -fsigned-char -Wall -Wwrite-strings -Wmissing-prototypes -Wno-format-y2k"
+	if test "$enable_debug" != "yes"
+	then
+		CFLAGS="$CFLAGS -finline-functions"
+	fi
+	CFLAGS="$CFLAGS -fsigned-char -Wall -Wwrite-strings -Wmissing-prototypes -Wno-format-y2k"
 	if test "$enable_debug" != "yes"
 	then
 		CFLAGS="$CFLAGS -U_FORTIFY_SOURCE"
 	fi
 elif test "$COB_USES_ICC_ONLY" = "yes"
 then
-	CFLAGS="$CFLAGS -finline-functions -Wall -wd1419 -vec-report0 -opt-report 0"
+	if test "$enable_debug" != "yes"
+	then
+		CFLAGS="$CFLAGS -finline-functions"
+	fi
+	CFLAGS="$CFLAGS -Wall -wd1419 -vec-report0 -opt-report 0"
 fi
 
 if test "x$lt_cv_dlopen_self" != "xyes"
