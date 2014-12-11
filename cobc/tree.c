@@ -2454,8 +2454,15 @@ finalize_report (struct cb_report *r, struct cb_field *records)
 			r->lines = 9999;
 		if(r->heading < 0)
 			r->heading = 0;
-		if(r->first_detail < 1)
+		if(r->first_detail < 1) {
+			if(r->first_detail <= 0
+			&& !r->has_detail
+			&& r->t_first_detail == NULL
+			&& r->t_last_detail == NULL) {
+				cb_warning_x (CB_TREE(r), _("NO DETAIL line defined in report %s"),r->name);
+			}
 			r->first_detail = 1;
+		}
 		if(r->t_lines == NULL
 		&& r->t_columns == NULL
 		&& r->t_heading == NULL

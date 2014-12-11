@@ -1233,6 +1233,7 @@ struct cb_report {
 	unsigned int		control_final:1;/* CONTROL FINAL declared */
 	unsigned int		global:1;	/* IS GLOBAL declared */
 	unsigned int		has_declarative:1;/* Has Declaratives Code to be executed */
+	unsigned int		has_detail:1;	/* Has DETAIL line */
 };
 
 #define CB_REPORT(x)	(CB_TREE_CAST (CB_TAG_REPORT, struct cb_report, x))

@@ -78,7 +78,7 @@ AT_DATA([prog.cob], [
            .
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [])
+AT_CHECK([$COMPILE prog.cob], [0], [], [])
 
 AT_CHECK([export DD_PRINTOUT=./report.txt
 ./prog], [0], [], [])
@@ -160,7 +160,7 @@ AT_DATA([prog.cob], [
            .
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [])
+AT_CHECK([$COMPILE prog.cob], [0], [], [])
 
 AT_CHECK([export DD_PRINTOUT=./report.txt
 ./prog], [0], [], [])
@@ -230,7 +230,7 @@ AT_DATA([prog.cob], [
            .
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [])
+AT_CHECK([$COMPILE prog.cob], [0], [], [])
 
 AT_CHECK([export DD_PRINTOUT=./report.txt
 ./prog], [0], [], [])
@@ -312,7 +312,7 @@ AT_DATA([prog.cob], [
            .
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [])
+AT_CHECK([$COMPILE prog.cob], [0], [], [])
 
 AT_CHECK([export DD_PRINTOUT=./report.txt
 ./prog], [0], [], [])
@@ -357,21 +357,21 @@ AT_DATA([prog.cob], [
          03     COL +1             PIC X(6) VALUE "<--->".
 
        PROCEDURE DIVISION.
-           OPEN OUTPUT report-file
-           INITIATE rp
+           OPEN OUTPUT report-file.
+           INITIATE rp.
 
-           MOVE "hello" TO foo
-            GENERATE rp-detail
+           MOVE "hello" TO foo.
+            GENERATE rp-detail.
 
-           MOVE "goodbye" TO foo
-            GENERATE rp-detail
+           MOVE "goodbye" TO foo.
+            GENERATE rp-detail.
 
            TERMINATE rp.
              CLOSE report-file.
            END PROGRAM paglim.
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [])
+AT_CHECK([$COMPILE prog.cob], [0], [], [])
 
 AT_CHECK([export DD_PRINTOUT=./report.txt
 ./prog], [0], [], [])
@@ -441,7 +441,7 @@ AT_DATA([prog.cob], [
            STOP RUN.
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [])
+AT_CHECK([$COMPILE prog.cob], [0], [], [])
 
 AT_CHECK([export DD_PRINTOUT=./report.txt
 ./prog], [0], [], [])
@@ -546,11 +546,7 @@ AT_DATA([prog.cob], [
        DATA DIVISION.
        FILE SECTION.
       
-       FD  TRANSACTION-DATA
-           LABEL RECORDS ARE OMITTED
-           BLOCK CONTAINS 0 RECORDS
-           RECORD CONTAINS 80 CHARACTERS
-           DATA RECORD IS TRANSACTION-RECORD.
+       FD  TRANSACTION-DATA.
       
        01  TRANSACTION-RECORD.
            03  TR-CUSTOMER-NUMBER      PIC 9(04).
@@ -566,7 +562,6 @@ AT_DATA([prog.cob], [
            03  FILLER                  PIC X(47).
       
        FD  REPORT-FILE
-           LABEL RECORDS ARE OMITTED
            REPORT IS CUSTOMER-REPORT.
       
        WORKING-STORAGE SECTION.
@@ -637,11 +632,7 @@ AT_DATA([prog.cob], [
       
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [prog.cob: 25: Warning: LABEL RECORDS is obsolete in Micro Focus COBOL
-prog.cob: 27: Warning: RECORD clause ignored for LINE SEQUENTIAL
-prog.cob: 28: Warning: DATA RECORDS is obsolete in Micro Focus COBOL
-prog.cob: 44: Warning: LABEL RECORDS is obsolete in Micro Focus COBOL
-])
+AT_CHECK([$COMPILE prog.cob], [0], [], [])
 
 AT_CHECK([export DD_DATAIN=./inp_data
 export DD_SYSPRINT=./report.txt
@@ -871,11 +862,7 @@ AT_DATA([prog.cob], [
        DATA DIVISION.
        FILE SECTION.
       
-       FD  TRANSACTION-DATA
-           LABEL RECORDS ARE OMITTED
-           BLOCK CONTAINS 0 RECORDS
-           RECORD CONTAINS 80 CHARACTERS
-           DATA RECORD IS TRANSACTION-RECORD.
+       FD  TRANSACTION-DATA.
       
        01  TRANSACTION-RECORD.
            03  TR-CUSTOMER-NUMBER      PIC 9(04).
@@ -891,7 +878,6 @@ AT_DATA([prog.cob], [
            03  FILLER                  PIC X(47).
       
        FD  REPORT-FILE
-           LABEL RECORDS ARE OMITTED
            REPORT IS CUSTOMER-REPORT.
       
        WORKING-STORAGE SECTION.
@@ -1001,11 +987,7 @@ AT_DATA([prog.cob], [
       
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [prog.cob: 24: Warning: LABEL RECORDS is obsolete in Micro Focus COBOL
-prog.cob: 26: Warning: RECORD clause ignored for LINE SEQUENTIAL
-prog.cob: 27: Warning: DATA RECORDS is obsolete in Micro Focus COBOL
-prog.cob: 43: Warning: LABEL RECORDS is obsolete in Micro Focus COBOL
-])
+AT_CHECK([$COMPILE prog.cob], [0], [], [])
 
 AT_CHECK([export DD_DATAIN=./inp_data
 export DD_SYSPRINT=./report.txt
@@ -1235,11 +1217,7 @@ AT_DATA([prog.cob], [
        DATA DIVISION.
        FILE SECTION.
       
-       FD  TRANSACTION-DATA
-           LABEL RECORDS ARE OMITTED
-           BLOCK CONTAINS 0 RECORDS
-           RECORD CONTAINS 80 CHARACTERS
-           DATA RECORD IS TRANSACTION-RECORD.
+       FD  TRANSACTION-DATA.
       
        01  TRANSACTION-RECORD.
            03  TR-CUSTOMER-NUMBER      PIC 9(04).
@@ -1255,7 +1233,6 @@ AT_DATA([prog.cob], [
            03  FILLER                  PIC X(47).
       
        FD  REPORT-FILE
-           LABEL RECORDS ARE OMITTED
            REPORT IS CUSTOMER-REPORT.
       
        WORKING-STORAGE SECTION.
@@ -1382,11 +1359,7 @@ AT_DATA([prog.cob], [
       
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [prog.cob: 24: Warning: LABEL RECORDS is obsolete in Micro Focus COBOL
-prog.cob: 26: Warning: RECORD clause ignored for LINE SEQUENTIAL
-prog.cob: 27: Warning: DATA RECORDS is obsolete in Micro Focus COBOL
-prog.cob: 43: Warning: LABEL RECORDS is obsolete in Micro Focus COBOL
-])
+AT_CHECK([$COMPILE prog.cob], [0], [], [])
 
 AT_CHECK([export DD_DATAIN=./inp_data
 export DD_SYSPRINT=./report.txt
@@ -1623,11 +1596,7 @@ AT_DATA([prog.cob], [
        DATA DIVISION.
        FILE SECTION.
       
-       FD  TRANSACTION-DATA
-           LABEL RECORDS ARE OMITTED
-           BLOCK CONTAINS 0 RECORDS
-           RECORD CONTAINS 80 CHARACTERS
-           DATA RECORD IS TRANSACTION-RECORD.
+       FD  TRANSACTION-DATA.
       
        01  TRANSACTION-RECORD.
            03  TR-CUSTOMER.                                             20110227
@@ -1644,7 +1613,6 @@ AT_DATA([prog.cob], [
            03  FILLER                  PIC X(47).
       
        FD  REPORT-FILE
-           LABEL RECORDS ARE OMITTED
            REPORT IS CUSTOMER-REPORT.
       
        WORKING-STORAGE SECTION.
@@ -1758,11 +1726,7 @@ AT_DATA([prog.cob], [
       
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [prog.cob: 31: Warning: LABEL RECORDS is obsolete in Micro Focus COBOL
-prog.cob: 33: Warning: RECORD clause ignored for LINE SEQUENTIAL
-prog.cob: 34: Warning: DATA RECORDS is obsolete in Micro Focus COBOL
-prog.cob: 51: Warning: LABEL RECORDS is obsolete in Micro Focus COBOL
-])
+AT_CHECK([$COMPILE prog.cob], [0], [], [])
 
 AT_CHECK([export DD_DATAIN=./inp_data
 export DD_SYSPRINT=./report.txt
@@ -1973,11 +1937,7 @@ AT_DATA([prog.cob], [
        DATA DIVISION.
        FILE SECTION.
       
-       FD  SALES-DATA
-           LABEL RECORDS ARE OMITTED
-           BLOCK CONTAINS 0 RECORDS
-           RECORD CONTAINS 80 CHARACTERS
-           DATA RECORD IS SALES-RECORD.
+       FD  SALES-DATA.
       
        01  SALES-RECORD.
            03  SR-SALESMAN-NUMBER      PIC 9(02).
@@ -1988,7 +1948,6 @@ AT_DATA([prog.cob], [
            03  FILLER                  PIC X(69).
       
        FD  REPORT-FILE
-           LABEL RECORDS ARE OMITTED
            REPORT IS DISTRICT-SALES-REPORT.
       
        WORKING-STORAGE SECTION.
@@ -2072,10 +2031,10 @@ AT_DATA([prog.cob], [
        DECLARATIVES.
        USE-SALESMAN-TOTAL SECTION. USE BEFORE REPORTING SALESMAN-TOTAL.
        USE-SALESMAN-TOTAL-PROC.
-           SET COMMISSION-IX TO +1.
+           SET COMMISSION-IX TO 1.
            SEARCH COMMISSION-ENTRY
                AT END
-                   MOVE +0.00 TO WS-COMMISSION
+                   MOVE 0.00 TO WS-COMMISSION
                WHEN CE-DISTRICT (COMMISSION-IX) = SR-DISTRICT-CODE
                    COMPUTE WS-COMMISSION ROUNDED =
                        CE-RATE (COMMISSION-IX) * ST-SALES-AMT.
@@ -2120,14 +2079,7 @@ AT_DATA([prog.cob], [
       
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [prog.cob: 25: Warning: LABEL RECORDS is obsolete in Micro Focus COBOL
-prog.cob: 27: Warning: RECORD clause ignored for LINE SEQUENTIAL
-prog.cob: 28: Warning: DATA RECORDS is obsolete in Micro Focus COBOL
-prog.cob: 39: Warning: LABEL RECORDS is obsolete in Micro Focus COBOL
-prog.cob: In section 'USE-SALESMAN-TOTAL':
-prog.cob: In paragraph 'USE-SALESMAN-TOTAL-PROC':
-prog.cob: 126: Warning: Ignoring sign
-])
+AT_CHECK([$COMPILE prog.cob], [0], [], [])
 
 AT_CHECK([export DD_DATAIN=./inp_data
 export DD_SYSPRINT=./report.txt
@@ -2403,11 +2355,7 @@ AT_DATA([prog.cob], [
        DATA DIVISION.
        FILE SECTION.
       
-       FD  PAYROLL-REGISTER-DATA
-           LABEL RECORDS ARE OMITTED
-           BLOCK CONTAINS 0 RECORDS
-           RECORD CONTAINS 80 CHARACTERS
-           DATA RECORD IS PAYROLL-REGISTER-RECORD.
+       FD  PAYROLL-REGISTER-DATA.
       
        01  PAYROLL-REGISTER-RECORD.
            03  PRR-DEPARTMENT-NUMBER   PIC 9(02).
@@ -2437,7 +2385,6 @@ AT_DATA([prog.cob], [
            03  FILLER                  PIC X(09).
       
        FD  REPORT-FILE
-           LABEL RECORDS ARE OMITTED
            REPORT IS QUARTERLY-PAY-REGISTER.
       
        WORKING-STORAGE SECTION.
@@ -2840,11 +2787,7 @@ AT_DATA([prog.cob], [
       
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [prog.cob: 29: Warning: LABEL RECORDS is obsolete in Micro Focus COBOL
-prog.cob: 31: Warning: RECORD clause ignored for LINE SEQUENTIAL
-prog.cob: 32: Warning: DATA RECORDS is obsolete in Micro Focus COBOL
-prog.cob: 62: Warning: LABEL RECORDS is obsolete in Micro Focus COBOL
-])
+AT_CHECK([$COMPILE prog.cob], [0], [], [])
 
 AT_CHECK([export DD_DATAIN=./inp_data
 export DD_SYSPRINT=./report.txt
@@ -3072,7 +3015,7 @@ AT_DATA([prog.cob], [
            TERMINATE STUDENT-REPORT.
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [prog.cob: 15: Warning: RECORD clause ignored for LINE SEQUENTIAL
+AT_CHECK([$COMPILE prog.cob], [0], [], [prog.cob: 15: Warning: RECORD clause ignored for LINE SEQUENTIAL
 ])
 
 AT_CHECK([export DD_STUDENT=./inp_data
@@ -3367,7 +3310,7 @@ AT_DATA([prog.cob], [
                     MOVE 'NO' TO ARE-THERE-MORE-RECORDS.
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [prog.cob: 15: Warning: RECORD clause ignored for LINE SEQUENTIAL
+AT_CHECK([$COMPILE prog.cob], [0], [], [prog.cob: 15: Warning: RECORD clause ignored for LINE SEQUENTIAL
 ])
 
 AT_CHECK([export DD_CUSTORD=./inp_data
@@ -3624,7 +3567,7 @@ AT_DATA([prog.cob], [
                     MOVE 'NO ' TO ARE-THERE-MORE-RECORDS.
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [])
+AT_CHECK([$COMPILE prog.cob], [0], [], [])
 
 AT_CHECK([export DD_STUDREC=./inp_data
 export DD_REPORT3=./report.txt
@@ -3837,7 +3780,7 @@ AT_DATA([prog.cob], [
        
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [])
+AT_CHECK([$COMPILE prog.cob], [0], [], [])
 
 AT_CHECK([export DD_INVFILE=./inp_data
 export DD_REPORT4=./report.txt
@@ -3997,7 +3940,7 @@ AT_DATA([prog.cob], [
            STOP RUN.
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [])
+AT_CHECK([$COMPILE prog.cob], [0], [], [])
 
 AT_CHECK([export DD_DUPDTL=./report.txt
 ./prog], [0], [], [])
@@ -4113,7 +4056,7 @@ AT_DATA([prog.cob], [
        END PROGRAM step-test.
 ])
 
-AT_CHECK([$COMPILE -std=mf -Wall prog.cob], [0], [], [])
+AT_CHECK([$COMPILE prog.cob], [0], [], [])
 
 AT_CHECK([export DD_PRINTOUT=./report.txt
 ./prog], [0], [], [])

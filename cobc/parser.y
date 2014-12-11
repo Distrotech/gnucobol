@@ -4729,6 +4729,9 @@ type_option:
 | cf_keyword control_footing_final
 | detail_keyword
   {
+	if(current_report != NULL) {
+		current_report->has_detail = 1;
+	}
       current_field->report_flag |= COB_REPORT_DETAIL;
   }
 | pf_keyword

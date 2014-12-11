@@ -1,3 +1,6 @@
+2014-12-11  Ron Norman (rjn@inglenet.com)
+	* Fixes so WARNING is given if no DETAIL lines in a report
+
 2014-06-16  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net> 
 
 	* parser.* : fixing Bug #79 by defining PLUS_KEYWORD: PLUS|+

@@ -1,3 +1,7 @@
+2014-12-11  Ron Norman (rjn@inglenet.com)
+	* reportio.c,  Corrected to handle processing of a single DETAIL line
+	        It had been incorrectly processing all DETAIL lines of report
+
 2014-06-17  Ron Norman (rjn@inglenet.com)
 	* parser.y, tree.c, codegen.c Added check to verfiy PAGE LIMITS of report
 
