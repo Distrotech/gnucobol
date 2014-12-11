@@ -2,13 +2,13 @@
 2014-11-17  Philipp Böhme  <phi.boehme@googlemail.com>
 
 	* call.c (do_cancel_module): bugfix for cancel, 
-		The bug was a crash in some situations, if the same module 
-        is cancelled more than once. (Solution as suggested by Sergey)
+	  The bug was a crash in some situations, if the same module 
+	  is cancelled more than once. (Solution as suggested by Sergey)
 
 2014-09-17  Edward Hart <edward.dan.hart@gmail.com>
 
 	* intrinsic.c: implemented (cob_intr_formatted_date),
-          (cob_intr_formatted_datetime) and (cob_intr_formatted_time)
+	  (cob_intr_formatted_datetime) and (cob_intr_formatted_time)
 	* intrinsic.c: moved common date/time checks into functions
 	  (valid_integer_date), (valid_year) and (valid_time)
 	* intrinsic.c: split main algorithms of (cob_intr_day_of_integer) and
@@ -24,13 +24,14 @@
 2014-09-09  Philipp Böhme  <phi.boehme@googlemail.com>
 
 	* numeric.c : new static function cob_gmp_free
-	* numeric.c (cob_decimal_set_double, cob_decimal_get_packed, cob_decimal_get_display): 
-		use cob_gmp_free() to free memory allocated in mpir/gmp
+	* numeric.c (cob_decimal_set_double, cob_decimal_get_packed,
+	  cob_decimal_get_display): use cob_gmp_free() to free memory allocated in
+	  mpir/gmp
 
 2014-09-04  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
-	* common.c (cob_check_env_false): new pendant to cob_check_env_true, currently
-	  used only for disabling COB_BELL
+	* common.c (cob_check_env_false): new pendant to cob_check_env_true,
+	  currently used only for disabling COB_BELL
 
 2014-08-24  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
@@ -41,8 +42,8 @@
 
 	* common.c, common.h: added cob_free() function (as suggested by
 	  Sergey Kashyrin)
-	* changed all free() to cob_free() (Own freeing function for debugging purposes. 
-	  (e.g. to locate heap crashes caused by malloc/free))
+	* changed all free() to cob_free() (Own freeing function for debugging
+	  purposes. (e.g. to locate heap crashes caused by malloc/free))
 	* numeric.c: use free function (passed by mp_get_memory_functions) (Bug #91)
 
 2014-08-05  Louis Krupp <lkrupp@users.sf.net>
@@ -65,14 +66,14 @@
 	* fileio.c: renaming (cob_tmpfile) to (cob_srttmpfile) and
 	  (cob_get_temp_file) to (cob_get_sort_tempfile)
 	* fileio.c (cob_srttmpfile): using new (cob_temp_name) to get the name
-	* common.c: use (cob_sys_getpid) everywhere instead of (getpid); use (setenv)
-	  if available
+	* common.c: use (cob_sys_getpid) everywhere instead of (getpid);
+	  use (setenv) if available
 
 2014-05-20  Philipp Böhme <phi.boehme@googlemail.com>
 
 	* call.c : inverted preload list for WIN32 builds
 	* common.c, move.c, screenio.c, fileio.c : Set runtime switch
-		from environment to true on "1", "Y", "YES", "TRUE", "ON"
+	  from environment to true on "1", "Y", "YES", "TRUE", "ON"
 
 2014-05-13  Ron Norman <rjn@inglenet.com>
 
@@ -84,10 +85,10 @@
 
 2014-05-06  Philipp Böhme <phi.boehme@googlemail.com>
 
-	* common.[ch] : Added print_runtime_env showing all environment values along with
-		resolved variables used in libcob
-		New string helper functions: cob_int_to_string, cob_strcat, cob_strjoin,
-		cob_int_to_formatted_bytestring
+	* common.c, common.h : Added print_runtime_env showing all environment values
+	  along with resolved variables used in libcob
+	  New string helper functions: cob_int_to_string, cob_strcat, cob_strjoin,
+	  cob_int_to_formatted_bytestring
 	* call.c : Remove duplicates when resolving COB_LIBRARY_PATH
 
 2014-04-25  Ron Norman <rjn@inglenet.com>
@@ -97,13 +98,13 @@
 
 2014-04-14  Philipp Böhme <phi.boehme@googlemail.com>
 
-	* common.*, system.def : Added cob_sys_getopt_long_long
-	* makefile.am : Added cobgetopt.[c,h]
+	* common.c, common.h, system.def : Added cob_sys_getopt_long_long
+	* makefile.am : Added cobgetopt.c, cobgetopt.h
 
 2014-03-03  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
-	* common.* : Rewriting cob_sig_handler, printing caught signal to stderr,
-		adding cob_reg_sighnd for registration of external signal handling
+	* common.c, common.h : Rewriting cob_sig_handler, printing caught signal to
+	  stderr, adding cob_reg_sighnd for registration of external signal handling
 
 2014-01-17  Ron Norman <rjn@inglenet.com>
 
@@ -112,7 +113,7 @@
 2013-12-26  Luke Bryan <cobcoder@users.sourceforge.net>
 
 	* strings.c : Fix Unstring delimited by all delimiter size > 1 issue,
-		see bug #54.
+	  see bug #54.
 
 2013-??-??  Sergey Kashyrin <ska@kiska.net>
 
@@ -125,7 +126,7 @@
 2010-09-03  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
 	* screenio.c : Added cob_convert_key for converting keys according to used
-		libraries (especially fix for PDCurses + numpad support)
+	  libraries (especially fix for PDCurses + numpad support)
 
 2010-06-28  Roger While <simrw@sim-basis.de>
 
@@ -135,12 +136,12 @@
 2010-05-18  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
 	* strings.c : fixing cob_unstring_into bug
-		www.opencobol.org/modules/newbb/viewtopic.php?topic_id=1003&forum=1
+	  www.opencobol.org/modules/newbb/viewtopic.php?topic_id=1003&forum=1
 
 20??-??-??  Roger While <simrw@sim-basis.de>
 
 	* fileio.c : Implement COB_VARSEQ_FORMAT to override default format
-		for variable length sequential files.
+	  for variable length sequential files.
 
 20??-??-??  Sergey Kashyrin <ska@kiska.net>
 
@@ -149,11 +150,11 @@
 2009-12-25  Roger While <simrw@sim-basis.de>
 
 	* strings.c : Added check for COB_EC_RANGE_INSPECT_SIZE and
-		NULL extension to cob_inspect_converting
+	  NULL extension to cob_inspect_converting
 
 2009-10-07  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
-	* common.[ch], system.def : Added new system routine C$GETPID
+	* common.c, common.h , system.def : Added new system routine C$GETPID
 
 2009-08-28  Roger While <simrw@sim-basis.de>
 
@@ -182,9 +183,9 @@
 2009-05-25  Roger While <simrw@sim-basis.de>
 
 	* General : Remove the following extraneous include files:
-		    byteswap.h, call.h, fileio.h, intrinsic.h, move.h, numeric.h,
-		    screenio.h, strings.h, termio.h by integration into common.h
-		    as first step
+	            byteswap.h, call.h, fileio.h, intrinsic.h, move.h, numeric.h,
+	            screenio.h, strings.h, termio.h by integration into common.h
+	            as first step
 
 2009-05-16  Roger While <simrw@sim-basis.de>
 
@@ -193,9 +194,9 @@
 
 2009-05-11  Roger While <simrw@sim-basis.de>
 
-	* fileio.[ch] : Implement file status 24 for relative files
+	* fileio.c, fileio.h : Implement file status 24 for relative files
 	* termio.c, screenio.c : Implement ACCEPT OMITTED
-	* fileio.[ch] : Change all I/O except L/S to file descriptor basis
+	* fileio.c, fileio.h : Change all I/O except L/S to file descriptor basis
 
 2009-05-01  Roger While <simrw@sim-basis.de>
 
@@ -205,7 +206,7 @@
 
 	* General : Support for icc
 	* fileio.c : Sanitize / remove BDB < 4.1 support
-	* fileio.[ch] : Support LOCK clause on OPEN
+	* fileio.c, fileio.h : Support LOCK clause on OPEN
 
 2009-02-23  Roger While <simrw@sim-basis.de>
 
@@ -221,28 +222,28 @@
 
 2009-01-22  Roger While <simrw@sim-basis.de>
 
-	* intrinsic.[ch] : Functions CONCATENATE and SUBSTITUTE-CASE
+	* intrinsic.c, intrinsic.h : Functions CONCATENATE and SUBSTITUTE-CASE
 
 2009-01-20  Roger While <simrw@sim-basis.de>
 
-	* screenio.[ch] : Minimal support for value occurs
+	* screenio.c, screenio.h : Minimal support for value occurs
 
 2009-01-17  Roger While <simrw@sim-basis.de>
 
-	* common.c, screenio.[ch] : Save/restore screen over SYSTEM call
+	* common.c, screenio.c, screenio.h : Save/restore screen over SYSTEM call
 	* General : Sanitize headers. Do not use names in prototypes
 
 2009-01-15  Roger While <simrw@sim-basis.de>
 
-	* screenio.[ch], termio.c - SCROLL for ACCEPT/DISPLAY
+	* screenio.c, screenio.h, termio.c - SCROLL for ACCEPT/DISPLAY
 
 2009-01-14  Roger While <simrw@sim-basis.de>
 
-	* screenio.[ch] - ACCEPT ... FROM LINES/COLUMNS
+	* screenio.c, screenio.h : ACCEPT ... FROM LINES/COLUMNS
 
 2008-12-20  Roger While <simrw@sim-basis.de>
 
-	* intrinsic.[ch] : Implement SUBSTITUTE function
+	* intrinsic.c, intrinsic.h : Implement SUBSTITUTE function
 
 2008-12-10  Roger While <simrw@sim-basis.de>
 
@@ -256,7 +257,7 @@
 2008-12-03  Roger While <simrw@sim-basis.de>
 
 	* General : More stack reducing
-		Clean up dangling varargs
+	  Clean up dangling varargs
 
 2008-11-20  Roger While <simrw@sim-basis.de>
 
@@ -265,7 +266,7 @@
 2008-11-15  Roger While <simrw@sim-basis.de>
 
 	* fileio.c : Fix SORT GIVING when output is line sequential
-	* common.[ch], call.[ch] : C routines for calling Cobol
+	* common.c, common.h, call.c, call.h : C routines for calling COBOL
 
 2008-11-14  Roger While <simrw@sim-basis.de>
 
@@ -273,11 +274,11 @@
 
 2008-10-17  Roger While <simrw@sim-basis.de>
 
-	* common.[ch] : cob_check_based - Check BASED items
+	* common.c, common.h : cob_check_based - Check BASED items
 
 2008-09-22  Roger While <simrw@sim-basis.de>
 
-	* fileio.[ch] : Evaluate FILE STATUS for SORT files
+	* fileio.c, fileio.h : Evaluate FILE STATUS for SORT files
 	* General : More constification
 
 2008-08-20  Roger While <simrw@sim-basis.de>
@@ -316,7 +317,7 @@
 
 2008-07-09  Roger While <simrw@sim-basis.de>
 
-	* screenio.[ch] : Fix up SCREEN handling
+	* screenio.c, screenio.h : Fix up SCREEN handling
 
 2008-07-05  Roger While <simrw@sim-basis.de>
 
@@ -328,17 +329,17 @@
 
 2008-06-29  Roger While <simrw@sim-basis.de>
 
-	* common.[ch], system.def : Implement CBL_OC_NANOSLEEP
+	* common.c, common.h, system.def : Implement CBL_OC_NANOSLEEP
 	* coblocal.h, move.c : support routines for the above
 
 2008-06-25  Roger While <simrw@sim-basis.de>
 
-	* screenio.[ch] : Define input fields for SCREEN section
+	* screenio.c, screenio.h : Define input fields for SCREEN section
 
 2008-06-23  Roger While <simrw@sim-basis.de>
 
 	* screenio.c : New env COB_SCREEN_EXCEPTIONS to retrun extended
-		exception codes on ACCEPT
+	  exception codes on ACCEPT
 
 2008-06-17  Roger While <simrw@sim-basis.de>
 
@@ -348,11 +349,12 @@
 
 2008-06-10  Roger While <simrw@sim-basis.de>
 
-	* screenio.[ch], termio.c : More Screen changes
+	* screenio.c, screenio.h, termio.c : More Screen changes
 
 2008-06-05  Roger While <simrw@sim-basis.de>
 
-	* coblocal.h, common.c, fileio.[ch] : Cleanup, prepare for linptr reuse
+	* coblocal.h, common.c, fileio.c, fileio.h : Cleanup, prepare for linptr
+	  reuse
 
 2008-06-04  Roger While <simrw@sim-basis.de>
 
@@ -360,7 +362,7 @@
 
 2008-06-03  Roger While <simrw@sim-basis.de>
 
-	* fileio.[ch] : Support UNLOCK statement
+	* fileio.c, fileio.h : Support UNLOCK statement
 
 2008-06-01  Roger While <simrw@sim-basis.de>
 
@@ -378,12 +380,12 @@
 
 2008-05-19  Roger While <simrw@sim-basis.de>
 
-	* screenio.[ch] : More support for SCREEN
+	* screenio.c, screenio.h : More support for SCREEN
 
 2008-05-14  Roger While <simrw@sim-basis.de>
 
 	* common.c : Fix C$NARG for chaining syntax
-	* common.[ch] : Simplify accept from environment
+	* common.c, common.h : Simplify accept from environment
 
 2008-05-12  Roger While <simrw@sim-basis.de>
 
@@ -391,17 +393,17 @@
 
 2008-04-17  Roger While <simrw@sim-basis.de>
 
-	* common.[ch], system.def : Implement MF call X"91",
-		subfunctions 11, 12, 16
+	* common.c, common.h, system.def : Implement MF call X"91",
+	  subfunctions 11, 12, 16
 
 2008-04-02  Roger While <simrw@sim-basis.de>
 
-	* intrinsic.[ch] : Implement FUNCTION COMBINED-DATETIME
+	* intrinsic.c, intrinsic.h : Implement FUNCTION COMBINED-DATETIME
 
 2008-03-31  Roger While <simrw@sim-basis.de>
 
-	* intrinsic:[ch] : Implement LOCALE-TIME-FROM-SECONDS
-		More refmodding for functions
+	* intrinsic.c, intrinsic.h : Implement LOCALE-TIME-FROM-SECONDS
+	  More refmodding for functions
 
 2008-03-29  Roger While <simrw@sim-basis.de>
 
@@ -409,23 +411,23 @@
 
 2008-03-24  Roger While <simrw@sim-basis.de>
 
-	* intrinsic.[ch] : Refmodding for some FUNCTIONS
+	* intrinsic.c, intrinsic.h : Refmodding for some FUNCTIONS
 
 2008-03-11  Roger While <simrw@sim-basis.de>
 
 	* call.c : New environment variable to control case conversion on
-		dynamic program loads.
-		COB_LOAD_CASE=UPPER|LOWER
+	  dynamic program loads.
+	  COB_LOAD_CASE=UPPER|LOWER
 
 2008-03-05  Roger While <simrw@sim-basis.de>
 
 	* fileio.c : New environment variables to control LINE SEQUENTIAL
-		files.
-		COB_LS_NULLS - Equivalent to MF's -N switch.
-		Bytes less than ASCII space are preceded by a null
-		byte on write.
-		COB_LS_FIXED - Write the record without trailing space
-		removal.
+	  files.
+	  COB_LS_NULLS - Equivalent to MF's -N switch.
+	  Bytes less than ASCII space are preceded by a null
+	  byte on write.
+	  COB_LS_FIXED - Write the record without trailing space
+	  removal.
 
 2008-03-01  Roger While <simrw@sim-basis.de>
 
@@ -441,12 +443,12 @@
 
 2008-02-12  Roger While <simrw@sim-basis.de>
 
-	* common.[ch] :  Rationalize some previously exported variables
-		New function - cob_set_location for line debugging
+	* common.c, common.h :  Rationalize some previously exported variables
+	  New function - cob_set_location for line debugging
 
 2008-01-07  Roger While <simrw@sim-basis.de>
 
-	* common.[ch] : DISPLAY .. UPON COMMAND-LINE
+	* common.c, common.h : DISPLAY .. UPON COMMAND-LINE
 
 2008-01-03  Roger While <simrw@sim-basis.de>
 
@@ -460,7 +462,7 @@
 2007-12-15  Roger While <simrw@sim-basis.de>
 
 	* common.c : Change exception structure definition to optimize
-		64 bit allocation
+	  64 bit allocation
 
 2007-11-21  Roger While <simrw@sim-basis.de>
 
@@ -469,7 +471,7 @@
 2007-11-20  Roger While <simrw@sim-basis.de>
 
 	* fileio.c : Cater for 02 return status
-		Put in hooks for C/D/VB-ISAM
+	  Put in hooks for C/D/VB-ISAM
 
 2007-11-09  Roger While <simrw@sim-basis.de>
 
@@ -485,7 +487,7 @@
 
 2007-10-24  Roger While <simrw@sim-basis.de>
 
-	* numeric.[ch] : New routine cob_cmp_uint
+	* numeric.c, numeric.h : New routine cob_cmp_uint
 
 2007-10-22  Roger While <simrw@sim-basis.de>
 
@@ -499,12 +501,12 @@
 2007-10-17  Roger While <simrw@sim-basis.de>
 
 	* common.c : User defined exit routines must be called before
-			the OC clean up routines.
-		     Fix missing call to user defined error routines.
+	             the OC clean up routines.
+	             Fix missing call to user defined error routines.
 
 2007-10-10  Roger While <simrw@sim-basis.de>
 
-	* fileio.[ch] : Change delete to fdelete (C++)
+	* fileio.c, fileio.h : Change delete to fdelete (C++)
 
 2007-09-18  Roger While <simrw@sim-basis.de>
 
@@ -521,14 +523,14 @@
 
 2007-08-31  Roger While <simrw@sim-basis.de>
 
-	* fileio.[ch] : Move defines, change EXTFH interface
-		Linage is reduced to a pointer in the fileio struct
-		2 local defines moved from fileio.c to fileio.h for EXTFH
+	* fileio.c, fileio.h : Move defines, change EXTFH interface
+	  Linage is reduced to a pointer in the fileio struct
+	  2 local defines moved from fileio.c to fileio.h for EXTFH
 
 2007-08-23  Roger While <simrw@sim-basis.de>
 
 	* General : Remove ASCII 10/20, fix up ascii/ebcdic on target
-		Note changes to module and file structures
+	  Note changes to module and file structures
 
 2007-08-14  Roger While <simrw@sim-basis.de>
 
@@ -568,17 +570,17 @@
 2007-07-02  Roger While <simrw@sim-basis.de>
 
 	* call.c : Previously we were trying to detect if dlopen(NULL)
-		works in configure and ifdef'ing in call.c
-		This does not work in all circumstances.
-		For borked systems this now has to be changed by hand
-		in call.c. The comments at the top of call.c -
-		/* NOTE - The following variable should be uncommented when
-		it is known that dlopen(NULL) is borked.
-		This is known to be true for some PA-RISC HP-UX 11.11 systems.
-		This is fixed with HP patch PHSS_28871. (There are newer
-		but this fixes dlopen/dlsym problems)
-		*/
-		/* #define COB_BORKED_DLOPEN */
+	  works in configure and ifdef'ing in call.c
+	  This does not work in all circumstances.
+	  For borked systems this now has to be changed by hand
+	  in call.c. The comments at the top of call.c -
+	  /* NOTE - The following variable should be uncommented when
+	  it is known that dlopen(NULL) is borked.
+	  This is known to be true for some PA-RISC HP-UX 11.11 systems.
+	  This is fixed with HP patch PHSS_28871. (There are newer
+	  but this fixes dlopen/dlsym problems)
+	  */
+	  /* #define COB_BORKED_DLOPEN */
 
 2007-07-01  Roger While <simrw@sim-basis.de>
 
@@ -588,21 +590,21 @@
 
 	* codegen.h : Tweak for non-alignment-tolerant architectures
 	* intrinsic.c : DST hack for ports that do not have "%z"
-		Note - This needs to be properly fixed
+	  Note - This needs to be properly fixed
 
 2007-06-26  Roger While <simrw@sim-basis.de>
 
 	* intrinsic.c : For specific ports, fix TZ in CURRENT-DATE
-		Add use of strftime for timezone if configure detected
+	  Add use of strftime for timezone if configure detected
 
 2007-06-06  Roger While <simrw@sim-basis.de>
 
-	* fileio.[ch] : LOCK on WRITE/REWRITE
+	* fileio.c, fileio.h : LOCK on WRITE/REWRITE
 
 2007-05-22  Roger While <simrw@sim-basis.de>
 
-	* fileio.[hc] : Implement IGNORING LOCK.
-		Fix a WRITE/REWRITE problem with duplicate keys.
+	* fileio.c, fileio.h : Implement IGNORING LOCK.
+	  Fix a WRITE/REWRITE problem with duplicate keys.
 
 2007-05-17  Roger While <simrw@sim-basis.de>
 
@@ -611,27 +613,27 @@
 2007-05-10  Roger While <simrw@sim-basis.de>
 
 	* fileio.c : Fix positioning with START,READ NEXT/PREVIOUS on duplicate
-		records.
+	  records.
 
 2007-05-08  Roger While <simrw@sim-basis.de>
 
-	* common.[ch] : Fix incompatible param definitions on CBL_EXIT_PROC
-		and CBL_ERROR_PROC
+	* common.c, common.h : Fix incompatible param definitions on CBL_EXIT_PROC
+	  and CBL_ERROR_PROC
 
 2007-05-04  Roger While <simrw@sim-basis.de>
 
-	* fileio.[ch] : Preliminary support for record locking
+	* fileio.c, fileio.h : Preliminary support for record locking
 
 2007-04-28  Roger While <simrw@sim-basis.de>
 
 	* numeric.c : Remove duplicated code.
-		Set up variables for binary > 64 bits
+	  Set up variables for binary > 64 bits
 
 2007-04-26  Roger While <simrw@sim-basis.de>
 
 	* numeric.c : Fix incorrect value when signed bit set in an
-		eight byte binary value.
-	* numeric.[ch] : Remove unused routine. Make 2 routines static.
+	  eight byte binary value.
+	* numeric.c, numeric.h : Remove unused routine. Make 2 routines static.
 
 2007-04-17  Roger While <simrw@sim-basis.de>
 
@@ -639,11 +641,11 @@
 
 2007-04-11  Roger While <simrw@sim-basis.de>
 
-	* common.[ch] : Define cob_one for screen display
+	* common.c, common.h : Define cob_one for screen display
 
 2007-04-10  Roger While <simrw@sim-basis.de>
 
-	* strings.[ch] : Dynamically allocate for unstring
+	* strings.c, strings.h : Dynamically allocate for unstring
 
 2007-03-27  Roger While <simrw@sim-basis.de>
 
@@ -672,7 +674,7 @@
 
 2007-03-01  Roger While <simrw@sim-basis.de>
 
-	* intrinsic.[ch] : Change params for LOCALE-DATE/TIME
+	* intrinsic.c, intrinsic.h : Change params for LOCALE-DATE/TIME
 
 2007-02-26  Roger While <simrw@sim-basis.de>
 
@@ -689,44 +691,44 @@
 2007-02-11  Roger While <simrw@sim-basis.de>
 
 	* coblocal.h : New file, contains prototypes that should only
-		be known to the library
+	  be known to the library
 	* All : Implement above header file
 
 2007-02-09  Roger While <simrw@sim-basis.de>
 
-	* fileio.[ch] : Implement SORT-RETURN
+	* fileio.c, fileio.h : Implement SORT-RETURN
 
 2007-02-07  Roger While <simrw@sim-basis.de>
 
-	* intrinsic.[ch] : Implement LOCALE-DATE, LOCALE-TIME
-	* fileio.[hc] : Fix a READ PREVIOUS problem
+	* intrinsic.c, intrinsic.h : Implement LOCALE-DATE, LOCALE-TIME
+	* fileio.c, fileio.h : Fix a READ PREVIOUS problem
 
 2007-01-24  Roger While <simrw@sim-basis.de>
 
-	* fileio.[ch] : Implement new SORT routines
-			Note these do not need the ISAM handler
+	* fileio.c, fileio.h : Implement new SORT routines
+	                Note these do not need the ISAM handler
 
 2007-01-17  Roger While <simrw@sim-basis.de>
 
-	* common.[ch] : Add cob_is_omitted, check for null parameter
+	* common.c, common.h : Add cob_is_omitted, check for NULL parameter
 
 2007-01-16  Roger While <simrw@sim-basis.de>
 
-	* intrinsic.[ch] : Implement FUNCTION's
-		SECONDS-PAST-MIDNIGHT, SECONDS-FROM-FORMATTED-TIME
+	* intrinsic.c, intrinsic.h : Implement FUNCTION's
+	  SECONDS-PAST-MIDNIGHT, SECONDS-FROM-FORMATTED-TIME
 	* All : Remove COB_SET_EXCEPTION define
 	* intrinsic.c : Set COB_EC_ARGUMENT_FUNCTION exception code where
-			appropriate
+	                appropriate
 
 2007-01-15  Roger While <simrw@sim-basis.de>
 
-	* common.[ch], fileio.[ch] : Change sort comparison routines to not
-		overwrite collating sequence. Also optimize.
-		Note, this fixes a problem with a (file) SORT with COLLATING and
-		INPUT and/or OUPUT procedures. Previously, this would
-		incorrectly change alphanumeric tests in the
-		INPUT/OUTPUT procedures.
-	* fileio.[ch] : Allow special ASSIGN [TO] DISPLAY processing
+	* common.c, common.h, fileio.c, fileio.h : Change sort comparison routines
+	  to not overwrite collating sequence. Also optimize.
+	  Note, this fixes a problem with a (file) SORT with COLLATING and
+	  INPUT and/or OUPUT procedures. Previously, this would
+	  incorrectly change alphanumeric tests in the
+	  INPUT/OUTPUT procedures.
+	* fileio.c, fileio.h : Allow special ASSIGN [TO] DISPLAY processing
 
 2007-01-12  Roger While <simrw@sim-basis.de>
 
@@ -734,15 +736,15 @@
 
 2007-01-10  Roger While <simrw@sim-basis.de>
 
-	* fileio.[ch] : Allow special ASSIGN [TO] KEYBOARD processing
+	* intrinsic.c, intrinsic.h : Allow special ASSIGN [TO] KEYBOARD processing
 
 2007-01-08  Roger While <simrw@sim-basis.de>
 
-	* call.[ch] : Implement new CANCEL processing
+	* call.c, call.h : Implement new CANCEL processing
 
 2006-12-17  Roger While <simrw@sim-basis.de>
 
-	* intrinsic.[ch] : Correct the NUMVAL-C function
+	* intrinsic.c, intrinsic.h : Correct the NUMVAL-C function
 
 2006-12-12  Roger While <simrw@sim-basis.de>
 
@@ -750,13 +752,13 @@
 
 2006-12-07  Roger While <simrw@sim-basis.de>
 
-	* intrinsic.[ch] : Implement TRIM function
+	* intrinsic.c, intrinsic.h : Implement TRIM function
 
 2006-11-28  Roger While <simrw@sim-basis.de>
 
 	* move.c : Small optimization
 	* numeric.c : New routines cob_cmp_long_numdisp,
-			cob_cmp_long_signed_numdisp
+	              cob_cmp_long_signed_numdisp
 
 2006-11-12  Roger While <simrw@sim-basis.de>
 
@@ -774,19 +776,19 @@
 2006-10-15  Roger While <simrw@sim-basis.de>
 
 	* codegen.h : This is now the place for optimization
-		Duplication in numeric.c is not necessary
-		Add in optimization for 3/5/6/7 byte compares
-		Add in 3 byte add optimization
+	  Duplication in numeric.c is not necessary
+	  Add in optimization for 3/5/6/7 byte compares
+	  Add in 3 byte add optimization
 	* numeric.c : Delete duplicated code from codegen.h
-		Constify
+	  Constify
 
 2006-10-14  Roger While <simrw@sim-basis.de>
 
-	* common.c, fileio.[ch], move.[ch] : const defintions
+	* common.c, fileio.c, fileio.h, move.c, move.h : const defintions
 
 2006-09-30  Roger While <simrw@sim-basis.de>
 
-	* common.[ch] : Implement CBL_EXIT_PROC
+	* common.c, common.h : Implement CBL_EXIT_PROC
 	* General : tidy up
 
 2006-08-31  Roger While <simrw@sim-basis.de>
@@ -805,22 +807,22 @@
 
 2006-08-09  Roger While <simrw@sim-basis.de>
 
-	* system.def, common.[ch] : More MF/ACU system routines
+	* system.def, common.c, common.h : More MF/ACU system routines
 
 2006-08-01  Roger While <simrw@sim-basis.de>
 
-	* common.[ch], call.c : Change cob_field_to_string to type void
+	* common.c, common.h, call.c : Change cob_field_to_string to type void
 
 2006-07-31  Roger While <simrw@sim-basis.de>
 
-	* system.def, fileio.[ch], call.c, common.[ch] : New MF system routines -
-	  see system.def
+	* system.def, fileio.c, fileio.h, call.c, common.c, common.h : New MF
+	  system routines - see system.def
 
 2006-07-26  Roger While <simrw@sim-basis.de>
 
 	* All : General clean up and fix gcc 4 warnings
 	* New file system.def
-	* call.c, common.[ch] : System routines
+	* call.c, common.c, common.h : System routines
 
 2006-07-19  Roger While <simrw@sim-basis.de>
 
@@ -833,7 +835,7 @@
 
 2006-07-12  Roger While <simrw@sim-basis.de>
 
-	* common.[ch] : Implement ALLOCATE/FREE
+	* common.c, common.h : Implement ALLOCATE/FREE
 	* strings.c : Clean up
 
 2006-07-07  Roger While <simrw@sim-basis.de>
@@ -863,11 +865,11 @@
 
 2006-06-05  Roger While <simrw@sim-basis.de>
 
-	* fileio.[ch] : Implement PREVIOUS for IS files
+	* fileio.c, fileio.h : Implement PREVIOUS for IS files
 
 2006-05-27  Roger While <simrw@sim-basis.de>
 
-	* common.[ch] : Implement cob_fatal_error
+	* common.c, common.h : Implement cob_fatal_error
 
 2006-05-20  Roger While <simrw@sim-basis.de>
 
@@ -875,8 +877,8 @@
 
 2006-05-18  Roger While <simrw@sim-basis.de>
 
-	* common.[ch], intrinsic.[ch] : Implement FUNCTION's EXCEPTION-FILE,
-		EXCEPTION-STATEMENT, EXCEPTION-LOCATION and EXCEPTION-STATUS
+	* common.c, common.h, intrinsic.c, intrinsic.h : Implement FUNCTIONs
+	  EXCEPTION-FILE, EXCEPTION-STATEMENT, EXCEPTION-LOCATION, EXCEPTION-STATUS
 
 2006-05-12  Roger While <simrw@sim-basis.de>
 
@@ -885,12 +887,13 @@
 2006-05-10  Roger While <simrw@sim-basis.de>
 
 	* common.h : Preliminary support for CURSOR IS and CRT STATUS IS
-	* intrinsic.[ch] : Implement STORED-CHAR-LENGTH (Fujitsu)
+	* intrinsic.c, intrinsic.h : Implement STORED-CHAR-LENGTH (Fujitsu)
 
 2006-05-08  Roger While <simrw@sim-basis.de>
 
-	* common.[ch] : cob_chain_setup - Setp CHAINING params from command line
-	* string.[ch] : Implement TRAILING syntax in INSPECT clause
+	* common.c, common.h : cob_chain_setup - Setp CHAINING params from
+	  command line
+	* strings.c, strings.h : Implement TRAILING syntax in INSPECT clause
 
 2006-05-05  Roger While <simrw@sim-basis.de>
 
@@ -903,16 +906,16 @@
 
 2006-05-03  Roger While <simrw@sim-basis.de>
 
-	* screenio.[ch] : Change strucrures
+	* screenio.c, screenio.h : Change strucrures
 
 2006-05-01  Roger While <simrw@sim-basis.de>
 
 	* General : Changes for native EBCDIC machines
 	* codegen.h, numeric.c : Further optimization for cob_cmp_xxx,
-		cob_add_xxx, cob_sub_xxx
-	* common.[ch]: Support for sign-ebcdic and sign-ascii20
-			(Note ascii20 is not correct)
-		       Implement SET ENVIRONMENT (ACU)
+	  cob_add_xxx, cob_sub_xxx
+	* common.c, common.h: Support for sign-ebcdic and sign-ascii20
+	               (Note ascii20 is not correct)
+	               Implement SET ENVIRONMENT (ACU)
 
 2006-04-17  Roger While <simrw@sim-basis.de>
 
@@ -940,7 +943,7 @@
 
 2006-03-22  Roger While <simrw@sim-basis.de>
 
-	* common.[hc] : Implement COLLATING SEQUENCE for table SORT
+	* common.c, common.h : Implement COLLATING SEQUENCE for table SORT
 
 2006-03-21  Roger While <simrw@sim-basis.de>
 
@@ -954,20 +957,20 @@
 
 	* All : Reduce compile warnings under Win
 	* common.c : setlocale depends on HAVE_SETLOCALE
-		     We must do a setlocale for LC_NUMERIC
-		     as languages with a comma separator change
-		     the operation of string functions which bork
-		     specfically FP operations
+	             We must do a setlocale for LC_NUMERIC
+	             as languages with a comma separator change
+	             the operation of string functions which bork
+	             specfically FP operations
 
 2006-03-09  Roger While <simrw@sim-basis.de>
 
 	* numeric.c : Fix remainder problem
-		      Fix returning functions which return void
+	              Fix returning functions which return void
 
 2006-03-04  Roger While <simrw@sim-basis.de>
 
 	* common.c : Don't do cob_put_sign for PACKED fields
-		     in the cob_cmp_xxx routines
+	             in the cob_cmp_xxx routines
 
 2006-02-21  Roger While <simrw@sim-basis.de>
 
@@ -1022,9 +1025,9 @@
 2006-01-05  Roger While <simrw@sim-basis.de>
 
 	* General : Bootstrap up to new libtool / automake
-		    MS VS/VC changes
+	            MS VS/VC changes
 	  fileio.c : Fix relative postioning and incorrectly
-		     returned relative record number
+	             returned relative record number
 
 2005-12-30  Roger While <simrw@sim-basis.de>
 
@@ -1040,7 +1043,7 @@
 
 	* General : Change occurrences of "char[variable]"
 	  move.c : Change code for "MOVE ALL '98' TO binary/packed/edited"
-		   This is still not completely correct
+	           This is still not completely correct
 
 2005-12-23  Roger While <simrw@sim-basis.de>
 
@@ -1056,7 +1059,7 @@
 2005-12-18  Roger While <simrw@sim-basis.de>
 
 	* All : Cleanup "shadowed" variables
-		Start generalizing code for large numbers
+	        Start generalizing code for large numbers
 	  common.c : Take out Ebcdic table, now genned by codegen
 
 2005-12-09  Roger While <simrw@sim-basis.de>
@@ -1178,7 +1181,7 @@
 	* intrinsic.c : Clean up and fixes
 	* move.c, numeric.c : Experiment with own_mem(cpy,set)
 	* fileio.c : Cast fseek offsets to off_t
-		     Return correctly if DB not defined
+	             Return correctly if DB not defined
 
 2005-06-28  Roger While <simrw@sim-basis.de>
 
@@ -1219,27 +1222,27 @@
 2005-05-23  Roger While <simrw@sim-basis.de>
 
 	* call.h, call.c : New functions cob_resolve_1
-			   cob_call_resolve_1.
-			   These are wrappers for optimized dynamic
-			   calls.
+	                   cob_call_resolve_1.
+	                   These are wrappers for optimized dynamic
+	                   calls.
 
 2005-05-21  Roger While <simrw@sim-basis.de>
 
 	* call.h, call.c : Cater for call.def
-			   Cater for --with-dl
-			   Restructure code slightly
-			   Take out check for cob_initialized
+	                   Cater for --with-dl
+	                   Restructure code slightly
+	                   Take out check for cob_initialized
 
 2005-05-03  Roger While <simrw@sim-basis.de>
 
 	* Mak* :      Due to autoreconf
 	  common.c :  Slight restructure.
-		      cob_exp10 must be int not long.
+	              cob_exp10 must be int not long.
 	  common.h :  extern definitions.
 	  fileio.c :  Force SORT to put duplicates in order.
 	  move.c :    Performance.
 	  numeric.c : Remove unused function.
-		      Change long to int (64-bitters where long = 8 bytes).
+	              Change long to int (64-bitters where long = 8 bytes).
 
 2005-04-15  Keisuke Nishida  <knishida@opencobol.org>
 
