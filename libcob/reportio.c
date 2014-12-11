@@ -698,6 +698,20 @@ do_page_heading(cob_report *r)
 	opt = COB_WRITE_BEFORE | COB_WRITE_LINES | 1;
 	rec = (char *)f->record->data;
 	memset(rec,' ',f->record_max);
+	if(!r->in_page_heading
+	&& !r->first_generate
+	&& r->def_lines > 0 
+	&& r->def_heading > 0
+	&& r->curr_line <= r->def_lines
+	&& r->curr_line > r->def_heading) { 		/* Skip to end of page */
+		while(r->curr_line <= r->def_lines) {		
+			cob_write(f, f->record, opt, NULL, 0);
+			r->curr_line++;
+		}
+		if(r->curr_line > r->def_lines)		/* Reset line to 1 */
+			r->curr_line = 1;
+		saveLineCounter(r);
+	}
 	r->in_page_heading = TRUE;
 	if(!r->first_generate) {
 		r->curr_page++;
@@ -1318,7 +1332,7 @@ cob_report_generate(cob_report *r, cob_report_line *l, int ctl)
 	cob_report_control	*rc, *rp;
 	cob_report_control_ref	*rr;
 	cob_report_line		*pl;
-	int			maxctl,ln,num;
+	int			maxctl,ln,num,gengrp;
 #ifdef DEBUG
 	char			wrk[128];
 #endif
@@ -1547,11 +1561,13 @@ PrintHeading:
 	} else if(l->suppress) {
 		l->suppress = FALSE;
 	} else {
-		if(l->sister == NULL
-		&& l->fields == NULL
+		gengrp = 0;
+		if(l->fields == NULL
 		&& l->child != NULL
-		&& l->child->sister != NULL)
+		&& l->child->sister != NULL) {
 			l = l->child;		/* Multiple Detail Lines in group */
+			gengrp = 1;
+		}
 
 		num = ln = 0;
 		for(pl = l; pl; pl = pl->sister) {
@@ -1562,6 +1578,7 @@ PrintHeading:
 				ln += pl->line;
 			}
 			num++;
+			if(!gengrp) break;
 		}
 		if(num > 1
 		&& (r->curr_line + ln) > r->def_last_detail) {	/* Page overflow */
@@ -1579,6 +1596,7 @@ PrintHeading:
 			if(!l->suppress) 
 				report_line(r,l);	/* Generate this DETAIL line */
 			l->suppress = FALSE;
+			if(!gengrp) break;
 		}
 	}
 
