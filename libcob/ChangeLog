@@ -1,8 +1,13 @@
 
+2014-12-11  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
+
+	* screenio.c (cob_exit_screen): check cobglobptr for early errors,
+	  especially in case of runtime error "cob_init() has not been called"
+
 2014-11-17  Philipp Böhme  <phi.boehme@googlemail.com>
 
-	* call.c (do_cancel_module): bugfix for cancel, 
-	  The bug was a crash in some situations, if the same module 
+	* call.c (do_cancel_module): bugfix for cancel,
+	  The bug was a crash in some situations, if the same module
 	  is cancelled more than once. (Solution as suggested by Sergey)
 
 2014-09-17  Edward Hart <edward.dan.hart@gmail.com>

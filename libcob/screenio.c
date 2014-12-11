@@ -1655,6 +1655,9 @@ cob_screen_set_mode (const cob_u32_t smode)
 void
 cob_exit_screen (void)
 {
+	if (!cobglobptr) {
+		return;
+	}
 	if (cobglobptr->cob_screen_initialized) {
 		cobglobptr->cob_screen_initialized = 0;
 		clear ();
