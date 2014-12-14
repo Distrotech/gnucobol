@@ -22,7 +22,8 @@
 AT_SETUP([Check REPORT error/warning])
 AT_KEYWORDS([report])
 
-AT_DATA([prog.cob], [       IDENTIFICATION   DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
        PROGRAM-ID. prog.
        ENVIRONMENT      DIVISION.
        INPUT-OUTPUT     SECTION.
@@ -111,10 +112,10 @@ AT_DATA([prog.cob], [       IDENTIFICATION   DIVISION.
 ])
 
 AT_CHECK([$COMPILE_ONLY prog.cob], [1], [],
-[prog.cob: 66: Error: 'CUSTOMER-REPORT' is not defined
-prog.cob: 66: Error: 'CUSTOMER-REPORT' is not a valid report name
-prog.cob: 81: Error: 'CUSTOMER-REPORT' is not defined
-prog.cob: 81: Error: 'CUSTOMER-REPORT' is not a valid report name
+[prog.cob: 67: Error: 'CUSTOMER-REPORT' is not defined
+prog.cob: 67: Error: 'CUSTOMER-REPORT' is not a valid report name
+prog.cob: 82: Error: 'CUSTOMER-REPORT' is not defined
+prog.cob: 82: Error: 'CUSTOMER-REPORT' is not a valid report name
 ])
 
 AT_CLEANUP
@@ -123,7 +124,8 @@ AT_CLEANUP
 AT_SETUP([REPORT not positive integers in COL / LINE [PLUS]])
 AT_KEYWORDS([report])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
 
        ENVIRONMENT DIVISION.
@@ -159,14 +161,13 @@ AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
 ])
 
 AT_CHECK([$COMPILE_ONLY prog.cob], [1], [],
-[prog.cob: 17: Error: Invalid COLUMN integer; Must be > 0
-prog.cob: 19: Warning: LINE PLUS 0 not implemented
-prog.cob: 22: Warning: LINE PLUS 0 not implemented
-prog.cob: 23: Error: Positive Integer value expected
-prog.cob: 23: Error: Invalid COLUMN integer; Must be > 0
+[prog.cob: 18: Error: Invalid COLUMN integer; Must be > 0
+prog.cob: 20: Warning: LINE PLUS 0 not implemented
+prog.cob: 23: Warning: LINE PLUS 0 not implemented
 prog.cob: 24: Error: Positive Integer value expected
-prog.cob: 12: Warning: NO DETAIL line defined in report rp
-prog.cob: 30: Error: 'rp-detail' is not defined
+prog.cob: 25: Error: Positive Integer value expected
+prog.cob: 13: Warning: NO DETAIL line defined in report rp
+prog.cob: 31: Error: 'rp-detail' is not defined
 ])
 
 AT_CLEANUP
@@ -175,7 +176,8 @@ AT_CLEANUP
 AT_SETUP([Missing DETAIL line])
 AT_KEYWORDS([report])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
 
        ENVIRONMENT DIVISION.
@@ -207,8 +209,8 @@ AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
 ])
 
 AT_CHECK([$COMPILE_ONLY prog.cob], [1], [],
-[prog.cob: 12: Warning: NO DETAIL line defined in report rp
-prog.cob: 26: Error: 'rp-detail' is not defined
+[prog.cob: 13: Warning: NO DETAIL line defined in report rp
+prog.cob: 27: Error: 'rp-detail' is not defined
 ])
 
 AT_CLEANUP

@@ -22,7 +22,8 @@
 AT_SETUP([REPORT BUG1])
 AT_KEYWORDS([report])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
       *>****************************************************************
       *> 11NOV2013 BUG 001 - RWCS Presents RF before it presents the  **
@@ -119,7 +120,8 @@ AT_CLEANUP
 AT_SETUP([REPORT COL PLUS])
 AT_KEYWORDS([report])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
       *>****************************************************************
       *> 11NOV2013 BUG 002 - RWCS Treats "COL PLUS n" the same as     **
@@ -188,7 +190,8 @@ AT_CLEANUP
 AT_SETUP([REPORT BUG3])
 AT_KEYWORDS([report])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
       *>****************************************************************
       *> 11NOV2013 BUG 003 - RWCS causes "Abort trap 6" if an attempt **
@@ -257,7 +260,8 @@ AT_CLEANUP
 AT_SETUP([EMPTY REPORT])
 AT_KEYWORDS([report])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
       *>****************************************************************
       *> 11NOV2013 BUG 004 - RWCS INITIATE TERMINATE W/O GENERATE     **
@@ -326,7 +330,8 @@ AT_CLEANUP
 AT_SETUP([PAGE LIMIT REPORT])
 AT_KEYWORDS([report])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
 
        ENVIRONMENT DIVISION.
@@ -518,7 +523,8 @@ AT_DATA([inp_data],[0152 J. LANGDON       87653 02475
 7545 M. LARSON        93715 04015
 ])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
       
       * ************************************************************* *
@@ -834,7 +840,8 @@ AT_DATA([inp_data],[0152 J. LANGDON       87653 02475
 7545 M. LARSON        93715 04015
 ])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
       * ************************************************************* *
       * REPORT WRITER EXAMPLE #2.                                     *
@@ -1188,7 +1195,8 @@ AT_DATA([inp_data],[0152 J. LANGDON       87653 02475
 7545 M. LARSON        93715 04015
 ])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
       * ************************************************************* *
       * REPORT WRITER EXAMPLE #3.                                     *
@@ -1559,7 +1567,8 @@ AT_DATA([inp_data],[0152 J. LANGDON       87653 02475
 7545 M. LARSON        93715 04015
 ])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
       * ************************************************************* *
       * * MODIFICATIONS:                                              *
@@ -1905,7 +1914,8 @@ AT_DATA([inp_data],[05 A 007328
 35 K 093046
 ])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
       
       * ************************************************************* *
@@ -2318,7 +2328,8 @@ AT_DATA([inp_data],[01 6622 M GAVIN SHAFER         19740201 026000 01521 03362 0
 25 6491 M LEO TILLEY           19740315 010100 00591 00776 00000 008733
 ])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
       * ************************************************************* *
       * * MODIFICATIONS:                                              *
@@ -2895,7 +2906,8 @@ AT_DATA([inp_data],[00123Dorken, Keith       CS 08
 12345Norman, Ron         CS 08
 ])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
@@ -3167,7 +3179,8 @@ AT_DATA([inp_data],[10001090001012010590416      $
 10009090022032010590417      $
 ])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
@@ -3436,7 +3449,8 @@ Dorken, Melissa     37EC Manning, Donna       Toronto
 Norman, Becky       27EC DiMetri, Donna       Toronto 
 ])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
@@ -3675,7 +3689,8 @@ AT_DATA([inp_data],[01Data Processing   02000500012388
 03Lawn mowing       03000600054397
 ])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
@@ -3856,7 +3871,8 @@ AT_CLEANUP
 AT_SETUP([Dup Detail Line])
 AT_KEYWORDS([report])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
@@ -3984,7 +4000,8 @@ AT_CLEANUP
 AT_SETUP([OCCURS Test])
 AT_KEYWORDS([report])
 
-AT_DATA([prog.cob], [       IDENTIFICATION DIVISION.
+AT_DATA([prog.cob], [
+       IDENTIFICATION DIVISION.
        PROGRAM-ID. prog.
 
        ENVIRONMENT DIVISION.
