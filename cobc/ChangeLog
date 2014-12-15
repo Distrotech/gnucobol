@@ -1,3 +1,7 @@
+2014-12-15  Ron Norman (rjn@inglenet.com)
+	* Fix for codeoptim.c and typeck.c to correctly handle SET pointer UP/DOWN
+	  on none x86 platforms
+
 2014-12-11  Ron Norman (rjn@inglenet.com)
 	* Fixes so WARNING is given if no DETAIL lines in a report
 
