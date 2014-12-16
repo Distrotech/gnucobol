@@ -2908,7 +2908,7 @@ AT_DATA([inp_data],[00123Dorken, Keith       CS 08
 
 AT_DATA([prog.cob], [
        IDENTIFICATION DIVISION.
-       PROGRAM-ID. prog.
+       PROGRAM-ID. prog INITIAL.
        ENVIRONMENT DIVISION.
        CONFIGURATION SECTION.
        INPUT-OUTPUT SECTION.
@@ -2941,6 +2941,7 @@ AT_DATA([prog.cob], [
             05  COLUMN-40     PIC XXX.
             05  FILLER        PIC X(4) VALUE SPACES.
             05  COLUMN-46     PIC Z99.9.
+            05  LAST-CHAR     PIC X.
 
        REPORT SECTION.
        RD   STUDENT-REPORT
@@ -2982,15 +2983,19 @@ AT_DATA([prog.cob], [
 
        PROCEDURE DIVISION.
        A000-MAINLINE.
-           DISPLAY "Report Test 1 " UPON CONSOLE.
            OPEN  INPUT  INPUT-FILE
                  OUTPUT PRINT-FILE
-           MOVE SPACES TO REPORT-DUMMY.
-           MOVE 5 TO COLUMN-4.
+           MOVE SPACES  TO REPORT-DUMMY.
+           DISPLAY "*** Report Test 1 ***" UPON CONSOLE.
+           MOVE SPACES  TO REPORT-DUMMY.
+           MOVE 5       TO COLUMN-4.
            MOVE "Hello" TO COLUMN-15.
-           MOVE "Bye" TO COLUMN-40.
-           MOVE 75 TO COLUMN-46.
-           MOVE REPORT-DUMMY (2:47) TO REPORT-DUMMY.
+           MOVE "Bye"   TO COLUMN-40.
+           MOVE 75.0    TO COLUMN-46.
+           MOVE "*"     TO LAST-CHAR
+      *  Test that overlapping move does not mangle data
+           MOVE REPORT-DUMMY (2:50) TO REPORT-DUMMY.
+           MOVE "*"     TO LAST-CHAR
            DISPLAY REPORT-DUMMY UPON CONSOLE.
            PERFORM DO-INIT.
            READ INPUT-FILE
@@ -3019,8 +3024,8 @@ AT_CHECK([$COMPILE prog.cob], [0], [], [])
 
 AT_CHECK([export DD_STUDENT=./inp_data
 export DD_REPORT1=./report.txt
-./prog], [0], [Report Test 1 
-  000005     Hello                    Bye     7    
+./prog], [0], [*** Report Test 1 ***
+  000005     Hello                    Bye     75.0 *
 ], [])
 
 

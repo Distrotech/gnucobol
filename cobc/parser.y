@@ -4973,11 +4973,14 @@ col_or_plus:
 	if (CB_LITERAL ($1)->sign > 0) {
 		current_field->report_flag |= COB_REPORT_COLUMN_PLUS;
 	}
-	if (current_field->report_column <= 0
-	|| CB_LITERAL ($1)->sign < 0) {
-		cb_error (_("Invalid COLUMN integer; Must be > 0"));
-		current_field->report_column = 0;
-		$$ = cb_int0;
+	if($1 != cb_int1
+	&& $1 != cb_int0) {
+		if (current_field->report_column <= 0
+		|| CB_LITERAL ($1)->sign < 0) {
+			cb_error (_("Invalid COLUMN integer; Must be > 0"));
+			current_field->report_column = 0;
+			$$ = cb_int0;
+		}
 	}
   }
 ;
