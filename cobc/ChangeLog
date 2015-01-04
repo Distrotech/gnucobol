@@ -1,3 +1,8 @@
+2015-01-04 Ron Norman (rjn@inglenet.com)
+	* Fix for codeoptim.c for cob_add_packed_int to use %% instead of %
+	  due to processing by sprintf on certain platforms the % was getting
+	  droppped.
+
 2014-12-15  Ron Norman (rjn@inglenet.com)
 	* Fix for codeoptim.c and typeck.c to correctly handle SET pointer UP/DOWN
 	  on none x86 platforms
