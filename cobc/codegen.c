@@ -155,6 +155,7 @@ static unsigned int		gen_custom = 0;
 static unsigned int		gen_figurative = 0;
 static unsigned int		gen_dynamic = 0;
 static int			generate_id = 0;
+static int			generate_bgn_lbl = -1;
 
 static int			param_id = 0;
 static int			stack_id = 0;
@@ -929,6 +930,67 @@ again:
 		cobc_abort_pr (_("Unexpected tree tag %d"), (int)CB_TREE_TAG (x));
 		COBC_ABORT ();
 	}
+}
+
+/* Generate goto label */
+
+static void
+perform_label(const char *toprefix, int tolbl, int callnum)
+{
+	struct label_list	*l;
+	if (!cb_flag_computed_goto) {
+		if(callnum > 0) {
+			for(l = label_cache; l && l->call_num != callnum; l = l->next);
+			if(l == NULL) {
+				printf("Internal compiler error; Could not find Label for %d\n",callnum);
+			} else {
+				output ("\tframe_ptr->return_address_num = %d; /* %s%d */\n", callnum,CB_PREFIX_LABEL,l->id);
+				output ("\tgoto %s%d;\n", toprefix, tolbl);
+				return;
+			}
+		}
+		l = cobc_parse_malloc (sizeof (struct label_list));
+		l->next = label_cache;
+		l->id = cb_id;
+		if (label_cache == NULL) {
+			l->call_num = 0;
+		} else {
+			l->call_num = label_cache->call_num + 1;
+		}
+		label_cache = l;
+		output ("\tframe_ptr->return_address_num = %d; /* %s%d */\n", l->call_num,CB_PREFIX_LABEL, cb_id);
+		output ("\tgoto %s%d;\n", toprefix, tolbl);
+		output ("%s%d:\n", CB_PREFIX_LABEL, cb_id);
+	} else {
+		if(callnum >= 0)
+			output ("\tframe_ptr->return_address_ptr = &&%s%d;\n", CB_PREFIX_LABEL, callnum);
+		else
+			output ("\tframe_ptr->return_address_ptr = &&%s%d;\n", CB_PREFIX_LABEL, cb_id);
+		output ("\tgoto %s%d;\n", toprefix, tolbl);
+		output ("%s%d:\n", CB_PREFIX_LABEL, cb_id);
+	}
+	cb_id++;
+}
+
+static int
+add_new_label()
+{
+	struct label_list	*l;
+	if (!cb_flag_computed_goto) {
+		l = cobc_parse_malloc (sizeof (struct label_list));
+		l->next = label_cache;
+		l->id = cb_id;
+		if (label_cache == NULL) {
+			l->call_num = 0;
+		} else {
+			l->call_num = label_cache->call_num + 1;
+		}
+		label_cache = l;
+		output ("%s%d:\n", CB_PREFIX_LABEL, cb_id++);
+		return l->call_num;
+	}
+	output ("%s%d:\n", CB_PREFIX_LABEL, cb_id++);
+	return cb_id-1;
 }
 
 static int
@@ -2146,8 +2208,7 @@ cb_emit_decl_case(struct cb_report *r, struct cb_field *f)
 			output ("\tcase %d:\t/* %s */\n",p->report_decl_id,p->name);
 			output ("\t\tframe_ptr++;\n");
 			output ("\t\tframe_ptr->perform_through = %d;\n",p->report_decl_id);
-			output ("\t\tframe_ptr->return_address_ptr = &&genbgn_%d;\n",generate_id);
-			output ("\t\tgoto %s%d;\n",CB_PREFIX_LABEL,p->report_decl_id);
+			perform_label(CB_PREFIX_LABEL,p->report_decl_id,generate_bgn_lbl);
 			output ("\t\tbreak;\n");
 		}
 		if(p->children) {
@@ -2206,20 +2267,19 @@ output_funcall (cb_tree x)
 		case 'R':	/* Generate REPORT line */
 			r = CB_REPORT(CB_VALUE(p->argv[0]));
 			generate_id++;
+			generate_bgn_lbl = -1;
 			if(r->has_declarative) {
 				output("{\n");
 				output("static\tint ctl;\n");
 				output("\tctl = 0;\n");
 				output("\tgoto gen_%d;\n",generate_id);
-				output("genbgn_%d:\n",generate_id);
+				generate_bgn_lbl = add_new_label();
 				output("\tframe_ptr--;\n");
 				output("gen_%d:\n",generate_id);
 				if(r->id) {
 					output ("\tframe_ptr++;\n");
 					output ("\tframe_ptr->perform_through = 0;\n");
-					output ("\tframe_ptr->return_address_ptr = &&rwg_%d;\n",generate_id);
-					output ("\tgoto %s%d;\n","rwmove_",r->id);
-					output("rwg_%d:\n",generate_id);
+					perform_label("rwmove_",r->id,-1);
 					output("\tframe_ptr--;\n");
 				}
 				output("\tctl = cob_report_generate (");
@@ -2235,9 +2295,7 @@ output_funcall (cb_tree x)
 				if(r->id) {
 					output ("\tframe_ptr++;\n");
 					output ("\tframe_ptr->perform_through = 0;\n");
-					output ("\tframe_ptr->return_address_ptr = &&rwg_%d;\n",generate_id);
-					output ("\tgoto %s%d;\n","rwmove_",r->id);
-					output("rwg_%d:\n",generate_id);
+					perform_label("rwmove_",r->id,-1);
 					output("\tframe_ptr--;\n\t");
 				}
 				output ("cob_report_generate (");
@@ -2250,20 +2308,19 @@ output_funcall (cb_tree x)
 		case 'T':	/* Terminate REPORT */
 			r = CB_REPORT(CB_VALUE(p->argv[0]));
 			generate_id++;
+			generate_bgn_lbl  = -1;
 			if(r->has_declarative) {
 				output("{\n");
 				output("static\tint ctl;\n");
 				output("\tctl = 0;\n");
 				output("\tgoto gen_%d;\n",generate_id);
-				output("genbgn_%d:\n",generate_id);
+				generate_bgn_lbl = add_new_label();
 				output("\tframe_ptr--;\n");
 				output("gen_%d:\n",generate_id);
 				if(r->id) {
 					output ("\tframe_ptr++;\n");
 					output ("\tframe_ptr->perform_through = 0;\n");
-					output ("\tframe_ptr->return_address_ptr = &&rwt_%d;\n",generate_id);
-					output ("\tgoto %s%d;\n","rwfoot_",r->id);
-					output("rwt_%d:\n",generate_id);
+					perform_label("rwfoot_",r->id,-1);
 					output("\tframe_ptr--;\n");
 				}
 				output("\tctl = cob_report_terminate (");
@@ -2276,9 +2333,7 @@ output_funcall (cb_tree x)
 			} else {
 				if(r->id) {
 					output ("\tframe_ptr++;\n");
-					output ("\tframe_ptr->return_address_ptr = &&rwt_%d;\n",generate_id);
-					output ("\tgoto %s%d;\n","rwfoot_",r->id);
-					output("rwt_%d:\n",generate_id);
+					perform_label("rwfoot_",r->id,-1);
 					output("\tframe_ptr--;\n\t");
 				}
 				output ("cob_report_terminate (");
@@ -2297,7 +2352,11 @@ output_funcall (cb_tree x)
 			break;
 		case 'm':	/* End of Move data for REPORT */
 			r = CB_REPORT(CB_VALUE(p->argv[0]));
-			output("\tgoto *frame_ptr->return_address_ptr;\n");
+			if (!cb_flag_computed_goto) {
+				output_line ("\tgoto P_switch;");
+			} else {
+				output_line ("\tgoto *frame_ptr->return_address_ptr;");
+			}
 			output("rwexit_%d: ",r->id);
 			break;
 		case 'I':	/* Initiate REPORT */
