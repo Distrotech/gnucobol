@@ -1,3 +1,8 @@
+2015-01-06  Brian Tiffin <btiffin@users.sf.net>
+
+	* cobc/parser.y : fixed segfault with STOP "literal" with the
+	  ACCEPT OMITTED feature of waiting for a return attempting
+	  to generate code with a null pointer
 
 2014-12-04  Edward Hart <edward-h@users.sf.net>
 
