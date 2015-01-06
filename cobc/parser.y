@@ -8510,7 +8510,7 @@ stop_statement:
 	cb_verify (cb_stop_literal_statement, "STOP literal");
 	cb_emit_display (CB_LIST_INIT ($2), cb_int0, cb_int1, NULL,
 			 NULL);
-	cb_emit_accept (NULL, NULL, NULL);
+	cb_emit_accept (cb_null, NULL, NULL);
 	cobc_cs_check = 0;
   }
 ;
