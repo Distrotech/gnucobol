@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 2.5.  */
+/* A Bison parser, made by GNU Bison 2.6.4.  */
 
 /* Bison implementation for Yacc-like parsers in C
    
-      Copyright (C) 1984, 1989-1990, 2000-2011 Free Software Foundation, Inc.
+      Copyright (C) 1984, 1989-1990, 2000-2012 Free Software Foundation, Inc.
    
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "2.5"
+#define YYBISON_VERSION "2.6.4"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -58,14 +58,11 @@
 /* Pull parsers.  */
 #define YYPULL 1
 
-/* Using locations.  */
-#define YYLSP_NEEDED 0
 
 
 
 /* Copy the first part of user declarations.  */
-
-/* Line 268 of yacc.c  */
+/* Line 358 of yacc.c  */
 #line 28 "parser.y"
 
 #include "config.h"
@@ -788,14 +785,16 @@ check_headers_present (const unsigned int lev1, const unsigned int lev2,
 }
 
 
+/* Line 358 of yacc.c  */
+#line 790 "parser.c"
 
-/* Line 268 of yacc.c  */
-#line 794 "parser.c"
-
-/* Enabling traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
+# ifndef YY_NULL
+#  if defined __cplusplus && 201103L <= __cplusplus
+#   define YY_NULL nullptr
+#  else
+#   define YY_NULL 0
+#  endif
+# endif
 
 /* Enabling verbose error messages.  */
 #ifdef YYERROR_VERBOSE
@@ -805,11 +804,17 @@ check_headers_present (const unsigned int lev1, const unsigned int lev2,
 # define YYERROR_VERBOSE 1
 #endif
 
-/* Enabling the token table.  */
-#ifndef YYTOKEN_TABLE
-# define YYTOKEN_TABLE 0
+/* In a future release of Bison, this section will be replaced
+   by #include "parser.h".  */
+#ifndef YY_YY_PARSER_H_INCLUDED
+# define YY_YY_PARSER_H_INCLUDED
+/* Enabling traces.  */
+#ifndef YYDEBUG
+# define YYDEBUG 0
 #endif
-
+#if YYDEBUG
+extern int yydebug;
+#endif
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -1332,7 +1337,6 @@ check_headers_present (const unsigned int lev1, const unsigned int lev2,
 #endif
 
 
-
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef int YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
@@ -1340,12 +1344,28 @@ typedef int YYSTYPE;
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
+extern YYSTYPE yylval;
+
+#ifdef YYPARSE_PARAM
+#if defined __STDC__ || defined __cplusplus
+int yyparse (void *YYPARSE_PARAM);
+#else
+int yyparse ();
+#endif
+#else /* ! YYPARSE_PARAM */
+#if defined __STDC__ || defined __cplusplus
+int yyparse (void);
+#else
+int yyparse ();
+#endif
+#endif /* ! YYPARSE_PARAM */
+
+#endif /* !YY_YY_PARSER_H_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
 
-
-/* Line 343 of yacc.c  */
-#line 1349 "parser.c"
+/* Line 377 of yacc.c  */
+#line 1369 "parser.c"
 
 #ifdef short
 # undef short
@@ -1398,24 +1418,24 @@ typedef short int yytype_int16;
 # if defined YYENABLE_NLS && YYENABLE_NLS
 #  if ENABLE_NLS
 #   include <libintl.h> /* INFRINGES ON USER NAME SPACE */
-#   define YY_(msgid) dgettext ("bison-runtime", msgid)
+#   define YY_(Msgid) dgettext ("bison-runtime", Msgid)
 #  endif
 # endif
 # ifndef YY_
-#  define YY_(msgid) msgid
+#  define YY_(Msgid) Msgid
 # endif
 #endif
 
 /* Suppress unused-variable warnings by "using" E.  */
 #if ! defined lint || defined __GNUC__
-# define YYUSE(e) ((void) (e))
+# define YYUSE(E) ((void) (E))
 #else
-# define YYUSE(e) /* empty */
+# define YYUSE(E) /* empty */
 #endif
 
 /* Identity function, used to suppress warnings about constant conditions.  */
 #ifndef lint
-# define YYID(n) (n)
+# define YYID(N) (N)
 #else
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
@@ -1451,6 +1471,7 @@ YYID (yyi)
 #    if ! defined _ALLOCA_H && ! defined EXIT_SUCCESS && (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 #     include <stdlib.h> /* INFRINGES ON USER NAME SPACE */
+      /* Use EXIT_SUCCESS as a witness for stdlib.h.  */
 #     ifndef EXIT_SUCCESS
 #      define EXIT_SUCCESS 0
 #     endif
@@ -1542,20 +1563,20 @@ union yyalloc
 #endif
 
 #if defined YYCOPY_NEEDED && YYCOPY_NEEDED
-/* Copy COUNT objects from FROM to TO.  The source and destination do
+/* Copy COUNT objects from SRC to DST.  The source and destination do
    not overlap.  */
 # ifndef YYCOPY
 #  if defined __GNUC__ && 1 < __GNUC__
-#   define YYCOPY(To, From, Count) \
-      __builtin_memcpy (To, From, (Count) * sizeof (*(From)))
+#   define YYCOPY(Dst, Src, Count) \
+      __builtin_memcpy (Dst, Src, (Count) * sizeof (*(Src)))
 #  else
-#   define YYCOPY(To, From, Count)		\
-      do					\
-	{					\
-	  YYSIZE_T yyi;				\
-	  for (yyi = 0; yyi < (Count); yyi++)	\
-	    (To)[yyi] = (From)[yyi];		\
-	}					\
+#   define YYCOPY(Dst, Src, Count)              \
+      do                                        \
+        {                                       \
+          YYSIZE_T yyi;                         \
+          for (yyi = 0; yyi < (Count); yyi++)   \
+            (Dst)[yyi] = (Src)[yyi];            \
+        }                                       \
       while (YYID (0))
 #  endif
 # endif
@@ -2557,7 +2578,7 @@ static const yytype_uint16 yyrline[] =
 };
 #endif
 
-#if YYDEBUG || YYERROR_VERBOSE || YYTOKEN_TABLE
+#if YYDEBUG || YYERROR_VERBOSE || 1
 /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
@@ -2879,7 +2900,7 @@ static const char *const yytname[] =
   "reel_or_unit", "scroll_line_or_lines", "size_or_length", "with_dups",
   "prog_coll_sequence", "detail_keyword", "ch_keyword", "cf_keyword",
   "ph_keyword", "pf_keyword", "rh_keyword", "rf_keyword",
-  "control_keyword", 0
+  "control_keyword", YY_NULL
 };
 #endif
 
@@ -4886,10 +4907,10 @@ static const yytype_int16 yytable[] =
        0,     0,     0,   765
 };
 
-#define yypact_value_is_default(yystate) \
-  ((yystate) == (-2357))
+#define yypact_value_is_default(Yystate) \
+  (!!((Yystate) == (-2357)))
 
-#define yytable_value_is_error(yytable_value) \
+#define yytable_value_is_error(Yytable_value) \
   YYID (0)
 
 static const yytype_int16 yycheck[] =
@@ -6011,17 +6032,18 @@ static const yytype_uint16 yystos[] =
 
 #define YYRECOVERING()  (!!yyerrstatus)
 
-#define YYBACKUP(Token, Value)					\
-do								\
-  if (yychar == YYEMPTY && yylen == 1)				\
-    {								\
-      yychar = (Token);						\
-      yylval = (Value);						\
-      YYPOPSTACK (1);						\
-      goto yybackup;						\
-    }								\
-  else								\
-    {								\
+#define YYBACKUP(Token, Value)                                  \
+do                                                              \
+  if (yychar == YYEMPTY)                                        \
+    {                                                           \
+      yychar = (Token);                                         \
+      yylval = (Value);                                         \
+      YYPOPSTACK (yylen);                                       \
+      yystate = *yyssp;                                         \
+      goto yybackup;                                            \
+    }                                                           \
+  else                                                          \
+    {                                                           \
       yyerror (YY_("syntax error: cannot back up")); \
       YYERROR;							\
     }								\
@@ -6031,31 +6053,32 @@ while (YYID (0))
 #define YYTERROR	1
 #define YYERRCODE	256
 
-
 /* YYLLOC_DEFAULT -- Set CURRENT to span from RHS[1] to RHS[N].
    If N is 0, then set CURRENT to the empty location which ends
    the previous symbol: RHS[0] (always defined).  */
 
-#define YYRHSLOC(Rhs, K) ((Rhs)[K])
 #ifndef YYLLOC_DEFAULT
-# define YYLLOC_DEFAULT(Current, Rhs, N)				\
-    do									\
-      if (YYID (N))                                                    \
-	{								\
-	  (Current).first_line   = YYRHSLOC (Rhs, 1).first_line;	\
-	  (Current).first_column = YYRHSLOC (Rhs, 1).first_column;	\
-	  (Current).last_line    = YYRHSLOC (Rhs, N).last_line;		\
-	  (Current).last_column  = YYRHSLOC (Rhs, N).last_column;	\
-	}								\
-      else								\
-	{								\
-	  (Current).first_line   = (Current).last_line   =		\
-	    YYRHSLOC (Rhs, 0).last_line;				\
-	  (Current).first_column = (Current).last_column =		\
-	    YYRHSLOC (Rhs, 0).last_column;				\
-	}								\
+# define YYLLOC_DEFAULT(Current, Rhs, N)                                \
+    do                                                                  \
+      if (YYID (N))                                                     \
+        {                                                               \
+          (Current).first_line   = YYRHSLOC (Rhs, 1).first_line;        \
+          (Current).first_column = YYRHSLOC (Rhs, 1).first_column;      \
+          (Current).last_line    = YYRHSLOC (Rhs, N).last_line;         \
+          (Current).last_column  = YYRHSLOC (Rhs, N).last_column;       \
+        }                                                               \
+      else                                                              \
+        {                                                               \
+          (Current).first_line   = (Current).last_line   =              \
+            YYRHSLOC (Rhs, 0).last_line;                                \
+          (Current).first_column = (Current).last_column =              \
+            YYRHSLOC (Rhs, 0).last_column;                              \
+        }                                                               \
     while (YYID (0))
 #endif
+
+#define YYRHSLOC(Rhs, K) ((Rhs)[K])
+
 
 
 /* This macro is provided for backward compatibility. */
@@ -6116,6 +6139,8 @@ yy_symbol_value_print (yyoutput, yytype, yyvaluep)
     YYSTYPE const * const yyvaluep;
 #endif
 {
+  FILE *yyo = yyoutput;
+  YYUSE (yyo);
   if (!yyvaluep)
     return;
 # ifdef YYPRINT
@@ -6367,12 +6392,12 @@ static int
 yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
                 yytype_int16 *yyssp, int yytoken)
 {
-  YYSIZE_T yysize0 = yytnamerr (0, yytname[yytoken]);
+  YYSIZE_T yysize0 = yytnamerr (YY_NULL, yytname[yytoken]);
   YYSIZE_T yysize = yysize0;
   YYSIZE_T yysize1;
   enum { YYERROR_VERBOSE_ARGS_MAXIMUM = 5 };
   /* Internationalized format string. */
-  const char *yyformat = 0;
+  const char *yyformat = YY_NULL;
   /* Arguments of yyformat. */
   char const *yyarg[YYERROR_VERBOSE_ARGS_MAXIMUM];
   /* Number of reported tokens (one for the "unexpected", one per
@@ -6432,7 +6457,7 @@ yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
                     break;
                   }
                 yyarg[yycount++] = yytname[yyx];
-                yysize1 = yysize + yytnamerr (0, yytname[yyx]);
+                yysize1 = yysize + yytnamerr (YY_NULL, yytname[yyx]);
                 if (! (yysize <= yysize1
                        && yysize1 <= YYSTACK_ALLOC_MAXIMUM))
                   return 2;
@@ -6524,24 +6549,19 @@ yydestruct (yymsg, yytype, yyvaluep)
 }
 
 
-/* Prevent warnings from -Wmissing-prototypes.  */
-#ifdef YYPARSE_PARAM
-#if defined __STDC__ || defined __cplusplus
-int yyparse (void *YYPARSE_PARAM);
-#else
-int yyparse ();
-#endif
-#else /* ! YYPARSE_PARAM */
-#if defined __STDC__ || defined __cplusplus
-int yyparse (void);
-#else
-int yyparse ();
-#endif
-#endif /* ! YYPARSE_PARAM */
 
 
 /* The lookahead symbol.  */
 int yychar;
+
+
+#ifndef YYLVAL_INITIALIZE
+# define YYLVAL_INITIALIZE()
+#endif
+#ifndef YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+# define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
+# define YY_IGNORE_MAYBE_UNINITIALIZED_END
+#endif
 
 /* The semantic value of the lookahead symbol.  */
 YYSTYPE yylval;
@@ -6584,7 +6604,7 @@ yyparse ()
        `yyss': related to states.
        `yyvs': related to semantic values.
 
-       Refer to the stacks thru separate pointers, to allow yyoverflow
+       Refer to the stacks through separate pointers, to allow yyoverflow
        to reallocate them elsewhere.  */
 
     /* The state stack.  */
@@ -6602,7 +6622,7 @@ yyparse ()
   int yyn;
   int yyresult;
   /* Lookahead token as an internal (translated) token number.  */
-  int yytoken;
+  int yytoken = 0;
   /* The variables used to return semantic value and location from the
      action routines.  */
   YYSTYPE yyval;
@@ -6620,7 +6640,6 @@ yyparse ()
      Keep to zero when no symbol should be popped.  */
   int yylen = 0;
 
-  yytoken = 0;
   yyss = yyssa;
   yyvs = yyvsa;
   yystacksize = YYINITDEPTH;
@@ -6639,6 +6658,7 @@ yyparse ()
   yyssp = yyss;
   yyvsp = yyvs;
 
+  YYLVAL_INITIALIZE ();
   goto yysetstate;
 
 /*------------------------------------------------------------.
@@ -6779,7 +6799,9 @@ yybackup:
   yychar = YYEMPTY;
 
   yystate = yyn;
+  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   *++yyvsp = yylval;
+  YY_IGNORE_MAYBE_UNINITIALIZED_END
 
   goto yynewstate;
 
@@ -6816,8 +6838,7 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1368 "parser.y"
     {
 	clear_initial_values ();
@@ -6832,8 +6853,7 @@ yyreduce:
     break;
 
   case 3:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1379 "parser.y"
     {
 	if (!current_program->flag_validated) {
@@ -6856,8 +6876,7 @@ yyreduce:
     break;
 
   case 10:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1415 "parser.y"
     {
 	cb_tree		l;
@@ -6881,8 +6900,7 @@ yyreduce:
     break;
 
   case 20:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1470 "parser.y"
     {
 	char	*s;
@@ -6907,8 +6925,7 @@ yyreduce:
     break;
 
   case 23:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1499 "parser.y"
     {
 	char	*s;
@@ -6933,8 +6950,7 @@ yyreduce:
     break;
 
   case 24:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1532 "parser.y"
     {
 	cb_validate_program_environment (current_program);
@@ -6942,8 +6958,7 @@ yyreduce:
     break;
 
   case 25:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1538 "parser.y"
     {
 	current_storage = CB_STORAGE_WORKING;
@@ -6951,8 +6966,7 @@ yyreduce:
     break;
 
   case 26:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1550 "parser.y"
     {
 	cb_validate_program_data (current_program);
@@ -6960,8 +6974,7 @@ yyreduce:
     break;
 
   case 28:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1560 "parser.y"
     {
 	current_section = NULL;
@@ -6996,8 +7009,7 @@ yyreduce:
     break;
 
   case 29:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1591 "parser.y"
     {
 	cobc_cs_check = 0;
@@ -7005,8 +7017,7 @@ yyreduce:
     break;
 
   case 30:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1598 "parser.y"
     {
 #if	0	/* RXWRXW - FUNCTION-ID */
@@ -7042,22 +7053,19 @@ yyreduce:
     break;
 
   case 33:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1637 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 34:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1638 "parser.y"
     { (yyval) = (yyvsp[(2) - (2)]); }
     break;
 
   case 37:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1647 "parser.y"
     {
 	if (!current_program->nested_level) {
@@ -7070,8 +7078,7 @@ yyreduce:
     break;
 
   case 38:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1656 "parser.y"
     {
 	if (!current_program->nested_level) {
@@ -7084,8 +7091,7 @@ yyreduce:
     break;
 
   case 41:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1670 "parser.y"
     {
 	current_program->flag_initial = 1;
@@ -7093,8 +7099,7 @@ yyreduce:
     break;
 
   case 42:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1674 "parser.y"
     {
 	current_program->flag_recursive = 1;
@@ -7102,8 +7107,7 @@ yyreduce:
     break;
 
   case 44:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1684 "parser.y"
     {
 	header_check |= COBC_HD_ENVIRONMENT_DIVISION;
@@ -7111,8 +7115,7 @@ yyreduce:
     break;
 
   case 46:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1693 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION, 0, 0, 0);
@@ -7124,8 +7127,7 @@ yyreduce:
     break;
 
   case 54:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1718 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION,
@@ -7138,8 +7140,7 @@ yyreduce:
     break;
 
   case 59:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1736 "parser.y"
     {
 	cb_verify (cb_debugging_line, "DEBUGGING MODE");
@@ -7151,8 +7152,7 @@ yyreduce:
     break;
 
   case 60:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1749 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION,
@@ -7162,8 +7162,7 @@ yyreduce:
     break;
 
   case 72:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1778 "parser.y"
     {
 	cb_verify (cb_memory_size_clause, "MEMORY SIZE");
@@ -7171,8 +7170,7 @@ yyreduce:
     break;
 
   case 73:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1785 "parser.y"
     {
 	current_program->collating_sequence = (yyvsp[(3) - (3)]);
@@ -7180,8 +7178,7 @@ yyreduce:
     break;
 
   case 74:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1792 "parser.y"
     {
 	/* Ignore */
@@ -7189,8 +7186,7 @@ yyreduce:
     break;
 
   case 75:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1799 "parser.y"
     {
 	if (current_program->classification) {
@@ -7202,8 +7198,7 @@ yyreduce:
     break;
 
   case 76:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1810 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -7211,8 +7206,7 @@ yyreduce:
     break;
 
   case 77:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1814 "parser.y"
     {
 	(yyval) = NULL;
@@ -7220,8 +7214,7 @@ yyreduce:
     break;
 
   case 78:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1818 "parser.y"
     {
 	(yyval) = cb_int1;
@@ -7229,8 +7222,7 @@ yyreduce:
     break;
 
   case 79:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1822 "parser.y"
     {
 	(yyval) = cb_int1;
@@ -7238,8 +7230,7 @@ yyreduce:
     break;
 
   case 82:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1836 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION,
@@ -7248,8 +7239,7 @@ yyreduce:
     break;
 
   case 83:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1841 "parser.y"
     {
 	cobc_in_repository = 0;
@@ -7257,8 +7247,7 @@ yyreduce:
     break;
 
   case 86:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1849 "parser.y"
     {
 	yyerrok;
@@ -7266,8 +7255,7 @@ yyreduce:
     break;
 
   case 89:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1861 "parser.y"
     {
 	functions_are_all = 1;
@@ -7275,8 +7263,7 @@ yyreduce:
     break;
 
   case 90:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1865 "parser.y"
     {
 	cb_tree		x;
@@ -7292,8 +7279,7 @@ yyreduce:
     break;
 
   case 94:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1886 "parser.y"
     {
 	(yyval) = NULL;
@@ -7301,8 +7287,7 @@ yyreduce:
     break;
 
   case 95:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1890 "parser.y"
     {
 	(yyval) = (yyvsp[(2) - (2)]);
@@ -7310,8 +7295,7 @@ yyreduce:
     break;
 
   case 96:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1897 "parser.y"
     {
 	current_program->function_spec_list =
@@ -7320,8 +7304,7 @@ yyreduce:
     break;
 
   case 97:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1902 "parser.y"
     {
 	current_program->function_spec_list =
@@ -7330,8 +7313,7 @@ yyreduce:
     break;
 
   case 98:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1913 "parser.y"
     {
 	check_duplicate = 0;
@@ -7345,8 +7327,7 @@ yyreduce:
     break;
 
   case 100:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1927 "parser.y"
     {
 	cobc_cs_check = 0;
@@ -7355,8 +7336,7 @@ yyreduce:
     break;
 
   case 115:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1958 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION,
@@ -7375,8 +7355,7 @@ yyreduce:
     break;
 
   case 117:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1977 "parser.y"
     {
 	if (save_tree) {
@@ -7390,8 +7369,7 @@ yyreduce:
     break;
 
   case 118:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 1987 "parser.y"
     {
 	if (save_tree) {
@@ -7408,8 +7386,7 @@ yyreduce:
     break;
 
   case 119:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2000 "parser.y"
     {
 	if (save_tree && CB_VALID_TREE ((yyvsp[(2) - (3)]))) {
@@ -7421,8 +7398,7 @@ yyreduce:
     break;
 
   case 123:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2016 "parser.y"
     {
 	cb_tree		x;
@@ -7436,8 +7412,7 @@ yyreduce:
     break;
 
   case 124:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2026 "parser.y"
     {
 	cb_tree		x;
@@ -7451,8 +7426,7 @@ yyreduce:
     break;
 
   case 125:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2041 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION,
@@ -7469,8 +7443,7 @@ yyreduce:
     break;
 
   case 126:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2054 "parser.y"
     {
 	if ((yyvsp[(3) - (5)])) {
@@ -7482,8 +7455,7 @@ yyreduce:
     break;
 
   case 127:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2065 "parser.y"
     {
 	if ((yyvsp[(-1) - (1)])) {
@@ -7493,8 +7465,7 @@ yyreduce:
     break;
 
   case 128:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2071 "parser.y"
     {
 	if ((yyvsp[(-1) - (1)])) {
@@ -7504,8 +7475,7 @@ yyreduce:
     break;
 
   case 129:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2077 "parser.y"
     {
 	if ((yyvsp[(-1) - (1)])) {
@@ -7515,8 +7485,7 @@ yyreduce:
     break;
 
   case 130:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2083 "parser.y"
     {
 	if ((yyvsp[(-1) - (1)])) {
@@ -7526,8 +7495,7 @@ yyreduce:
     break;
 
   case 131:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2089 "parser.y"
     {
 	if ((yyvsp[(-1) - (1)])) {
@@ -7537,8 +7505,7 @@ yyreduce:
     break;
 
   case 132:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2095 "parser.y"
     {
 	if ((yyvsp[(-1) - (1)])) {
@@ -7549,8 +7516,7 @@ yyreduce:
     break;
 
   case 133:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2105 "parser.y"
     {
 	(yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)]));
@@ -7558,8 +7524,7 @@ yyreduce:
     break;
 
   case 134:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2109 "parser.y"
     {
 	(yyval) = cb_list_add ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]));
@@ -7567,8 +7532,7 @@ yyreduce:
     break;
 
   case 135:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2116 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -7576,8 +7540,7 @@ yyreduce:
     break;
 
   case 136:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2120 "parser.y"
     {
 	(yyval) = CB_BUILD_PAIR ((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]));
@@ -7585,8 +7548,7 @@ yyreduce:
     break;
 
   case 137:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2124 "parser.y"
     {
 	(yyval) = CB_LIST_INIT ((yyvsp[(1) - (2)]));
@@ -7594,8 +7556,7 @@ yyreduce:
     break;
 
   case 138:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2128 "parser.y"
     {
 	(yyval) = (yyvsp[(3) - (4)]);
@@ -7603,8 +7564,7 @@ yyreduce:
     break;
 
   case 139:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2135 "parser.y"
     {
 	cb_list_add ((yyvsp[(0) - (1)]), (yyvsp[(1) - (1)]));
@@ -7612,8 +7572,7 @@ yyreduce:
     break;
 
   case 140:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2139 "parser.y"
     {
 	cb_list_add ((yyvsp[(0) - (3)]), (yyvsp[(3) - (3)]));
@@ -7621,64 +7580,55 @@ yyreduce:
     break;
 
   case 141:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2145 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 142:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2146 "parser.y"
     { (yyval) = cb_space; }
     break;
 
   case 143:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2147 "parser.y"
     { (yyval) = cb_zero; }
     break;
 
   case 144:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2148 "parser.y"
     { (yyval) = cb_quote; }
     break;
 
   case 145:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2149 "parser.y"
     { (yyval) = cb_norm_high; }
     break;
 
   case 146:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2150 "parser.y"
     { (yyval) = cb_norm_low; }
     break;
 
   case 147:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2154 "parser.y"
     { (yyval) = cb_space; }
     break;
 
   case 148:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2155 "parser.y"
     { (yyval) = cb_zero; }
     break;
 
   case 149:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2163 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION,
@@ -7693,8 +7643,7 @@ yyreduce:
     break;
 
   case 150:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2177 "parser.y"
     {
 	(yyval) = NULL;
@@ -7702,8 +7651,7 @@ yyreduce:
     break;
 
   case 151:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2181 "parser.y"
     {
 	(yyval) = (yyvsp[(2) - (2)]);
@@ -7711,8 +7659,7 @@ yyreduce:
     break;
 
   case 152:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2189 "parser.y"
     {
 	(yyval) = (yyvsp[(3) - (3)]);
@@ -7720,8 +7667,7 @@ yyreduce:
     break;
 
   case 153:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2196 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -7729,8 +7675,7 @@ yyreduce:
     break;
 
   case 154:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2200 "parser.y"
     {
 	if ((yyvsp[(2) - (2)])) {
@@ -7742,8 +7687,7 @@ yyreduce:
     break;
 
   case 155:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2211 "parser.y"
     {
 	cb_tree		l1;
@@ -7764,8 +7708,7 @@ yyreduce:
     break;
 
   case 156:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2231 "parser.y"
     {
 	if ((yyvsp[(1) - (1)]) == NULL) {
@@ -7777,8 +7720,7 @@ yyreduce:
     break;
 
   case 157:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2239 "parser.y"
     {
 	if ((yyvsp[(2) - (2)]) == NULL) {
@@ -7790,22 +7732,19 @@ yyreduce:
     break;
 
   case 158:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2249 "parser.y"
     { (yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)])); }
     break;
 
   case 159:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2250 "parser.y"
     { (yyval) = cb_list_add ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 160:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2257 "parser.y"
     {
 	cb_tree		x;
@@ -7827,22 +7766,19 @@ yyreduce:
     break;
 
   case 161:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2277 "parser.y"
     { (yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)])); }
     break;
 
   case 162:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2278 "parser.y"
     { (yyval) = cb_list_add ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 163:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2283 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -7850,8 +7786,7 @@ yyreduce:
     break;
 
   case 164:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2287 "parser.y"
     {
 	if (CB_TREE_CLASS ((yyvsp[(1) - (3)])) != CB_CLASS_NUMERIC &&
@@ -7871,8 +7806,7 @@ yyreduce:
     break;
 
   case 165:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2308 "parser.y"
     {
 	cb_tree	l;
@@ -7894,8 +7828,7 @@ yyreduce:
     break;
 
   case 166:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2331 "parser.y"
     {
 	unsigned char	*s = CB_LITERAL ((yyvsp[(4) - (5)]))->data;
@@ -7976,8 +7909,7 @@ yyreduce:
     break;
 
   case 167:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2412 "parser.y"
     {
 	(yyval) = NULL;
@@ -7985,8 +7917,7 @@ yyreduce:
     break;
 
   case 168:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2416 "parser.y"
     {
 	(yyval) = (yyvsp[(3) - (3)]);
@@ -7994,8 +7925,7 @@ yyreduce:
     break;
 
   case 169:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2425 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION,
@@ -8012,8 +7942,7 @@ yyreduce:
     break;
 
   case 170:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2444 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION,
@@ -8028,8 +7957,7 @@ yyreduce:
     break;
 
   case 171:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2460 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION,
@@ -8045,8 +7973,7 @@ yyreduce:
     break;
 
   case 172:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2478 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION,
@@ -8062,8 +7989,7 @@ yyreduce:
     break;
 
   case 173:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2496 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION,
@@ -8079,8 +8005,7 @@ yyreduce:
     break;
 
   case 174:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2513 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION,
@@ -8096,8 +8021,7 @@ yyreduce:
     break;
 
   case 176:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2530 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION, 0, 0, 0);
@@ -8106,8 +8030,7 @@ yyreduce:
     break;
 
   case 178:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2538 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION,
@@ -8117,8 +8040,7 @@ yyreduce:
     break;
 
   case 180:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2547 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION,
@@ -8128,8 +8050,7 @@ yyreduce:
     break;
 
   case 183:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2562 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION,
@@ -8150,8 +8071,7 @@ yyreduce:
     break;
 
   case 184:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2579 "parser.y"
     {
 	validate_file (current_file, (yyvsp[(3) - (6)]));
@@ -8159,8 +8079,7 @@ yyreduce:
     break;
 
   case 185:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2583 "parser.y"
     {
 	yyerrok;
@@ -8172,8 +8091,7 @@ yyreduce:
     break;
 
   case 201:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2617 "parser.y"
     {
 	check_repeated ("ASSIGN", SYN_CLAUSE_1);
@@ -8183,8 +8101,7 @@ yyreduce:
     break;
 
   case 202:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2623 "parser.y"
     {
 	check_repeated ("ASSIGN", SYN_CLAUSE_1);
@@ -8198,8 +8115,7 @@ yyreduce:
     break;
 
   case 203:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2633 "parser.y"
     {
 	check_repeated ("ASSIGN", SYN_CLAUSE_1);
@@ -8216,8 +8132,7 @@ yyreduce:
     break;
 
   case 204:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2646 "parser.y"
     {
 	check_repeated ("ASSIGN", SYN_CLAUSE_1);
@@ -8234,8 +8149,7 @@ yyreduce:
     break;
 
   case 205:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2659 "parser.y"
     {
 	check_repeated ("ASSIGN", SYN_CLAUSE_1);
@@ -8252,8 +8166,7 @@ yyreduce:
     break;
 
   case 211:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2682 "parser.y"
     {
 	current_file->flag_line_adv = 1;
@@ -8261,8 +8174,7 @@ yyreduce:
     break;
 
   case 213:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2689 "parser.y"
     {
 	current_file->flag_ext_assign = 1;
@@ -8270,8 +8182,7 @@ yyreduce:
     break;
 
   case 217:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2702 "parser.y"
     {
 	(yyval) = NULL;
@@ -8279,8 +8190,7 @@ yyreduce:
     break;
 
   case 220:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2714 "parser.y"
     {
 	cobc_cs_check = 0;
@@ -8289,29 +8199,25 @@ yyreduce:
     break;
 
   case 221:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2721 "parser.y"
     { current_file->access_mode = COB_ACCESS_SEQUENTIAL; }
     break;
 
   case 222:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2722 "parser.y"
     { current_file->access_mode = COB_ACCESS_DYNAMIC; }
     break;
 
   case 223:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2723 "parser.y"
     { current_file->access_mode = COB_ACCESS_RANDOM; }
     break;
 
   case 224:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2731 "parser.y"
     {
 	struct cb_alt_key *p;
@@ -8336,15 +8242,13 @@ yyreduce:
     break;
 
   case 225:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2754 "parser.y"
     { }
     break;
 
   case 226:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2757 "parser.y"
     {
 	PENDING ("SUPPRESS WHEN ALL");
@@ -8352,8 +8256,7 @@ yyreduce:
     break;
 
   case 227:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2762 "parser.y"
     {
 	PENDING ("SUPPRESS WHEN SPACE/ZERO");
@@ -8361,8 +8264,7 @@ yyreduce:
     break;
 
   case 228:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2772 "parser.y"
     {
 	check_repeated ("COLLATING", SYN_CLAUSE_3);
@@ -8371,8 +8273,7 @@ yyreduce:
     break;
 
   case 229:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2783 "parser.y"
     {
 	check_repeated ("STATUS", SYN_CLAUSE_4);
@@ -8381,8 +8282,7 @@ yyreduce:
     break;
 
   case 233:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2798 "parser.y"
     {
 	check_repeated ("LOCK", SYN_CLAUSE_5);
@@ -8390,8 +8290,7 @@ yyreduce:
     break;
 
   case 235:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2806 "parser.y"
     {
 	current_file->lock_mode = COB_LOCK_MANUAL;
@@ -8400,8 +8299,7 @@ yyreduce:
     break;
 
   case 236:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2811 "parser.y"
     {
 	current_file->lock_mode = COB_LOCK_AUTOMATIC;
@@ -8410,8 +8308,7 @@ yyreduce:
     break;
 
   case 237:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2816 "parser.y"
     {
 	current_file->lock_mode = COB_LOCK_EXCLUSIVE;
@@ -8420,8 +8317,7 @@ yyreduce:
     break;
 
   case 240:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2825 "parser.y"
     {
 	current_file->lock_mode |= COB_LOCK_MULTIPLE;
@@ -8429,8 +8325,7 @@ yyreduce:
     break;
 
   case 241:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2829 "parser.y"
     {
 	current_file->lock_mode |= COB_LOCK_MULTIPLE;
@@ -8439,8 +8334,7 @@ yyreduce:
     break;
 
   case 244:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2845 "parser.y"
     {
 	check_repeated ("ORGANIZATION", SYN_CLAUSE_6);
@@ -8449,8 +8343,7 @@ yyreduce:
     break;
 
   case 245:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2850 "parser.y"
     {
 	check_repeated ("ORGANIZATION", SYN_CLAUSE_6);
@@ -8459,8 +8352,7 @@ yyreduce:
     break;
 
   case 246:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2855 "parser.y"
     {
 	check_repeated ("ORGANIZATION", SYN_CLAUSE_6);
@@ -8469,8 +8361,7 @@ yyreduce:
     break;
 
   case 247:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2860 "parser.y"
     {
 	check_repeated ("ORGANIZATION", SYN_CLAUSE_6);
@@ -8479,8 +8370,7 @@ yyreduce:
     break;
 
   case 248:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2871 "parser.y"
     {
 	check_repeated ("PADDING", SYN_CLAUSE_7);
@@ -8489,8 +8379,7 @@ yyreduce:
     break;
 
   case 249:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2882 "parser.y"
     {
 	check_repeated ("RECORD DELIMITER", SYN_CLAUSE_8);
@@ -8498,8 +8387,7 @@ yyreduce:
     break;
 
   case 250:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2892 "parser.y"
     {
 	check_repeated ("RECORD KEY", SYN_CLAUSE_9);
@@ -8508,29 +8396,25 @@ yyreduce:
     break;
 
   case 251:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2899 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 252:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2900 "parser.y"
     { PENDING ("SPLIT KEYS"); }
     break;
 
   case 253:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2901 "parser.y"
     { PENDING ("SPLIT KEYS"); }
     break;
 
   case 254:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2908 "parser.y"
     {
 	check_repeated ("RELATIVE KEY", SYN_CLAUSE_10);
@@ -8539,8 +8423,7 @@ yyreduce:
     break;
 
   case 255:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2919 "parser.y"
     {
 	check_repeated ("RESERVE", SYN_CLAUSE_11);
@@ -8548,8 +8431,7 @@ yyreduce:
     break;
 
   case 258:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2933 "parser.y"
     {
 	check_repeated ("SHARING", SYN_CLAUSE_12);
@@ -8558,29 +8440,25 @@ yyreduce:
     break;
 
   case 259:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2940 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 260:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2941 "parser.y"
     { (yyval) = cb_int (COB_LOCK_OPEN_EXCLUSIVE); }
     break;
 
   case 261:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2942 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 264:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2951 "parser.y"
     {
 	yyerrok;
@@ -8588,8 +8466,7 @@ yyreduce:
     break;
 
   case 269:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2970 "parser.y"
     {
 	cb_tree l;
@@ -8618,36 +8495,31 @@ yyreduce:
     break;
 
   case 270:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2997 "parser.y"
     { (yyval) = cb_int0; }
     break;
 
   case 271:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2998 "parser.y"
     { (yyval) = cb_int1; }
     break;
 
   case 272:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 2999 "parser.y"
     { (yyval) = cb_int2; }
     break;
 
   case 273:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3000 "parser.y"
     { (yyval) = cb_int2; }
     break;
 
   case 274:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3007 "parser.y"
     {
 	/* Fake for TAPE */
@@ -8656,8 +8528,7 @@ yyreduce:
     break;
 
   case 275:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3012 "parser.y"
     {
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION,
@@ -8669,8 +8540,7 @@ yyreduce:
     break;
 
   case 282:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3039 "parser.y"
     {
 	header_check |= COBC_HD_DATA_DIVISION;
@@ -8678,8 +8548,7 @@ yyreduce:
     break;
 
   case 284:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3048 "parser.y"
     {
 	current_storage = CB_STORAGE_FILE;
@@ -8689,8 +8558,7 @@ yyreduce:
     break;
 
   case 287:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3062 "parser.y"
     {
 	if (CB_VALID_TREE (current_file)) {
@@ -8708,8 +8576,7 @@ yyreduce:
     break;
 
   case 288:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3081 "parser.y"
     {
 	current_storage = CB_STORAGE_FILE;
@@ -8729,8 +8596,7 @@ yyreduce:
     break;
 
   case 290:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3098 "parser.y"
     {
 	yyerrok;
@@ -8738,8 +8604,7 @@ yyreduce:
     break;
 
   case 291:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3105 "parser.y"
     {
 	(yyval) = NULL;
@@ -8747,8 +8612,7 @@ yyreduce:
     break;
 
   case 292:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3109 "parser.y"
     {
 	(yyval) = cb_int1;
@@ -8756,8 +8620,7 @@ yyreduce:
     break;
 
   case 295:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3120 "parser.y"
     {
 	check_repeated ("EXTERNAL", SYN_CLAUSE_1);
@@ -8771,8 +8634,7 @@ yyreduce:
     break;
 
   case 296:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3130 "parser.y"
     {
 	check_repeated ("GLOBAL", SYN_CLAUSE_2);
@@ -8791,8 +8653,7 @@ yyreduce:
     break;
 
   case 306:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3160 "parser.y"
     {
 	check_repeated ("BLOCK", SYN_CLAUSE_3);
@@ -8801,8 +8662,7 @@ yyreduce:
     break;
 
   case 310:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3173 "parser.y"
     {
 	check_repeated ("RECORD", SYN_CLAUSE_4);
@@ -8826,8 +8686,7 @@ yyreduce:
     break;
 
   case 311:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3193 "parser.y"
     {
 	int	error_ind = 0;
@@ -8865,8 +8724,7 @@ yyreduce:
     break;
 
   case 312:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3228 "parser.y"
     {
 	int	error_ind = 0;
@@ -8898,8 +8756,7 @@ yyreduce:
     break;
 
   case 314:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3259 "parser.y"
     {
 	current_file->record_depending = (yyvsp[(3) - (3)]);
@@ -8907,36 +8764,31 @@ yyreduce:
     break;
 
   case 315:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3265 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 316:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3266 "parser.y"
     { (yyval) = (yyvsp[(2) - (2)]); }
     break;
 
   case 317:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3270 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 318:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3271 "parser.y"
     { (yyval) = (yyvsp[(2) - (2)]); }
     break;
 
   case 319:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3279 "parser.y"
     {
 	check_repeated ("LABEL", SYN_CLAUSE_5);
@@ -8945,8 +8797,7 @@ yyreduce:
     break;
 
   case 320:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3290 "parser.y"
     {
 	check_repeated ("VALUE OF", SYN_CLAUSE_6);
@@ -8955,8 +8806,7 @@ yyreduce:
     break;
 
   case 321:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3295 "parser.y"
     {
 	check_repeated ("VALUE OF", SYN_CLAUSE_6);
@@ -8968,8 +8818,7 @@ yyreduce:
     break;
 
   case 326:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3318 "parser.y"
     {
 	check_repeated ("DATA", SYN_CLAUSE_7);
@@ -8978,8 +8827,7 @@ yyreduce:
     break;
 
   case 327:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3330 "parser.y"
     {
 	check_repeated ("LINAGE", SYN_CLAUSE_8);
@@ -8998,8 +8846,7 @@ yyreduce:
     break;
 
   case 333:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3358 "parser.y"
     {
 	current_file->latfoot = (yyvsp[(4) - (4)]);
@@ -9007,8 +8854,7 @@ yyreduce:
     break;
 
   case 334:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3365 "parser.y"
     {
 	current_file->lattop = (yyvsp[(2) - (2)]);
@@ -9016,8 +8862,7 @@ yyreduce:
     break;
 
   case 335:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3372 "parser.y"
     {
 	current_file->latbot = (yyvsp[(2) - (2)]);
@@ -9025,8 +8870,7 @@ yyreduce:
     break;
 
   case 336:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3381 "parser.y"
     {
 	cobc_cs_check = 0;
@@ -9036,8 +8880,7 @@ yyreduce:
     break;
 
   case 337:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3393 "parser.y"
     {
 	check_repeated ("CODE SET", SYN_CLAUSE_10);
@@ -9088,8 +8931,7 @@ yyreduce:
     break;
 
   case 338:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3445 "parser.y"
     {
 	check_repeated ("REPORT", SYN_CLAUSE_11);
@@ -9105,8 +8947,7 @@ yyreduce:
     break;
 
   case 341:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3465 "parser.y"
     {
 	current_report = build_report ((yyvsp[(1) - (1)]));
@@ -9120,8 +8961,7 @@ yyreduce:
     break;
 
   case 342:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3475 "parser.y"
     {
 	current_report = build_report ((yyvsp[(2) - (2)]));
@@ -9134,8 +8974,7 @@ yyreduce:
     break;
 
   case 344:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3515 "parser.y"
     {
 	check_headers_present (COBC_HD_DATA_DIVISION, 0, 0, 0);
@@ -9145,8 +8984,7 @@ yyreduce:
     break;
 
   case 345:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3521 "parser.y"
     {
 	if ((yyvsp[(5) - (5)])) {
@@ -9156,8 +8994,7 @@ yyreduce:
     break;
 
   case 346:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3530 "parser.y"
     {
 	(yyval) = NULL;
@@ -9165,8 +9002,7 @@ yyreduce:
     break;
 
   case 347:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3533 "parser.y"
     {
 	current_field = NULL;
@@ -9176,8 +9012,7 @@ yyreduce:
     break;
 
   case 348:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3539 "parser.y"
     {
 	struct cb_field *p;
@@ -9190,8 +9025,7 @@ yyreduce:
     break;
 
   case 353:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3559 "parser.y"
     {
 	cb_tree x;
@@ -9210,8 +9044,7 @@ yyreduce:
     break;
 
   case 354:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3574 "parser.y"
     {
 	if (!qualifier && (current_field->level == 88 ||
@@ -9235,8 +9068,7 @@ yyreduce:
     break;
 
   case 355:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3594 "parser.y"
     {
 	/* Free tree assocated with level number */
@@ -9250,8 +9082,7 @@ yyreduce:
     break;
 
   case 356:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3607 "parser.y"
     {
 	(yyval) = (yyvsp[(2) - (2)]);
@@ -9259,8 +9090,7 @@ yyreduce:
     break;
 
   case 357:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3614 "parser.y"
     {
 	(yyval) = cb_build_filler ();
@@ -9270,8 +9100,7 @@ yyreduce:
     break;
 
   case 358:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3620 "parser.y"
     {
 	(yyval) = cb_build_filler ();
@@ -9281,8 +9110,7 @@ yyreduce:
     break;
 
   case 359:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3626 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -9292,8 +9120,7 @@ yyreduce:
     break;
 
   case 360:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3635 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -9303,8 +9130,7 @@ yyreduce:
     break;
 
   case 361:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3644 "parser.y"
     {
 	(yyval)= NULL;
@@ -9312,8 +9138,7 @@ yyreduce:
     break;
 
   case 362:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3648 "parser.y"
     {
 	if (current_program->prog_type == CB_FUNCTION_TYPE) {
@@ -9326,36 +9151,31 @@ yyreduce:
     break;
 
   case 363:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3659 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 364:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3660 "parser.y"
     { (yyval) = cb_build_const_length ((yyvsp[(2) - (2)])); }
     break;
 
   case 365:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3661 "parser.y"
     { (yyval) = cb_build_const_length ((yyvsp[(2) - (2)])); }
     break;
 
   case 366:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3662 "parser.y"
     { (yyval) = cb_build_const_length ((yyvsp[(3) - (3)])); }
     break;
 
   case 367:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3667 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -9363,8 +9183,7 @@ yyreduce:
     break;
 
   case 368:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3671 "parser.y"
     {
 	(yyval) = cb_int1;
@@ -9372,8 +9191,7 @@ yyreduce:
     break;
 
   case 369:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3675 "parser.y"
     {
 	(yyval) = cb_int2;
@@ -9381,8 +9199,7 @@ yyreduce:
     break;
 
   case 370:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3679 "parser.y"
     {
 	(yyval) = cb_int4;
@@ -9390,8 +9207,7 @@ yyreduce:
     break;
 
   case 371:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3683 "parser.y"
     {
 	(yyval) = cb_int (8);
@@ -9399,8 +9215,7 @@ yyreduce:
     break;
 
   case 372:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3687 "parser.y"
     {
 	(yyval) = cb_int ((int)sizeof(long));
@@ -9408,8 +9223,7 @@ yyreduce:
     break;
 
   case 373:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3691 "parser.y"
     {
 	(yyval) = cb_int ((int)sizeof(void *));
@@ -9417,8 +9231,7 @@ yyreduce:
     break;
 
   case 374:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3695 "parser.y"
     {
 	(yyval) = cb_int ((int)sizeof(float));
@@ -9426,8 +9239,7 @@ yyreduce:
     break;
 
   case 375:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3699 "parser.y"
     {
 	(yyval) = cb_int ((int)sizeof(double));
@@ -9435,8 +9247,7 @@ yyreduce:
     break;
 
   case 376:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3703 "parser.y"
     {
 	(yyval) = cb_int (4);
@@ -9444,8 +9255,7 @@ yyreduce:
     break;
 
   case 377:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3707 "parser.y"
     {
 	(yyval) = cb_int (8);
@@ -9453,8 +9263,7 @@ yyreduce:
     break;
 
   case 378:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3711 "parser.y"
     {
 	(yyval) = cb_int (16);
@@ -9462,8 +9271,7 @@ yyreduce:
     break;
 
   case 379:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3715 "parser.y"
     {
 	yyerrok;
@@ -9475,8 +9283,7 @@ yyreduce:
     break;
 
   case 389:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3747 "parser.y"
     {
 	cb_tree x;
@@ -9503,8 +9310,7 @@ yyreduce:
     break;
 
   case 390:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3773 "parser.y"
     {
 	(yyval) = (yyvsp[(2) - (2)]);
@@ -9512,8 +9318,7 @@ yyreduce:
     break;
 
   case 391:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3777 "parser.y"
     {
 	PENDING ("CONSTANT FROM clause");
@@ -9522,8 +9327,7 @@ yyreduce:
     break;
 
   case 392:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3785 "parser.y"
     {
 	/* Required to check redefines */
@@ -9532,8 +9336,7 @@ yyreduce:
     break;
 
   case 393:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3791 "parser.y"
     {
 	/* Required to check redefines */
@@ -9542,8 +9345,7 @@ yyreduce:
     break;
 
   case 408:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3819 "parser.y"
     {
 	check_pic_repeated ("REDEFINES", SYN_CLAUSE_1);
@@ -9565,8 +9367,7 @@ yyreduce:
     break;
 
   case 409:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3843 "parser.y"
     {
 	check_pic_repeated ("EXTERNAL", SYN_CLAUSE_2);
@@ -9594,8 +9395,7 @@ yyreduce:
     break;
 
   case 410:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3870 "parser.y"
     {
 	current_field->ename = cb_to_cname (current_field->name);
@@ -9603,8 +9403,7 @@ yyreduce:
     break;
 
   case 411:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3874 "parser.y"
     {
 	current_field->ename = cb_to_cname ((const char *)CB_LITERAL ((yyvsp[(2) - (2)]))->data);
@@ -9612,8 +9411,7 @@ yyreduce:
     break;
 
   case 412:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3883 "parser.y"
     {
 	check_pic_repeated ("GLOBAL", SYN_CLAUSE_3);
@@ -9636,8 +9434,7 @@ yyreduce:
     break;
 
   case 413:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3908 "parser.y"
     {
 	check_pic_repeated ("PICTURE", SYN_CLAUSE_4);
@@ -9646,8 +9443,7 @@ yyreduce:
     break;
 
   case 416:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3924 "parser.y"
     {
 	check_set_usage (CB_USAGE_BINARY);
@@ -9655,8 +9451,7 @@ yyreduce:
     break;
 
   case 417:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3928 "parser.y"
     {
 	check_set_usage (CB_USAGE_BINARY);
@@ -9664,8 +9459,7 @@ yyreduce:
     break;
 
   case 418:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3932 "parser.y"
     {
 	check_set_usage (CB_USAGE_FLOAT);
@@ -9673,8 +9467,7 @@ yyreduce:
     break;
 
   case 419:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3936 "parser.y"
     {
 	check_set_usage (CB_USAGE_DOUBLE);
@@ -9682,8 +9475,7 @@ yyreduce:
     break;
 
   case 420:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3940 "parser.y"
     {
 	check_set_usage (CB_USAGE_PACKED);
@@ -9691,8 +9483,7 @@ yyreduce:
     break;
 
   case 421:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3944 "parser.y"
     {
 	check_set_usage (CB_USAGE_BINARY);
@@ -9700,8 +9491,7 @@ yyreduce:
     break;
 
   case 422:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3948 "parser.y"
     {
 	check_set_usage (CB_USAGE_COMP_5);
@@ -9709,8 +9499,7 @@ yyreduce:
     break;
 
   case 423:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3952 "parser.y"
     {
 	check_set_usage (CB_USAGE_COMP_6);
@@ -9718,8 +9507,7 @@ yyreduce:
     break;
 
   case 424:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3956 "parser.y"
     {
 	check_set_usage (CB_USAGE_COMP_X);
@@ -9727,8 +9515,7 @@ yyreduce:
     break;
 
   case 425:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3960 "parser.y"
     {
 	check_set_usage (CB_USAGE_DISPLAY);
@@ -9736,8 +9523,7 @@ yyreduce:
     break;
 
   case 426:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3964 "parser.y"
     {
 	check_set_usage (CB_USAGE_INDEX);
@@ -9745,8 +9531,7 @@ yyreduce:
     break;
 
   case 427:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3968 "parser.y"
     {
 	check_set_usage (CB_USAGE_PACKED);
@@ -9754,8 +9539,7 @@ yyreduce:
     break;
 
   case 428:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3972 "parser.y"
     {
 	check_set_usage (CB_USAGE_POINTER);
@@ -9764,8 +9548,7 @@ yyreduce:
     break;
 
   case 429:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3977 "parser.y"
     {
 	check_set_usage (CB_USAGE_PROGRAM_POINTER);
@@ -9774,8 +9557,7 @@ yyreduce:
     break;
 
   case 430:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3982 "parser.y"
     {
 	check_set_usage (CB_USAGE_SIGNED_SHORT);
@@ -9783,8 +9565,7 @@ yyreduce:
     break;
 
   case 431:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3986 "parser.y"
     {
 	check_set_usage (CB_USAGE_SIGNED_INT);
@@ -9792,8 +9573,7 @@ yyreduce:
     break;
 
   case 432:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3990 "parser.y"
     {
 	if (sizeof(long) == 4) {
@@ -9805,8 +9585,7 @@ yyreduce:
     break;
 
   case 433:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 3998 "parser.y"
     {
 	check_set_usage (CB_USAGE_UNSIGNED_SHORT);
@@ -9814,8 +9593,7 @@ yyreduce:
     break;
 
   case 434:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4002 "parser.y"
     {
 	check_set_usage (CB_USAGE_UNSIGNED_INT);
@@ -9823,8 +9601,7 @@ yyreduce:
     break;
 
   case 435:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4006 "parser.y"
     {
 	if (sizeof(long) == 4) {
@@ -9836,8 +9613,7 @@ yyreduce:
     break;
 
   case 436:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4014 "parser.y"
     {
 	check_set_usage (CB_USAGE_SIGNED_CHAR);
@@ -9845,8 +9621,7 @@ yyreduce:
     break;
 
   case 437:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4018 "parser.y"
     {
 	check_set_usage (CB_USAGE_UNSIGNED_CHAR);
@@ -9854,8 +9629,7 @@ yyreduce:
     break;
 
   case 438:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4022 "parser.y"
     {
 	check_set_usage (CB_USAGE_SIGNED_SHORT);
@@ -9863,8 +9637,7 @@ yyreduce:
     break;
 
   case 439:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4026 "parser.y"
     {
 	check_set_usage (CB_USAGE_UNSIGNED_SHORT);
@@ -9872,8 +9645,7 @@ yyreduce:
     break;
 
   case 440:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4030 "parser.y"
     {
 	check_set_usage (CB_USAGE_SIGNED_INT);
@@ -9881,8 +9653,7 @@ yyreduce:
     break;
 
   case 441:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4034 "parser.y"
     {
 	check_set_usage (CB_USAGE_UNSIGNED_INT);
@@ -9890,8 +9661,7 @@ yyreduce:
     break;
 
   case 442:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4038 "parser.y"
     {
 	check_set_usage (CB_USAGE_SIGNED_LONG);
@@ -9899,8 +9669,7 @@ yyreduce:
     break;
 
   case 443:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4042 "parser.y"
     {
 	check_set_usage (CB_USAGE_UNSIGNED_LONG);
@@ -9908,8 +9677,7 @@ yyreduce:
     break;
 
   case 444:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4046 "parser.y"
     {
 	if (sizeof(long) == 4) {
@@ -9921,8 +9689,7 @@ yyreduce:
     break;
 
   case 445:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4054 "parser.y"
     {
 	if (sizeof(long) == 4) {
@@ -9934,8 +9701,7 @@ yyreduce:
     break;
 
   case 446:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4062 "parser.y"
     {
 	check_set_usage (CB_USAGE_FP_BIN32);
@@ -9943,8 +9709,7 @@ yyreduce:
     break;
 
   case 447:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4066 "parser.y"
     {
 	check_set_usage (CB_USAGE_FP_BIN64);
@@ -9952,8 +9717,7 @@ yyreduce:
     break;
 
   case 448:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4070 "parser.y"
     {
 	check_set_usage (CB_USAGE_FP_BIN128);
@@ -9961,8 +9725,7 @@ yyreduce:
     break;
 
   case 449:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4074 "parser.y"
     {
 	check_set_usage (CB_USAGE_FP_DEC64);
@@ -9970,8 +9733,7 @@ yyreduce:
     break;
 
   case 450:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4078 "parser.y"
     {
 	check_set_usage (CB_USAGE_FP_DEC128);
@@ -9979,8 +9741,7 @@ yyreduce:
     break;
 
   case 451:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4082 "parser.y"
     {
 	check_pic_repeated ("USAGE", SYN_CLAUSE_5);
@@ -9989,8 +9750,7 @@ yyreduce:
     break;
 
   case 456:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4102 "parser.y"
     {
 	check_pic_repeated ("SIGN", SYN_CLAUSE_6);
@@ -10000,8 +9760,7 @@ yyreduce:
     break;
 
   case 457:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4108 "parser.y"
     {
 	check_pic_repeated ("SIGN", SYN_CLAUSE_6);
@@ -10011,8 +9770,7 @@ yyreduce:
     break;
 
   case 458:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4121 "parser.y"
     {
 	check_pic_repeated ("OCCURS", SYN_CLAUSE_7);
@@ -10031,8 +9789,7 @@ yyreduce:
     break;
 
   case 460:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4139 "parser.y"
     {
 	current_field->step_count = cb_get_int ((yyvsp[(2) - (2)]));
@@ -10040,8 +9797,7 @@ yyreduce:
     break;
 
   case 461:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4149 "parser.y"
     {
 	check_pic_repeated ("OCCURS", SYN_CLAUSE_7);
@@ -10065,8 +9821,7 @@ yyreduce:
     break;
 
   case 462:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4170 "parser.y"
     {
 	current_field->occurs_min = (yyvsp[(4) - (8)]) ? cb_get_int ((yyvsp[(4) - (8)])) : 0;
@@ -10087,36 +9842,31 @@ yyreduce:
     break;
 
   case 463:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4189 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 464:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4190 "parser.y"
     { (yyval) = (yyvsp[(2) - (2)]); }
     break;
 
   case 465:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4194 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 466:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4195 "parser.y"
     { (yyval) = (yyvsp[(2) - (2)]); }
     break;
 
   case 468:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4200 "parser.y"
     {
 	current_field->depending = (yyvsp[(3) - (3)]);
@@ -10124,8 +9874,7 @@ yyreduce:
     break;
 
   case 470:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4207 "parser.y"
     {
 	(yyval) = cb_build_index ((yyvsp[(3) - (3)]), cb_zero, 0, current_field);
@@ -10134,8 +9883,7 @@ yyreduce:
     break;
 
   case 472:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4215 "parser.y"
     {
 	/* current_field->initialized = 1; */
@@ -10143,8 +9891,7 @@ yyreduce:
     break;
 
   case 473:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4222 "parser.y"
     {
 	if ((yyvsp[(1) - (1)])) {
@@ -10169,15 +9916,13 @@ yyreduce:
     break;
 
   case 474:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4245 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 475:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4248 "parser.y"
     {
 	cb_tree l;
@@ -10194,22 +9939,19 @@ yyreduce:
     break;
 
   case 476:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4263 "parser.y"
     { (yyval) = cb_int (COB_ASCENDING); }
     break;
 
   case 477:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4264 "parser.y"
     { (yyval) = cb_int (COB_DESCENDING); }
     break;
 
   case 479:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4269 "parser.y"
     {
 	current_field->index_list = (yyvsp[(3) - (3)]);
@@ -10217,22 +9959,19 @@ yyreduce:
     break;
 
   case 480:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4275 "parser.y"
     { (yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)])); }
     break;
 
   case 481:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4277 "parser.y"
     { (yyval) = cb_list_add ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 482:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4282 "parser.y"
     {
 	(yyval) = cb_build_index ((yyvsp[(1) - (1)]), cb_int1, 1U, current_field);
@@ -10241,8 +9980,7 @@ yyreduce:
     break;
 
   case 483:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4293 "parser.y"
     {
 	check_pic_repeated ("JUSTIFIED", SYN_CLAUSE_8);
@@ -10251,8 +9989,7 @@ yyreduce:
     break;
 
   case 484:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4304 "parser.y"
     {
 	check_pic_repeated ("SYNCHRONIZED", SYN_CLAUSE_9);
@@ -10261,8 +9998,7 @@ yyreduce:
     break;
 
   case 485:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4315 "parser.y"
     {
 	check_pic_repeated ("BLANK", SYN_CLAUSE_10);
@@ -10271,8 +10007,7 @@ yyreduce:
     break;
 
   case 486:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4326 "parser.y"
     {
 	check_pic_repeated ("BASED", SYN_CLAUSE_11);
@@ -10299,8 +10034,7 @@ yyreduce:
     break;
 
   case 487:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4354 "parser.y"
     {
 	check_pic_repeated ("VALUE", SYN_CLAUSE_12);
@@ -10309,36 +10043,31 @@ yyreduce:
     break;
 
   case 489:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4362 "parser.y"
     { (yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)])); }
     break;
 
   case 490:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4363 "parser.y"
     { (yyval) = cb_list_add ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 491:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4367 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 492:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4368 "parser.y"
     { (yyval) = CB_BUILD_PAIR ((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)])); }
     break;
 
   case 494:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4373 "parser.y"
     {
 	if (current_field->level != 88) {
@@ -10349,8 +10078,7 @@ yyreduce:
     break;
 
   case 495:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4386 "parser.y"
     {
 	check_pic_repeated ("RENAMES", SYN_CLAUSE_13);
@@ -10367,8 +10095,7 @@ yyreduce:
     break;
 
   case 496:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4399 "parser.y"
     {
 	check_pic_repeated ("RENAMES", SYN_CLAUSE_13);
@@ -10388,8 +10115,7 @@ yyreduce:
     break;
 
   case 497:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4420 "parser.y"
     {
 	check_pic_repeated ("ANY", SYN_CLAUSE_14);
@@ -10402,8 +10128,7 @@ yyreduce:
     break;
 
   case 498:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4429 "parser.y"
     {
 	check_pic_repeated ("ANY", SYN_CLAUSE_14);
@@ -10417,8 +10142,7 @@ yyreduce:
     break;
 
   case 500:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4444 "parser.y"
     {
 	check_headers_present (COBC_HD_DATA_DIVISION, 0, 0, 0);
@@ -10431,8 +10155,7 @@ yyreduce:
     break;
 
   case 501:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4453 "parser.y"
     {
 	if ((yyvsp[(5) - (5)])) {
@@ -10442,8 +10165,7 @@ yyreduce:
     break;
 
   case 503:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4465 "parser.y"
     {
 	check_headers_present (COBC_HD_DATA_DIVISION, 0, 0, 0);
@@ -10453,8 +10175,7 @@ yyreduce:
     break;
 
   case 504:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4471 "parser.y"
     {
 	if ((yyvsp[(5) - (5)])) {
@@ -10464,8 +10185,7 @@ yyreduce:
     break;
 
   case 506:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4482 "parser.y"
     {
 	cb_warning (_("REPORT SECTION not implemented"));
@@ -10475,8 +10195,7 @@ yyreduce:
     break;
 
   case 510:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4498 "parser.y"
     {
 	if (CB_INVALID_TREE ((yyvsp[(2) - (2)]))) {
@@ -10489,8 +10208,7 @@ yyreduce:
     break;
 
   case 514:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4513 "parser.y"
     {
 	yyerrok;
@@ -10498,8 +10216,7 @@ yyreduce:
     break;
 
   case 515:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4520 "parser.y"
     {
 	check_repeated ("GLOBAL", SYN_CLAUSE_1);
@@ -10508,8 +10225,7 @@ yyreduce:
     break;
 
   case 516:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4525 "parser.y"
     {
 	check_repeated ("CODE", SYN_CLAUSE_2);
@@ -10517,8 +10233,7 @@ yyreduce:
     break;
 
   case 519:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4536 "parser.y"
     {
 	check_repeated ("CONTROL", SYN_CLAUSE_3);
@@ -10526,8 +10241,7 @@ yyreduce:
     break;
 
   case 523:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4555 "parser.y"
     {
 	check_repeated ("PAGE", SYN_CLAUSE_4);
@@ -10564,8 +10278,7 @@ yyreduce:
     break;
 
   case 524:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4591 "parser.y"
     {
 	current_report->lines = cb_get_int ((yyvsp[(1) - (1)]));
@@ -10573,8 +10286,7 @@ yyreduce:
     break;
 
   case 525:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4595 "parser.y"
     {
 	current_report->lines = cb_get_int ((yyvsp[(1) - (4)]));
@@ -10583,8 +10295,7 @@ yyreduce:
     break;
 
   case 526:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4600 "parser.y"
     {
 	current_report->lines = cb_get_int ((yyvsp[(1) - (2)]));
@@ -10592,8 +10303,7 @@ yyreduce:
     break;
 
   case 534:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4620 "parser.y"
     {
 	current_report->heading = cb_get_int ((yyvsp[(3) - (3)]));
@@ -10601,8 +10311,7 @@ yyreduce:
     break;
 
   case 535:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4627 "parser.y"
     {
 	current_report->first_detail = cb_get_int ((yyvsp[(4) - (4)]));
@@ -10610,8 +10319,7 @@ yyreduce:
     break;
 
   case 536:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4634 "parser.y"
     {
 	current_report->last_control = cb_get_int ((yyvsp[(4) - (4)]));
@@ -10619,8 +10327,7 @@ yyreduce:
     break;
 
   case 537:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4641 "parser.y"
     {
 	current_report->last_detail = cb_get_int ((yyvsp[(4) - (4)]));
@@ -10628,8 +10335,7 @@ yyreduce:
     break;
 
   case 538:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4648 "parser.y"
     {
 	current_report->footing = cb_get_int ((yyvsp[(3) - (3)]));
@@ -10637,8 +10343,7 @@ yyreduce:
     break;
 
   case 541:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4659 "parser.y"
     {
 	check_pic_duplicate = 0;
@@ -10646,8 +10351,7 @@ yyreduce:
     break;
 
   case 561:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4690 "parser.y"
     {
 	check_pic_repeated ("TYPE", SYN_CLAUSE_16);
@@ -10655,8 +10359,7 @@ yyreduce:
     break;
 
   case 574:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4716 "parser.y"
     {
 	check_pic_repeated ("NEXT GROUP", SYN_CLAUSE_17);
@@ -10664,8 +10367,7 @@ yyreduce:
     break;
 
   case 575:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4723 "parser.y"
     {
 	check_pic_repeated ("SUM", SYN_CLAUSE_19);
@@ -10673,8 +10375,7 @@ yyreduce:
     break;
 
   case 580:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4739 "parser.y"
     {
 	check_pic_repeated ("PRESENT", SYN_CLAUSE_20);
@@ -10682,8 +10383,7 @@ yyreduce:
     break;
 
   case 582:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4750 "parser.y"
     {
 	check_pic_repeated ("LINE", SYN_CLAUSE_21);
@@ -10691,8 +10391,7 @@ yyreduce:
     break;
 
   case 585:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4762 "parser.y"
     {
 	check_pic_repeated ("COLUMN", SYN_CLAUSE_18);
@@ -10700,8 +10399,7 @@ yyreduce:
     break;
 
   case 597:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4795 "parser.y"
     {
 	check_pic_repeated ("SOURCE", SYN_CLAUSE_22);
@@ -10709,8 +10407,7 @@ yyreduce:
     break;
 
   case 598:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4802 "parser.y"
     {
 	check_pic_repeated ("GROUP", SYN_CLAUSE_23);
@@ -10718,8 +10415,7 @@ yyreduce:
     break;
 
   case 599:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4809 "parser.y"
     {
 	check_pic_repeated ("USAGE", SYN_CLAUSE_24);
@@ -10727,8 +10423,7 @@ yyreduce:
     break;
 
   case 601:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4818 "parser.y"
     {
 	current_storage = CB_STORAGE_SCREEN;
@@ -10739,8 +10434,7 @@ yyreduce:
     break;
 
   case 602:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4825 "parser.y"
     {
 	struct cb_field *p;
@@ -10756,8 +10450,7 @@ yyreduce:
     break;
 
   case 608:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4851 "parser.y"
     {
 	cb_tree	x;
@@ -10792,8 +10485,7 @@ yyreduce:
     break;
 
   case 609:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4882 "parser.y"
     {
 	if (!qualifier && (current_field->level == 88 ||
@@ -10823,8 +10515,7 @@ yyreduce:
     break;
 
   case 610:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4908 "parser.y"
     {
 	/* Free tree assocated with level number */
@@ -10844,8 +10535,7 @@ yyreduce:
     break;
 
   case 613:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4931 "parser.y"
     {
 	check_screen_attr ("BLANK LINE", COB_SCREEN_BLANK_LINE);
@@ -10853,8 +10543,7 @@ yyreduce:
     break;
 
   case 614:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4935 "parser.y"
     {
 	check_screen_attr ("BLANK SCREEN", COB_SCREEN_BLANK_SCREEN);
@@ -10862,8 +10551,7 @@ yyreduce:
     break;
 
   case 615:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4939 "parser.y"
     {
 	check_screen_attr ("BELL", COB_SCREEN_BELL);
@@ -10871,8 +10559,7 @@ yyreduce:
     break;
 
   case 616:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4943 "parser.y"
     {
 	check_screen_attr ("BLINK", COB_SCREEN_BLINK);
@@ -10880,8 +10567,7 @@ yyreduce:
     break;
 
   case 617:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4947 "parser.y"
     {
 	check_screen_attr ("ERASE EOL", COB_SCREEN_ERASE_EOL);
@@ -10889,8 +10575,7 @@ yyreduce:
     break;
 
   case 618:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4951 "parser.y"
     {
 	check_screen_attr ("ERASE EOS", COB_SCREEN_ERASE_EOS);
@@ -10898,8 +10583,7 @@ yyreduce:
     break;
 
   case 619:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4955 "parser.y"
     {
 	check_screen_attr ("HIGHLIGHT", COB_SCREEN_HIGHLIGHT);
@@ -10907,8 +10591,7 @@ yyreduce:
     break;
 
   case 620:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4959 "parser.y"
     {
 	check_screen_attr ("LOWLIGHT", COB_SCREEN_LOWLIGHT);
@@ -10916,8 +10599,7 @@ yyreduce:
     break;
 
   case 621:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4963 "parser.y"
     {
 	check_screen_attr ("REVERSE-VIDEO", COB_SCREEN_REVERSE);
@@ -10925,8 +10607,7 @@ yyreduce:
     break;
 
   case 622:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4967 "parser.y"
     {
 	check_screen_attr ("UNDERLINE", COB_SCREEN_UNDERLINE);
@@ -10934,8 +10615,7 @@ yyreduce:
     break;
 
   case 623:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4971 "parser.y"
     {
 	check_screen_attr ("OVERLINE", COB_SCREEN_OVERLINE);
@@ -10943,8 +10623,7 @@ yyreduce:
     break;
 
   case 624:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4975 "parser.y"
     {
 	check_screen_attr ("LEFTLINE", COB_SCREEN_LEFTLINE);
@@ -10952,8 +10631,7 @@ yyreduce:
     break;
 
   case 625:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4979 "parser.y"
     {
 	check_screen_attr ("AUTO", COB_SCREEN_AUTO);
@@ -10961,8 +10639,7 @@ yyreduce:
     break;
 
   case 626:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4983 "parser.y"
     {
 	check_screen_attr ("SECURE", COB_SCREEN_SECURE);
@@ -10970,8 +10647,7 @@ yyreduce:
     break;
 
   case 627:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4987 "parser.y"
     {
 	check_screen_attr ("REQUIRED", COB_SCREEN_REQUIRED);
@@ -10979,8 +10655,7 @@ yyreduce:
     break;
 
   case 628:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4991 "parser.y"
     {
 	check_screen_attr ("FULL", COB_SCREEN_FULL);
@@ -10988,8 +10663,7 @@ yyreduce:
     break;
 
   case 629:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 4995 "parser.y"
     {
 	check_screen_attr ("PROMPT", COB_SCREEN_PROMPT);
@@ -10998,8 +10672,7 @@ yyreduce:
     break;
 
   case 630:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5000 "parser.y"
     {
 	check_screen_attr ("PROMPT", COB_SCREEN_PROMPT);
@@ -11007,8 +10680,7 @@ yyreduce:
     break;
 
   case 631:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5004 "parser.y"
     {
 	check_screen_attr ("INITIAL", COB_SCREEN_INITIAL);
@@ -11016,8 +10688,7 @@ yyreduce:
     break;
 
   case 632:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5008 "parser.y"
     {
 	check_pic_repeated ("LINE", SYN_CLAUSE_16);
@@ -11026,8 +10697,7 @@ yyreduce:
     break;
 
   case 633:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5013 "parser.y"
     {
 	check_pic_repeated ("COLUMN", SYN_CLAUSE_17);
@@ -11036,8 +10706,7 @@ yyreduce:
     break;
 
   case 634:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5018 "parser.y"
     {
 	check_pic_repeated ("FOREGROUND-COLOR", SYN_CLAUSE_18);
@@ -11046,8 +10715,7 @@ yyreduce:
     break;
 
   case 635:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5023 "parser.y"
     {
 	check_pic_repeated ("BACKGROUND-COLOR", SYN_CLAUSE_19);
@@ -11056,8 +10724,7 @@ yyreduce:
     break;
 
   case 644:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5036 "parser.y"
     {
 	check_pic_repeated ("USING", SYN_CLAUSE_20);
@@ -11068,8 +10735,7 @@ yyreduce:
     break;
 
   case 645:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5043 "parser.y"
     {
 	check_pic_repeated ("FROM", SYN_CLAUSE_21);
@@ -11078,8 +10744,7 @@ yyreduce:
     break;
 
   case 646:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5048 "parser.y"
     {
 	check_pic_repeated ("TO", SYN_CLAUSE_22);
@@ -11089,8 +10754,7 @@ yyreduce:
     break;
 
   case 651:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5067 "parser.y"
     {
 	/* Nothing */
@@ -11098,8 +10762,7 @@ yyreduce:
     break;
 
   case 652:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5071 "parser.y"
     {
 	current_field->screen_flag |= COB_SCREEN_LINE_PLUS;
@@ -11107,8 +10770,7 @@ yyreduce:
     break;
 
   case 653:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5075 "parser.y"
     {
 	current_field->screen_flag |= COB_SCREEN_LINE_MINUS;
@@ -11116,8 +10778,7 @@ yyreduce:
     break;
 
   case 654:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5082 "parser.y"
     {
 	/* Nothing */
@@ -11125,8 +10786,7 @@ yyreduce:
     break;
 
   case 655:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5086 "parser.y"
     {
 	current_field->screen_flag |= COB_SCREEN_COLUMN_PLUS;
@@ -11134,8 +10794,7 @@ yyreduce:
     break;
 
   case 656:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5090 "parser.y"
     {
 	current_field->screen_flag |= COB_SCREEN_COLUMN_MINUS;
@@ -11143,8 +10802,7 @@ yyreduce:
     break;
 
   case 657:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5098 "parser.y"
     {
 	check_pic_repeated ("OCCURS", SYN_CLAUSE_23);
@@ -11156,8 +10814,7 @@ yyreduce:
     break;
 
   case 658:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5109 "parser.y"
     {
 	cb_error (_("GLOBAL is not allowed with screen items"));
@@ -11165,8 +10822,7 @@ yyreduce:
     break;
 
   case 660:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5118 "parser.y"
     {
 	current_section = NULL;
@@ -11180,8 +10836,7 @@ yyreduce:
     break;
 
   case 661:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5128 "parser.y"
     {
 	if (current_program->flag_main && !current_program->flag_chained && (yyvsp[(3) - (7)])) {
@@ -11197,8 +10852,7 @@ yyreduce:
     break;
 
   case 662:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5140 "parser.y"
     {
 	if (current_paragraph) {
@@ -11217,8 +10871,7 @@ yyreduce:
     break;
 
   case 663:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5155 "parser.y"
     {
 	cb_tree label;
@@ -11251,8 +10904,7 @@ yyreduce:
     break;
 
   case 665:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5188 "parser.y"
     {
 	(yyval) = NULL;
@@ -11260,8 +10912,7 @@ yyreduce:
     break;
 
   case 666:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5192 "parser.y"
     {
 	call_mode = CB_CALL_BY_REFERENCE;
@@ -11270,8 +10921,7 @@ yyreduce:
     break;
 
   case 667:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5197 "parser.y"
     {
 	if (cb_list_length ((yyvsp[(3) - (3)])) > COB_MAX_FIELD_PARAMS) {
@@ -11283,8 +10933,7 @@ yyreduce:
     break;
 
   case 668:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5205 "parser.y"
     {
 	call_mode = CB_CALL_BY_REFERENCE;
@@ -11297,8 +10946,7 @@ yyreduce:
     break;
 
   case 669:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5214 "parser.y"
     {
 	if (cb_list_length ((yyvsp[(3) - (3)])) > COB_MAX_FIELD_PARAMS) {
@@ -11310,22 +10958,19 @@ yyreduce:
     break;
 
   case 670:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5224 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 671:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5226 "parser.y"
     { (yyval) = cb_list_append ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 672:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5231 "parser.y"
     {
 	(yyval) = CB_BUILD_PAIR (cb_int (call_mode), cb_build_identifier ((yyvsp[(4) - (4)]), 0));
@@ -11334,8 +10979,7 @@ yyreduce:
     break;
 
   case 674:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5240 "parser.y"
     {
 	call_mode = CB_CALL_BY_REFERENCE;
@@ -11343,8 +10987,7 @@ yyreduce:
     break;
 
   case 675:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5244 "parser.y"
     {
 	if (current_program->flag_chained) {
@@ -11356,8 +10999,7 @@ yyreduce:
     break;
 
   case 677:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5256 "parser.y"
     {
 	if (call_mode != CB_CALL_BY_VALUE) {
@@ -11369,8 +11011,7 @@ yyreduce:
     break;
 
   case 678:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5264 "parser.y"
     {
 	if (call_mode != CB_CALL_BY_VALUE) {
@@ -11382,8 +11023,7 @@ yyreduce:
     break;
 
   case 679:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5272 "parser.y"
     {
 	if (call_mode != CB_CALL_BY_VALUE) {
@@ -11395,8 +11035,7 @@ yyreduce:
     break;
 
   case 680:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5280 "parser.y"
     {
 	unsigned char *s = CB_LITERAL ((yyvsp[(4) - (4)]))->data;
@@ -11429,8 +11068,7 @@ yyreduce:
     break;
 
   case 681:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5309 "parser.y"
     {
 	unsigned char *s = CB_LITERAL ((yyvsp[(3) - (3)]))->data;
@@ -11463,8 +11101,7 @@ yyreduce:
     break;
 
   case 683:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5342 "parser.y"
     {
 	if (call_mode != CB_CALL_BY_REFERENCE) {
@@ -11474,8 +11111,7 @@ yyreduce:
     break;
 
   case 684:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5351 "parser.y"
     {
 	if (current_program->prog_type == CB_FUNCTION_TYPE) {
@@ -11485,8 +11121,7 @@ yyreduce:
     break;
 
   case 685:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5357 "parser.y"
     {
 	struct cb_field	*f;
@@ -11515,8 +11150,7 @@ yyreduce:
     break;
 
   case 687:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5385 "parser.y"
     {
 	in_declaratives = 1;
@@ -11525,8 +11159,7 @@ yyreduce:
     break;
 
   case 688:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5391 "parser.y"
     {
 	if (needs_field_debug) {
@@ -11556,8 +11189,7 @@ yyreduce:
     break;
 
   case 693:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5429 "parser.y"
     {
 	if (next_label_list) {
@@ -11578,8 +11210,7 @@ yyreduce:
     break;
 
   case 695:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5447 "parser.y"
     {
 	/* check_unreached = 0; */
@@ -11587,8 +11218,7 @@ yyreduce:
     break;
 
   case 696:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5457 "parser.y"
     {
 	non_const_word = 0;
@@ -11636,8 +11266,7 @@ yyreduce:
     break;
 
   case 697:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5501 "parser.y"
     {
 	emit_statement (CB_TREE (current_section));
@@ -11645,8 +11274,7 @@ yyreduce:
     break;
 
   case 700:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5512 "parser.y"
     {
 	cb_tree label;
@@ -11695,8 +11323,7 @@ yyreduce:
     break;
 
   case 701:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5560 "parser.y"
     {
 	non_const_word = 0;
@@ -11709,8 +11336,7 @@ yyreduce:
     break;
 
   case 702:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5572 "parser.y"
     {
 	(yyval) = NULL;
@@ -11718,8 +11344,7 @@ yyreduce:
     break;
 
   case 703:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5576 "parser.y"
     {
 	if (in_declaratives) {
@@ -11735,8 +11360,7 @@ yyreduce:
     break;
 
   case 704:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5594 "parser.y"
     {
 	(yyval) = current_program->exec_list;
@@ -11746,8 +11370,7 @@ yyreduce:
     break;
 
   case 705:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5599 "parser.y"
     {
 	(yyval) = CB_TREE (current_statement);
@@ -11756,8 +11379,7 @@ yyreduce:
     break;
 
   case 706:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5604 "parser.y"
     {
 	(yyval) = cb_list_reverse (current_program->exec_list);
@@ -11767,8 +11389,7 @@ yyreduce:
     break;
 
   case 707:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5612 "parser.y"
     {
 	cb_tree label;
@@ -11799,8 +11420,7 @@ yyreduce:
     break;
 
   case 708:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5639 "parser.y"
     {
 	cobc_cs_check = 0;
@@ -11808,8 +11428,7 @@ yyreduce:
     break;
 
   case 709:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5643 "parser.y"
     {
 	cobc_cs_check = 0;
@@ -11817,8 +11436,7 @@ yyreduce:
     break;
 
   case 759:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5699 "parser.y"
     {
 	if (cb_verify (cb_next_sentence_phrase, "NEXT SENTENCE")) {
@@ -11836,8 +11454,7 @@ yyreduce:
     break;
 
   case 760:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5713 "parser.y"
     {
 	yyerrok;
@@ -11846,8 +11463,7 @@ yyreduce:
     break;
 
   case 761:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5724 "parser.y"
     {
 	begin_statement ("ACCEPT", TERM_ACCEPT);
@@ -11862,8 +11478,7 @@ yyreduce:
     break;
 
   case 763:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5741 "parser.y"
     {
 	cobc_cs_check = 0;
@@ -11872,8 +11487,7 @@ yyreduce:
     break;
 
   case 764:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5746 "parser.y"
     {
 	cb_emit_accept_line_or_col ((yyvsp[(1) - (3)]), 0);
@@ -11881,8 +11495,7 @@ yyreduce:
     break;
 
   case 765:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5750 "parser.y"
     {
 	cb_emit_accept_line_or_col ((yyvsp[(1) - (3)]), 1);
@@ -11890,8 +11503,7 @@ yyreduce:
     break;
 
   case 766:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5754 "parser.y"
     {
 	cobc_cs_check = 0;
@@ -11900,8 +11512,7 @@ yyreduce:
     break;
 
   case 767:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5759 "parser.y"
     {
 	cobc_cs_check = 0;
@@ -11910,8 +11521,7 @@ yyreduce:
     break;
 
   case 768:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5764 "parser.y"
     {
 	cobc_cs_check = 0;
@@ -11920,8 +11530,7 @@ yyreduce:
     break;
 
   case 769:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5769 "parser.y"
     {
 	cobc_cs_check = 0;
@@ -11930,8 +11539,7 @@ yyreduce:
     break;
 
   case 770:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5774 "parser.y"
     {
 	cb_emit_accept_day_of_week ((yyvsp[(1) - (3)]));
@@ -11939,8 +11547,7 @@ yyreduce:
     break;
 
   case 771:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5778 "parser.y"
     {
 	cb_emit_accept_escape_key ((yyvsp[(1) - (4)]));
@@ -11948,8 +11555,7 @@ yyreduce:
     break;
 
   case 772:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5782 "parser.y"
     {
 	cb_emit_accept_exception_status ((yyvsp[(1) - (4)]));
@@ -11957,8 +11563,7 @@ yyreduce:
     break;
 
   case 773:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5786 "parser.y"
     {
 	cb_emit_accept_time ((yyvsp[(1) - (3)]));
@@ -11966,8 +11571,7 @@ yyreduce:
     break;
 
   case 774:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5790 "parser.y"
     {
 	cobc_cs_check = 0;
@@ -11976,8 +11580,7 @@ yyreduce:
     break;
 
   case 775:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5795 "parser.y"
     {
 	cb_emit_accept_command_line ((yyvsp[(1) - (3)]));
@@ -11985,8 +11588,7 @@ yyreduce:
     break;
 
   case 776:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5799 "parser.y"
     {
 	cb_emit_accept_environment ((yyvsp[(1) - (4)]));
@@ -11994,8 +11596,7 @@ yyreduce:
     break;
 
   case 777:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5803 "parser.y"
     {
 	cb_emit_get_environment ((yyvsp[(4) - (5)]), (yyvsp[(1) - (5)]));
@@ -12003,8 +11604,7 @@ yyreduce:
     break;
 
   case 778:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5807 "parser.y"
     {
 	cb_emit_accept_arg_number ((yyvsp[(1) - (3)]));
@@ -12012,8 +11612,7 @@ yyreduce:
     break;
 
   case 779:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5811 "parser.y"
     {
 	cb_emit_accept_arg_value ((yyvsp[(1) - (4)]));
@@ -12021,8 +11620,7 @@ yyreduce:
     break;
 
   case 780:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5815 "parser.y"
     {
 	cb_emit_accept_mnemonic ((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]));
@@ -12030,8 +11628,7 @@ yyreduce:
     break;
 
   case 781:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5819 "parser.y"
     {
 	cb_emit_accept_name ((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]));
@@ -12039,8 +11636,7 @@ yyreduce:
     break;
 
   case 783:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5827 "parser.y"
     {
 	(yyval) = cb_null;
@@ -12048,78 +11644,67 @@ yyreduce:
     break;
 
   case 786:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5838 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 787:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5839 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 788:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5843 "parser.y"
     { (yyval) = CB_BUILD_PAIR ((yyvsp[(2) - (3)]), (yyvsp[(3) - (3)])); }
     break;
 
   case 789:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5844 "parser.y"
     { (yyval) = CB_BUILD_PAIR ((yyvsp[(3) - (3)]), (yyvsp[(2) - (3)])); }
     break;
 
   case 790:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5845 "parser.y"
     { (yyval) = CB_BUILD_PAIR ((yyvsp[(2) - (2)]), cb_int0); }
     break;
 
   case 791:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5846 "parser.y"
     { (yyval) = CB_BUILD_PAIR (cb_int0, (yyvsp[(2) - (2)])); }
     break;
 
   case 792:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5847 "parser.y"
     { (yyval) = (yyvsp[(2) - (2)]); }
     break;
 
   case 793:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5851 "parser.y"
     { (yyval) = (yyvsp[(3) - (3)]); }
     break;
 
   case 794:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5855 "parser.y"
     { (yyval) = (yyvsp[(3) - (3)]); }
     break;
 
   case 795:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5856 "parser.y"
     { (yyval) = (yyvsp[(3) - (3)]); }
     break;
 
   case 799:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5865 "parser.y"
     {
 	cobc_cs_check = 0;
@@ -12127,8 +11712,7 @@ yyreduce:
     break;
 
   case 804:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5881 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_AUTO);
@@ -12136,8 +11720,7 @@ yyreduce:
     break;
 
   case 805:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5885 "parser.y"
     {
 	if (cb_accept_auto) {
@@ -12147,8 +11730,7 @@ yyreduce:
     break;
 
   case 806:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5891 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_BELL);
@@ -12156,8 +11738,7 @@ yyreduce:
     break;
 
   case 807:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5895 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_BLINK);
@@ -12165,8 +11746,7 @@ yyreduce:
     break;
 
   case 808:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5899 "parser.y"
     {
 	cb_warning (_("Ignoring CONVERSION"));
@@ -12174,8 +11754,7 @@ yyreduce:
     break;
 
   case 809:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5903 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_FULL);
@@ -12183,8 +11762,7 @@ yyreduce:
     break;
 
   case 810:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5907 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_HIGHLIGHT);
@@ -12192,8 +11770,7 @@ yyreduce:
     break;
 
   case 811:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5911 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_LEFTLINE);
@@ -12201,8 +11778,7 @@ yyreduce:
     break;
 
   case 812:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5915 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_LOWER);
@@ -12210,8 +11786,7 @@ yyreduce:
     break;
 
   case 813:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5919 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_LOWLIGHT);
@@ -12219,8 +11794,7 @@ yyreduce:
     break;
 
   case 814:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5923 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_NO_ECHO);
@@ -12228,8 +11802,7 @@ yyreduce:
     break;
 
   case 815:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5927 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_OVERLINE);
@@ -12237,8 +11810,7 @@ yyreduce:
     break;
 
   case 816:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5931 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, (yyvsp[(4) - (4)]), COB_SCREEN_PROMPT);
@@ -12246,8 +11818,7 @@ yyreduce:
     break;
 
   case 817:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5935 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_PROMPT);
@@ -12255,8 +11826,7 @@ yyreduce:
     break;
 
   case 818:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5939 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_REQUIRED);
@@ -12264,8 +11834,7 @@ yyreduce:
     break;
 
   case 819:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5943 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_REVERSE);
@@ -12273,8 +11842,7 @@ yyreduce:
     break;
 
   case 820:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5947 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_SECURE);
@@ -12282,8 +11850,7 @@ yyreduce:
     break;
 
   case 821:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5951 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_UNDERLINE);
@@ -12291,8 +11858,7 @@ yyreduce:
     break;
 
   case 822:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5955 "parser.y"
     {
 	if (cb_accept_update) {
@@ -12302,8 +11868,7 @@ yyreduce:
     break;
 
   case 823:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5961 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_UPDATE);
@@ -12311,8 +11876,7 @@ yyreduce:
     break;
 
   case 824:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5965 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_UPPER);
@@ -12320,8 +11884,7 @@ yyreduce:
     break;
 
   case 825:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5969 "parser.y"
     {
 	check_attribs ((yyvsp[(3) - (3)]), NULL, NULL, NULL, NULL, 0);
@@ -12329,8 +11892,7 @@ yyreduce:
     break;
 
   case 826:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5973 "parser.y"
     {
 	check_attribs (NULL, (yyvsp[(3) - (3)]), NULL, NULL, NULL, 0);
@@ -12338,8 +11900,7 @@ yyreduce:
     break;
 
   case 827:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5977 "parser.y"
     {
 	check_attribs (NULL, NULL, (yyvsp[(3) - (3)]), NULL, NULL, 0);
@@ -12347,8 +11908,7 @@ yyreduce:
     break;
 
   case 828:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5981 "parser.y"
     {
 	check_attribs (NULL, NULL, (yyvsp[(3) - (3)]), NULL, NULL, COB_SCREEN_SCROLL_DOWN);
@@ -12356,8 +11916,7 @@ yyreduce:
     break;
 
   case 829:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5985 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, (yyvsp[(3) - (3)]), NULL, 0);
@@ -12365,8 +11924,7 @@ yyreduce:
     break;
 
   case 832:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 5997 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), ACCEPT);
@@ -12374,8 +11932,7 @@ yyreduce:
     break;
 
   case 833:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6001 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), ACCEPT);
@@ -12390,8 +11947,7 @@ yyreduce:
     break;
 
   case 834:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6018 "parser.y"
     {
 	begin_statement ("ADD", TERM_ADD);
@@ -12399,8 +11955,7 @@ yyreduce:
     break;
 
   case 836:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6027 "parser.y"
     {
 	cb_emit_arithmetic ((yyvsp[(3) - (4)]), '+', cb_build_binary_list ((yyvsp[(1) - (4)]), '+'));
@@ -12408,8 +11963,7 @@ yyreduce:
     break;
 
   case 837:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6031 "parser.y"
     {
 	cb_emit_arithmetic ((yyvsp[(4) - (5)]), 0, cb_build_binary_list ((yyvsp[(1) - (5)]), '+'));
@@ -12417,8 +11971,7 @@ yyreduce:
     break;
 
   case 838:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6035 "parser.y"
     {
 	cb_emit_corresponding (cb_build_add, (yyvsp[(4) - (6)]), (yyvsp[(2) - (6)]), (yyvsp[(5) - (6)]));
@@ -12426,8 +11979,7 @@ yyreduce:
     break;
 
   case 840:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6042 "parser.y"
     {
 	cb_list_add ((yyvsp[(0) - (2)]), (yyvsp[(2) - (2)]));
@@ -12435,8 +11987,7 @@ yyreduce:
     break;
 
   case 841:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6049 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), ADD);
@@ -12444,8 +11995,7 @@ yyreduce:
     break;
 
   case 842:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6053 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), ADD);
@@ -12453,8 +12003,7 @@ yyreduce:
     break;
 
   case 843:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6063 "parser.y"
     {
 	begin_statement ("ALLOCATE", 0);
@@ -12463,8 +12012,7 @@ yyreduce:
     break;
 
   case 845:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6072 "parser.y"
     {
 	cb_emit_allocate ((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]), NULL, (yyvsp[(2) - (3)]));
@@ -12472,8 +12020,7 @@ yyreduce:
     break;
 
   case 846:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6076 "parser.y"
     {
 	if ((yyvsp[(4) - (4)]) == NULL) {
@@ -12486,22 +12033,19 @@ yyreduce:
     break;
 
   case 847:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6087 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 848:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6088 "parser.y"
     { (yyval) = (yyvsp[(2) - (2)]); }
     break;
 
   case 849:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6096 "parser.y"
     {
 	begin_statement ("ALTER", 0);
@@ -12510,8 +12054,7 @@ yyreduce:
     break;
 
   case 853:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6110 "parser.y"
     {
 	cb_emit_alter ((yyvsp[(1) - (4)]), (yyvsp[(4) - (4)]));
@@ -12519,8 +12062,7 @@ yyreduce:
     break;
 
   case 856:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6122 "parser.y"
     {
 	begin_statement ("CALL", TERM_CALL);
@@ -12529,8 +12071,7 @@ yyreduce:
     break;
 
   case 858:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6137 "parser.y"
     {
 	if (CB_LITERAL_P ((yyvsp[(2) - (6)])) &&
@@ -12545,8 +12086,7 @@ yyreduce:
     break;
 
   case 859:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6151 "parser.y"
     {
 	(yyval) = NULL;
@@ -12555,8 +12095,7 @@ yyreduce:
     break;
 
   case 860:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6156 "parser.y"
     {
 	(yyval) = cb_int (CB_CONV_STATIC_LINK);
@@ -12565,8 +12104,7 @@ yyreduce:
     break;
 
   case 861:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6161 "parser.y"
     {
 	(yyval) = cb_int (CB_CONV_STDCALL);
@@ -12575,8 +12113,7 @@ yyreduce:
     break;
 
   case 862:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6166 "parser.y"
     {
 	cb_tree		x;
@@ -12597,8 +12134,7 @@ yyreduce:
     break;
 
   case 863:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6186 "parser.y"
     {
 	(yyval) = NULL;
@@ -12606,8 +12142,7 @@ yyreduce:
     break;
 
   case 864:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6190 "parser.y"
     {
 	call_mode = CB_CALL_BY_REFERENCE;
@@ -12616,8 +12151,7 @@ yyreduce:
     break;
 
   case 865:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6195 "parser.y"
     {
 	if (cb_list_length ((yyvsp[(3) - (3)])) > COB_MAX_FIELD_PARAMS) {
@@ -12630,22 +12164,19 @@ yyreduce:
     break;
 
   case 866:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6206 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 867:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6208 "parser.y"
     { (yyval) = cb_list_append ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 868:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6213 "parser.y"
     {
 	if (call_mode != CB_CALL_BY_REFERENCE) {
@@ -12657,8 +12188,7 @@ yyreduce:
     break;
 
   case 869:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6221 "parser.y"
     {
 	int	save_mode;
@@ -12684,8 +12214,7 @@ yyreduce:
     break;
 
   case 871:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6247 "parser.y"
     {
 	call_mode = CB_CALL_BY_REFERENCE;
@@ -12693,8 +12222,7 @@ yyreduce:
     break;
 
   case 872:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6251 "parser.y"
     {
 	if (current_program->flag_chained) {
@@ -12707,8 +12235,7 @@ yyreduce:
     break;
 
   case 873:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6260 "parser.y"
     {
 	if (current_program->flag_chained) {
@@ -12721,8 +12248,7 @@ yyreduce:
     break;
 
   case 874:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6272 "parser.y"
     {
 	(yyval) = NULL;
@@ -12730,8 +12256,7 @@ yyreduce:
     break;
 
   case 875:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6276 "parser.y"
     {
 	(yyval) = (yyvsp[(3) - (3)]);
@@ -12739,8 +12264,7 @@ yyreduce:
     break;
 
   case 876:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6280 "parser.y"
     {
 	(yyval) = cb_null;
@@ -12748,8 +12272,7 @@ yyreduce:
     break;
 
   case 877:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6284 "parser.y"
     {
 	struct cb_field	*f;
@@ -12773,8 +12296,7 @@ yyreduce:
     break;
 
   case 882:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6317 "parser.y"
     {
 	(yyval) = NULL;
@@ -12782,8 +12304,7 @@ yyreduce:
     break;
 
   case 883:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6322 "parser.y"
     {
 	(yyval) = (yyvsp[(2) - (2)]);
@@ -12791,8 +12312,7 @@ yyreduce:
     break;
 
   case 884:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6329 "parser.y"
     {
 	(yyval) = NULL;
@@ -12800,8 +12320,7 @@ yyreduce:
     break;
 
   case 885:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6334 "parser.y"
     {
 	(yyval) = (yyvsp[(2) - (2)]);
@@ -12809,8 +12328,7 @@ yyreduce:
     break;
 
   case 886:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6341 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), CALL);
@@ -12818,8 +12336,7 @@ yyreduce:
     break;
 
   case 887:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6345 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), CALL);
@@ -12827,8 +12344,7 @@ yyreduce:
     break;
 
   case 888:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6355 "parser.y"
     {
 	begin_statement ("CANCEL", 0);
@@ -12836,8 +12352,7 @@ yyreduce:
     break;
 
   case 890:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6363 "parser.y"
     {
 	cb_emit_cancel ((yyvsp[(1) - (1)]));
@@ -12845,8 +12360,7 @@ yyreduce:
     break;
 
   case 891:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6367 "parser.y"
     {
 	cb_emit_cancel ((yyvsp[(2) - (2)]));
@@ -12854,8 +12368,7 @@ yyreduce:
     break;
 
   case 892:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6377 "parser.y"
     {
 	begin_statement ("CLOSE", 0);
@@ -12863,8 +12376,7 @@ yyreduce:
     break;
 
   case 894:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6385 "parser.y"
     {
 	begin_implicit_statement ();
@@ -12873,8 +12385,7 @@ yyreduce:
     break;
 
   case 895:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6390 "parser.y"
     {
 	begin_implicit_statement ();
@@ -12883,43 +12394,37 @@ yyreduce:
     break;
 
   case 896:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6397 "parser.y"
     { (yyval) = cb_int (COB_CLOSE_NORMAL); }
     break;
 
   case 897:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6398 "parser.y"
     { (yyval) = cb_int (COB_CLOSE_UNIT); }
     break;
 
   case 898:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6399 "parser.y"
     { (yyval) = cb_int (COB_CLOSE_UNIT_REMOVAL); }
     break;
 
   case 899:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6400 "parser.y"
     { (yyval) = cb_int (COB_CLOSE_NO_REWIND); }
     break;
 
   case 900:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6401 "parser.y"
     { (yyval) = cb_int (COB_CLOSE_LOCK); }
     break;
 
   case 901:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6409 "parser.y"
     {
 	begin_statement ("COMPUTE", TERM_COMPUTE);
@@ -12927,8 +12432,7 @@ yyreduce:
     break;
 
   case 903:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6418 "parser.y"
     {
 	cb_emit_arithmetic ((yyvsp[(1) - (4)]), 0, (yyvsp[(3) - (4)]));
@@ -12936,8 +12440,7 @@ yyreduce:
     break;
 
   case 904:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6425 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), COMPUTE);
@@ -12945,8 +12448,7 @@ yyreduce:
     break;
 
   case 905:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6429 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), COMPUTE);
@@ -12954,8 +12456,7 @@ yyreduce:
     break;
 
   case 906:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6439 "parser.y"
     {
 	begin_statement ("COMMIT", 0);
@@ -12964,8 +12465,7 @@ yyreduce:
     break;
 
   case 907:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6450 "parser.y"
     {
 	size_t	save_unreached;
@@ -12980,8 +12480,7 @@ yyreduce:
     break;
 
   case 908:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6467 "parser.y"
     {
 	begin_statement ("DELETE", TERM_DELETE);
@@ -12989,8 +12488,7 @@ yyreduce:
     break;
 
   case 910:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6476 "parser.y"
     {
 	cb_emit_delete ((yyvsp[(1) - (3)]));
@@ -12998,8 +12496,7 @@ yyreduce:
     break;
 
   case 912:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6484 "parser.y"
     {
 	begin_implicit_statement ();
@@ -13008,8 +12505,7 @@ yyreduce:
     break;
 
   case 913:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6489 "parser.y"
     {
 	begin_implicit_statement ();
@@ -13018,8 +12514,7 @@ yyreduce:
     break;
 
   case 914:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6497 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), DELETE);
@@ -13027,8 +12522,7 @@ yyreduce:
     break;
 
   case 915:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6501 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), DELETE);
@@ -13036,8 +12530,7 @@ yyreduce:
     break;
 
   case 916:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6511 "parser.y"
     {
 	begin_statement ("DISPLAY", TERM_DISPLAY);
@@ -13046,8 +12539,7 @@ yyreduce:
     break;
 
   case 918:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6521 "parser.y"
     {
 	cb_emit_env_name ((yyvsp[(1) - (3)]));
@@ -13055,8 +12547,7 @@ yyreduce:
     break;
 
   case 919:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6525 "parser.y"
     {
 	cb_emit_env_value ((yyvsp[(1) - (3)]));
@@ -13064,8 +12555,7 @@ yyreduce:
     break;
 
   case 920:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6529 "parser.y"
     {
 	cb_emit_arg_number ((yyvsp[(1) - (3)]));
@@ -13073,8 +12563,7 @@ yyreduce:
     break;
 
   case 921:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6533 "parser.y"
     {
 	cb_emit_command_line ((yyvsp[(1) - (3)]));
@@ -13082,8 +12571,7 @@ yyreduce:
     break;
 
   case 922:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6537 "parser.y"
     {
 	cb_emit_display ((yyvsp[(1) - (4)]), (yyvsp[(2) - (4)]), (yyvsp[(3) - (4)]), NULL, NULL);
@@ -13091,8 +12579,7 @@ yyreduce:
     break;
 
   case 924:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6542 "parser.y"
     {
 	cobc_cs_check = 0;
@@ -13102,8 +12589,7 @@ yyreduce:
     break;
 
   case 926:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6552 "parser.y"
     {
 	begin_implicit_statement ();
@@ -13111,8 +12597,7 @@ yyreduce:
     break;
 
   case 928:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6560 "parser.y"
     {
 	cb_emit_display (CB_LIST_INIT ((yyvsp[(1) - (5)])), cb_null, cb_int1,
@@ -13121,8 +12606,7 @@ yyreduce:
     break;
 
   case 929:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6568 "parser.y"
     {
 	if (current_program->flag_console_is_crt) {
@@ -13134,8 +12618,7 @@ yyreduce:
     break;
 
   case 930:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6576 "parser.y"
     {
 	(yyval) = cb_build_display_mnemonic ((yyvsp[(2) - (2)]));
@@ -13143,8 +12626,7 @@ yyreduce:
     break;
 
   case 931:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6580 "parser.y"
     {
 	(yyval) = cb_build_display_name ((yyvsp[(2) - (2)]));
@@ -13152,8 +12634,7 @@ yyreduce:
     break;
 
   case 932:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6584 "parser.y"
     {
 	(yyval) = cb_int0;
@@ -13161,8 +12642,7 @@ yyreduce:
     break;
 
   case 933:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6588 "parser.y"
     {
 	if (current_program->flag_console_is_crt) {
@@ -13174,8 +12654,7 @@ yyreduce:
     break;
 
   case 939:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6610 "parser.y"
     {
 	cobc_cs_check = 0;
@@ -13183,22 +12662,19 @@ yyreduce:
     break;
 
   case 940:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6616 "parser.y"
     { (yyval) = cb_int1; }
     break;
 
   case 941:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6617 "parser.y"
     { (yyval) = cb_int0; }
     break;
 
   case 944:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6628 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_BELL);
@@ -13206,8 +12682,7 @@ yyreduce:
     break;
 
   case 945:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6632 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_BLANK_LINE);
@@ -13215,8 +12690,7 @@ yyreduce:
     break;
 
   case 946:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6636 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_BLANK_SCREEN);
@@ -13224,8 +12698,7 @@ yyreduce:
     break;
 
   case 947:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6640 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_BLINK);
@@ -13233,8 +12706,7 @@ yyreduce:
     break;
 
   case 948:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6644 "parser.y"
     {
 	cb_warning (_("Ignoring CONVERSION"));
@@ -13242,8 +12714,7 @@ yyreduce:
     break;
 
   case 949:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6648 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_ERASE_EOL);
@@ -13251,8 +12722,7 @@ yyreduce:
     break;
 
   case 950:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6652 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_ERASE_EOS);
@@ -13260,8 +12730,7 @@ yyreduce:
     break;
 
   case 951:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6656 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_HIGHLIGHT);
@@ -13269,8 +12738,7 @@ yyreduce:
     break;
 
   case 952:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6660 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_LOWLIGHT);
@@ -13278,8 +12746,7 @@ yyreduce:
     break;
 
   case 953:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6664 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_OVERLINE);
@@ -13287,8 +12754,7 @@ yyreduce:
     break;
 
   case 954:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6668 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_REVERSE);
@@ -13296,8 +12762,7 @@ yyreduce:
     break;
 
   case 955:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6672 "parser.y"
     {
 	check_attribs (NULL, NULL, NULL, NULL, NULL, COB_SCREEN_UNDERLINE);
@@ -13305,8 +12770,7 @@ yyreduce:
     break;
 
   case 956:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6676 "parser.y"
     {
 	check_attribs ((yyvsp[(3) - (3)]), NULL, NULL, NULL, NULL, 0);
@@ -13314,8 +12778,7 @@ yyreduce:
     break;
 
   case 957:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6680 "parser.y"
     {
 	check_attribs (NULL, (yyvsp[(3) - (3)]), NULL, NULL, NULL, 0);
@@ -13323,8 +12786,7 @@ yyreduce:
     break;
 
   case 958:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6684 "parser.y"
     {
 	check_attribs (NULL, NULL, (yyvsp[(3) - (3)]), NULL, NULL, 0);
@@ -13332,8 +12794,7 @@ yyreduce:
     break;
 
   case 959:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6688 "parser.y"
     {
 	check_attribs (NULL, NULL, (yyvsp[(3) - (3)]), NULL, NULL, COB_SCREEN_SCROLL_DOWN);
@@ -13341,8 +12802,7 @@ yyreduce:
     break;
 
   case 960:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6695 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), DISPLAY);
@@ -13350,8 +12810,7 @@ yyreduce:
     break;
 
   case 961:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6699 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), DISPLAY);
@@ -13359,8 +12818,7 @@ yyreduce:
     break;
 
   case 962:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6709 "parser.y"
     {
 	begin_statement ("DIVIDE", TERM_DIVIDE);
@@ -13368,8 +12826,7 @@ yyreduce:
     break;
 
   case 964:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6718 "parser.y"
     {
 	cb_emit_arithmetic ((yyvsp[(3) - (4)]), '/', (yyvsp[(1) - (4)]));
@@ -13377,8 +12834,7 @@ yyreduce:
     break;
 
   case 965:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6722 "parser.y"
     {
 	cb_emit_arithmetic ((yyvsp[(5) - (6)]), 0, cb_build_binary_op ((yyvsp[(3) - (6)]), '/', (yyvsp[(1) - (6)])));
@@ -13386,8 +12842,7 @@ yyreduce:
     break;
 
   case 966:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6726 "parser.y"
     {
 	cb_emit_arithmetic ((yyvsp[(5) - (6)]), 0, cb_build_binary_op ((yyvsp[(1) - (6)]), '/', (yyvsp[(3) - (6)])));
@@ -13395,8 +12850,7 @@ yyreduce:
     break;
 
   case 967:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6730 "parser.y"
     {
 	cb_emit_divide ((yyvsp[(3) - (8)]), (yyvsp[(1) - (8)]), (yyvsp[(5) - (8)]), (yyvsp[(7) - (8)]));
@@ -13404,8 +12858,7 @@ yyreduce:
     break;
 
   case 968:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6734 "parser.y"
     {
 	cb_emit_divide ((yyvsp[(1) - (8)]), (yyvsp[(3) - (8)]), (yyvsp[(5) - (8)]), (yyvsp[(7) - (8)]));
@@ -13413,8 +12866,7 @@ yyreduce:
     break;
 
   case 969:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6741 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), DIVIDE);
@@ -13422,8 +12874,7 @@ yyreduce:
     break;
 
   case 970:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6745 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), DIVIDE);
@@ -13431,8 +12882,7 @@ yyreduce:
     break;
 
   case 971:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6755 "parser.y"
     {
 	check_unreached = 0;
@@ -13441,8 +12891,7 @@ yyreduce:
     break;
 
   case 973:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6764 "parser.y"
     {
 	if (current_program->nested_level) {
@@ -13458,8 +12907,7 @@ yyreduce:
     break;
 
   case 974:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6782 "parser.y"
     {
 	begin_statement ("EVALUATE", TERM_EVALUATE);
@@ -13482,8 +12930,7 @@ yyreduce:
     break;
 
   case 976:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6806 "parser.y"
     {
 	cb_emit_evaluate ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]));
@@ -13492,22 +12939,19 @@ yyreduce:
     break;
 
   case 977:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6813 "parser.y"
     { (yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)])); }
     break;
 
   case 978:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6815 "parser.y"
     { (yyval) = cb_list_add ((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)])); }
     break;
 
   case 979:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6820 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -13522,8 +12966,7 @@ yyreduce:
     break;
 
   case 980:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6831 "parser.y"
     {
 	(yyval) = cb_true;
@@ -13538,8 +12981,7 @@ yyreduce:
     break;
 
   case 981:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6842 "parser.y"
     {
 	(yyval) = cb_false;
@@ -13554,8 +12996,7 @@ yyreduce:
     break;
 
   case 982:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6856 "parser.y"
     {
 	(yyval) = cb_list_add ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]));
@@ -13563,8 +13004,7 @@ yyreduce:
     break;
 
   case 983:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6860 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -13572,22 +13012,19 @@ yyreduce:
     break;
 
   case 984:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6866 "parser.y"
     { (yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)])); }
     break;
 
   case 985:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6868 "parser.y"
     { (yyval) = cb_list_add ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 986:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6874 "parser.y"
     {
 	(yyval) = CB_BUILD_CHAIN ((yyvsp[(2) - (2)]), (yyvsp[(1) - (2)]));
@@ -13596,8 +13033,7 @@ yyreduce:
     break;
 
   case 987:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6883 "parser.y"
     {
 	(yyval) = CB_BUILD_CHAIN ((yyvsp[(3) - (3)]), NULL);
@@ -13606,8 +13042,7 @@ yyreduce:
     break;
 
   case 988:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6891 "parser.y"
     {
 	(yyval) = CB_LIST_INIT ((yyvsp[(2) - (2)]));
@@ -13616,8 +13051,7 @@ yyreduce:
     break;
 
   case 989:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6897 "parser.y"
     {
 	(yyval) = cb_list_add ((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]));
@@ -13626,22 +13060,19 @@ yyreduce:
     break;
 
   case 990:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6904 "parser.y"
     { (yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)])); }
     break;
 
   case 991:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6906 "parser.y"
     { (yyval) = cb_list_add ((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)])); }
     break;
 
   case 992:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6911 "parser.y"
     {
 	cb_tree	not0;
@@ -13707,43 +13138,37 @@ yyreduce:
     break;
 
   case 993:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6972 "parser.y"
     { (yyval) = cb_any; eval_inc2++; }
     break;
 
   case 994:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6973 "parser.y"
     { (yyval) = cb_true; eval_inc2++; }
     break;
 
   case 995:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6974 "parser.y"
     { (yyval) = cb_false; eval_inc2++; }
     break;
 
   case 996:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6978 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 997:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6979 "parser.y"
     { (yyval) = (yyvsp[(2) - (2)]); }
     break;
 
   case 998:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6984 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), EVALUATE);
@@ -13751,8 +13176,7 @@ yyreduce:
     break;
 
   case 999:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6988 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), EVALUATE);
@@ -13760,8 +13184,7 @@ yyreduce:
     break;
 
   case 1000:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 6998 "parser.y"
     {
 	begin_statement ("EXIT", 0);
@@ -13770,8 +13193,7 @@ yyreduce:
     break;
 
   case 1001:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7003 "parser.y"
     {
 	cobc_cs_check = 0;
@@ -13779,8 +13201,7 @@ yyreduce:
     break;
 
   case 1003:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7011 "parser.y"
     {
 	if (in_declaratives && use_global_ind) {
@@ -13805,8 +13226,7 @@ yyreduce:
     break;
 
   case 1004:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7032 "parser.y"
     {
 	if (in_declaratives && use_global_ind) {
@@ -13824,8 +13244,7 @@ yyreduce:
     break;
 
   case 1005:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7046 "parser.y"
     {
 	struct cb_perform	*p;
@@ -13851,8 +13270,7 @@ yyreduce:
     break;
 
   case 1006:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7068 "parser.y"
     {
 	struct cb_perform	*p;
@@ -13878,8 +13296,7 @@ yyreduce:
     break;
 
   case 1007:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7090 "parser.y"
     {
 	cb_tree	plabel;
@@ -13903,8 +13320,7 @@ yyreduce:
     break;
 
   case 1008:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7110 "parser.y"
     {
 	cb_tree	plabel;
@@ -13928,22 +13344,19 @@ yyreduce:
     break;
 
   case 1009:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7132 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1010:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7133 "parser.y"
     { (yyval) = (yyvsp[(2) - (2)]); }
     break;
 
   case 1011:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7141 "parser.y"
     {
 	begin_statement ("FREE", 0);
@@ -13952,8 +13365,7 @@ yyreduce:
     break;
 
   case 1013:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7150 "parser.y"
     {
 	cb_emit_free ((yyvsp[(1) - (1)]));
@@ -13961,8 +13373,7 @@ yyreduce:
     break;
 
   case 1014:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7160 "parser.y"
     {
 	begin_statement ("GENERATE", 0);
@@ -13971,8 +13382,7 @@ yyreduce:
     break;
 
   case 1017:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7176 "parser.y"
     {
 	if (!current_paragraph->flag_statement) {
@@ -13985,8 +13395,7 @@ yyreduce:
     break;
 
   case 1019:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7189 "parser.y"
     {
 	cb_emit_goto ((yyvsp[(2) - (3)]), (yyvsp[(3) - (3)]));
@@ -13995,8 +13404,7 @@ yyreduce:
     break;
 
   case 1020:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7197 "parser.y"
     {
 	check_unreached = 1;
@@ -14005,8 +13413,7 @@ yyreduce:
     break;
 
   case 1021:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7202 "parser.y"
     {
 	check_unreached = 0;
@@ -14015,8 +13422,7 @@ yyreduce:
     break;
 
   case 1022:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7213 "parser.y"
     {
 	begin_statement ("GOBACK", 0);
@@ -14029,8 +13435,7 @@ yyreduce:
     break;
 
   case 1023:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7228 "parser.y"
     {
 	begin_statement ("IF", TERM_IF);
@@ -14038,8 +13443,7 @@ yyreduce:
     break;
 
   case 1025:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7237 "parser.y"
     {
 	cb_emit_if ((yyvsp[(-1) - (3)]), (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]));
@@ -14047,8 +13451,7 @@ yyreduce:
     break;
 
   case 1026:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7241 "parser.y"
     {
 	cb_emit_if ((yyvsp[(-1) - (2)]), NULL, (yyvsp[(2) - (2)]));
@@ -14056,8 +13459,7 @@ yyreduce:
     break;
 
   case 1027:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7245 "parser.y"
     {
 	cb_emit_if ((yyvsp[(-1) - (1)]), (yyvsp[(1) - (1)]), NULL);
@@ -14065,8 +13467,7 @@ yyreduce:
     break;
 
   case 1028:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7252 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-4) - (0)]), IF);
@@ -14074,8 +13475,7 @@ yyreduce:
     break;
 
   case 1029:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7256 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-4) - (1)]), IF);
@@ -14083,8 +13483,7 @@ yyreduce:
     break;
 
   case 1030:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7266 "parser.y"
     {
 	begin_statement ("INITIALIZE", 0);
@@ -14092,8 +13491,7 @@ yyreduce:
     break;
 
   case 1032:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7275 "parser.y"
     {
 	cb_emit_initialize ((yyvsp[(1) - (5)]), (yyvsp[(2) - (5)]), (yyvsp[(3) - (5)]), (yyvsp[(4) - (5)]), (yyvsp[(5) - (5)]));
@@ -14101,43 +13499,37 @@ yyreduce:
     break;
 
   case 1033:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7281 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1034:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7282 "parser.y"
     { (yyval) = cb_true; }
     break;
 
   case 1035:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7286 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1036:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7287 "parser.y"
     { (yyval) = cb_true; }
     break;
 
   case 1037:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7288 "parser.y"
     { (yyval) = (yyvsp[(1) - (3)]); }
     break;
 
   case 1038:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7293 "parser.y"
     {
 	(yyval) = NULL;
@@ -14145,8 +13537,7 @@ yyreduce:
     break;
 
   case 1039:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7297 "parser.y"
     {
 	(yyval) = (yyvsp[(2) - (2)]);
@@ -14154,8 +13545,7 @@ yyreduce:
     break;
 
   case 1040:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7304 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -14163,8 +13553,7 @@ yyreduce:
     break;
 
   case 1041:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7309 "parser.y"
     {
 	(yyval) = cb_list_append ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]));
@@ -14172,8 +13561,7 @@ yyreduce:
     break;
 
   case 1042:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7316 "parser.y"
     {
 	(yyval) = CB_BUILD_PAIR ((yyvsp[(1) - (4)]), (yyvsp[(4) - (4)]));
@@ -14181,57 +13569,49 @@ yyreduce:
     break;
 
   case 1043:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7322 "parser.y"
     { (yyval) = cb_int (CB_CATEGORY_ALPHABETIC); }
     break;
 
   case 1044:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7323 "parser.y"
     { (yyval) = cb_int (CB_CATEGORY_ALPHANUMERIC); }
     break;
 
   case 1045:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7324 "parser.y"
     { (yyval) = cb_int (CB_CATEGORY_NUMERIC); }
     break;
 
   case 1046:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7325 "parser.y"
     { (yyval) = cb_int (CB_CATEGORY_ALPHANUMERIC_EDITED); }
     break;
 
   case 1047:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7326 "parser.y"
     { (yyval) = cb_int (CB_CATEGORY_NUMERIC_EDITED); }
     break;
 
   case 1048:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7327 "parser.y"
     { (yyval) = cb_int (CB_CATEGORY_NATIONAL); }
     break;
 
   case 1049:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7328 "parser.y"
     { (yyval) = cb_int (CB_CATEGORY_NATIONAL_EDITED); }
     break;
 
   case 1050:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7333 "parser.y"
     {
 	(yyval) = NULL;
@@ -14239,8 +13619,7 @@ yyreduce:
     break;
 
   case 1051:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7337 "parser.y"
     {
 	(yyval) = cb_true;
@@ -14248,8 +13627,7 @@ yyreduce:
     break;
 
   case 1052:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7346 "parser.y"
     {
 	begin_statement ("INITIATE", 0);
@@ -14258,8 +13636,7 @@ yyreduce:
     break;
 
   case 1054:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7355 "parser.y"
     {
 	begin_implicit_statement ();
@@ -14269,8 +13646,7 @@ yyreduce:
     break;
 
   case 1055:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7361 "parser.y"
     {
 	begin_implicit_statement ();
@@ -14280,8 +13656,7 @@ yyreduce:
     break;
 
   case 1056:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7372 "parser.y"
     {
 	begin_statement ("INSPECT", 0);
@@ -14290,8 +13665,7 @@ yyreduce:
     break;
 
   case 1059:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7385 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -14299,8 +13673,7 @@ yyreduce:
     break;
 
   case 1060:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7389 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -14308,8 +13681,7 @@ yyreduce:
     break;
 
   case 1061:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7393 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -14317,8 +13689,7 @@ yyreduce:
     break;
 
   case 1066:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7409 "parser.y"
     {
 	cb_init_tallying ();
@@ -14326,8 +13697,7 @@ yyreduce:
     break;
 
   case 1067:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7413 "parser.y"
     {
 	cb_emit_inspect ((yyvsp[(0) - (3)]), (yyvsp[(3) - (3)]), cb_int0, 0);
@@ -14336,8 +13706,7 @@ yyreduce:
     break;
 
   case 1068:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7423 "parser.y"
     {
 	cb_emit_inspect ((yyvsp[(0) - (2)]), (yyvsp[(2) - (2)]), cb_int1, 1);
@@ -14346,8 +13715,7 @@ yyreduce:
     break;
 
   case 1069:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7433 "parser.y"
     {
 	cb_tree		x;
@@ -14357,78 +13725,67 @@ yyreduce:
     break;
 
   case 1070:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7441 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 1071:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7442 "parser.y"
     { (yyval) = cb_list_append ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 1072:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7446 "parser.y"
     { (yyval) = cb_build_tallying_data ((yyvsp[(1) - (2)])); }
     break;
 
   case 1073:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7447 "parser.y"
     { (yyval) = cb_build_tallying_characters ((yyvsp[(2) - (2)])); }
     break;
 
   case 1074:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7448 "parser.y"
     { (yyval) = cb_build_tallying_all (); }
     break;
 
   case 1075:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7449 "parser.y"
     { (yyval) = cb_build_tallying_leading (); }
     break;
 
   case 1076:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7450 "parser.y"
     { (yyval) = cb_build_tallying_trailing (); }
     break;
 
   case 1077:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7451 "parser.y"
     { (yyval) = cb_build_tallying_value ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 1078:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7455 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 1079:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7456 "parser.y"
     { (yyval) = cb_list_append ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 1080:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7461 "parser.y"
     {
 	(yyval) = cb_build_replacing_characters ((yyvsp[(3) - (4)]), (yyvsp[(4) - (4)]));
@@ -14437,8 +13794,7 @@ yyreduce:
     break;
 
   case 1081:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7466 "parser.y"
     {
 	(yyval) = (yyvsp[(2) - (2)]);
@@ -14446,43 +13802,37 @@ yyreduce:
     break;
 
   case 1082:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7472 "parser.y"
     { /* Nothing */ }
     break;
 
   case 1083:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7473 "parser.y"
     { inspect_keyword = 1; }
     break;
 
   case 1084:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7474 "parser.y"
     { inspect_keyword = 2; }
     break;
 
   case 1085:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7475 "parser.y"
     { inspect_keyword = 3; }
     break;
 
   case 1086:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7476 "parser.y"
     { inspect_keyword = 4; }
     break;
 
   case 1087:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7481 "parser.y"
     {
 	switch (inspect_keyword) {
@@ -14508,8 +13858,7 @@ yyreduce:
     break;
 
   case 1088:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7508 "parser.y"
     {
 	(yyval) = cb_build_inspect_region_start ();
@@ -14517,8 +13866,7 @@ yyreduce:
     break;
 
   case 1089:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7512 "parser.y"
     {
 	(yyval) = (yyvsp[(2) - (2)]);
@@ -14526,8 +13874,7 @@ yyreduce:
     break;
 
   case 1090:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7519 "parser.y"
     {
 	(yyval) = cb_list_add ((yyvsp[(0) - (3)]), CB_BUILD_FUNCALL_1 ("cob_inspect_before", (yyvsp[(3) - (3)])));
@@ -14535,8 +13882,7 @@ yyreduce:
     break;
 
   case 1091:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7523 "parser.y"
     {
 	(yyval) = cb_list_add ((yyvsp[(0) - (3)]), CB_BUILD_FUNCALL_1 ("cob_inspect_after", (yyvsp[(3) - (3)])));
@@ -14544,8 +13890,7 @@ yyreduce:
     break;
 
   case 1092:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7532 "parser.y"
     {
 	begin_statement ("MERGE", 0);
@@ -14554,8 +13899,7 @@ yyreduce:
     break;
 
   case 1094:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7544 "parser.y"
     {
 	begin_statement ("MOVE", 0);
@@ -14563,8 +13907,7 @@ yyreduce:
     break;
 
   case 1096:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7552 "parser.y"
     {
 	cb_emit_move ((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]));
@@ -14572,8 +13915,7 @@ yyreduce:
     break;
 
   case 1097:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7556 "parser.y"
     {
 	cb_emit_move_corresponding ((yyvsp[(2) - (4)]), (yyvsp[(4) - (4)]));
@@ -14581,8 +13923,7 @@ yyreduce:
     break;
 
   case 1098:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7566 "parser.y"
     {
 	begin_statement ("MULTIPLY", TERM_MULTIPLY);
@@ -14590,8 +13931,7 @@ yyreduce:
     break;
 
   case 1100:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7575 "parser.y"
     {
 	cb_emit_arithmetic ((yyvsp[(3) - (4)]), '*', (yyvsp[(1) - (4)]));
@@ -14599,8 +13939,7 @@ yyreduce:
     break;
 
   case 1101:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7579 "parser.y"
     {
 	cb_emit_arithmetic ((yyvsp[(5) - (6)]), 0, cb_build_binary_op ((yyvsp[(1) - (6)]), '*', (yyvsp[(3) - (6)])));
@@ -14608,8 +13947,7 @@ yyreduce:
     break;
 
   case 1102:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7586 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), MULTIPLY);
@@ -14617,8 +13955,7 @@ yyreduce:
     break;
 
   case 1103:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7590 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), MULTIPLY);
@@ -14626,8 +13963,7 @@ yyreduce:
     break;
 
   case 1104:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7600 "parser.y"
     {
 	begin_statement ("OPEN", 0);
@@ -14635,8 +13971,7 @@ yyreduce:
     break;
 
   case 1106:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7608 "parser.y"
     {
 	cb_tree l;
@@ -14661,8 +13996,7 @@ yyreduce:
     break;
 
   case 1107:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7629 "parser.y"
     {
 	cb_tree l;
@@ -14687,71 +14021,61 @@ yyreduce:
     break;
 
   case 1108:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7652 "parser.y"
     { (yyval) = cb_int (COB_OPEN_INPUT); }
     break;
 
   case 1109:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7653 "parser.y"
     { (yyval) = cb_int (COB_OPEN_OUTPUT); }
     break;
 
   case 1110:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7654 "parser.y"
     { (yyval) = cb_int (COB_OPEN_I_O); }
     break;
 
   case 1111:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7655 "parser.y"
     { (yyval) = cb_int (COB_OPEN_EXTEND); }
     break;
 
   case 1112:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7659 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1113:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7660 "parser.y"
     { (yyval) = (yyvsp[(3) - (3)]); }
     break;
 
   case 1114:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7664 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1115:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7665 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1116:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7666 "parser.y"
     { (yyval) = cb_int (COB_LOCK_OPEN_EXCLUSIVE); }
     break;
 
   case 1117:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7668 "parser.y"
     {
 	(void)cb_verify (CB_OBSOLETE, "REVERSED");
@@ -14760,8 +14084,7 @@ yyreduce:
     break;
 
   case 1118:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7679 "parser.y"
     {
 	begin_statement ("PERFORM", TERM_PERFORM);
@@ -14772,8 +14095,7 @@ yyreduce:
     break;
 
   case 1120:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7690 "parser.y"
     {
 	cb_emit_perform ((yyvsp[(2) - (2)]), (yyvsp[(1) - (2)]));
@@ -14782,8 +14104,7 @@ yyreduce:
     break;
 
   case 1121:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7695 "parser.y"
     {
 	CB_ADD_TO_CHAIN ((yyvsp[(1) - (1)]), perform_stack);
@@ -14793,8 +14114,7 @@ yyreduce:
     break;
 
   case 1122:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7701 "parser.y"
     {
 	perform_stack = CB_CHAIN (perform_stack);
@@ -14803,8 +14123,7 @@ yyreduce:
     break;
 
   case 1123:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7706 "parser.y"
     {
 	cb_emit_perform ((yyvsp[(1) - (2)]), NULL);
@@ -14813,8 +14132,7 @@ yyreduce:
     break;
 
   case 1124:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7714 "parser.y"
     {
 	if (cb_relaxed_syntax_check) {
@@ -14826,8 +14144,7 @@ yyreduce:
     break;
 
   case 1125:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7722 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-4) - (1)]), PERFORM);
@@ -14835,8 +14152,7 @@ yyreduce:
     break;
 
   case 1126:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7729 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), PERFORM);
@@ -14844,8 +14160,7 @@ yyreduce:
     break;
 
   case 1127:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7733 "parser.y"
     {
 	if (cb_relaxed_syntax_check) {
@@ -14859,8 +14174,7 @@ yyreduce:
     break;
 
   case 1128:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7746 "parser.y"
     {
 	/* Return from $1 */
@@ -14871,8 +14185,7 @@ yyreduce:
     break;
 
   case 1129:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7753 "parser.y"
     {
 	/* Return from $3 */
@@ -14884,8 +14197,7 @@ yyreduce:
     break;
 
   case 1130:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7764 "parser.y"
     {
 	(yyval) = cb_build_perform_once (NULL);
@@ -14893,8 +14205,7 @@ yyreduce:
     break;
 
   case 1131:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7768 "parser.y"
     {
 	(yyval) = cb_build_perform_times ((yyvsp[(1) - (2)]));
@@ -14903,8 +14214,7 @@ yyreduce:
     break;
 
   case 1132:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7773 "parser.y"
     {
 	(yyval) = cb_build_perform_forever (NULL);
@@ -14912,8 +14222,7 @@ yyreduce:
     break;
 
   case 1133:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7777 "parser.y"
     {
 	cb_tree varying;
@@ -14928,8 +14237,7 @@ yyreduce:
     break;
 
   case 1134:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7788 "parser.y"
     {
 	(yyval) = cb_build_perform_until ((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]));
@@ -14937,50 +14245,43 @@ yyreduce:
     break;
 
   case 1135:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7794 "parser.y"
     { (yyval) = CB_BEFORE; }
     break;
 
   case 1136:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7795 "parser.y"
     { (yyval) = (yyvsp[(3) - (3)]); }
     break;
 
   case 1137:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7799 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1138:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7800 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 1139:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7803 "parser.y"
     { (yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)])); }
     break;
 
   case 1140:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7805 "parser.y"
     { (yyval) = cb_list_add ((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)])); }
     break;
 
   case 1141:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7810 "parser.y"
     {
 	(yyval) = cb_build_perform_varying ((yyvsp[(1) - (7)]), (yyvsp[(3) - (7)]), (yyvsp[(5) - (7)]), (yyvsp[(7) - (7)]));
@@ -14988,8 +14289,7 @@ yyreduce:
     break;
 
   case 1142:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7820 "parser.y"
     {
 	begin_statement ("READ", TERM_READ);
@@ -14997,8 +14297,7 @@ yyreduce:
     break;
 
   case 1144:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7829 "parser.y"
     {
 	if (CB_VALID_TREE ((yyvsp[(1) - (7)]))) {
@@ -15026,22 +14325,19 @@ yyreduce:
     break;
 
   case 1145:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7855 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1146:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7856 "parser.y"
     { (yyval) = (yyvsp[(2) - (2)]); }
     break;
 
   case 1147:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7861 "parser.y"
     {
 	(yyval) = NULL;
@@ -15049,8 +14345,7 @@ yyreduce:
     break;
 
   case 1148:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7865 "parser.y"
     {
 	(yyval) = cb_int3;
@@ -15058,8 +14353,7 @@ yyreduce:
     break;
 
   case 1149:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7869 "parser.y"
     {
 	(yyval) = cb_int1;
@@ -15067,8 +14361,7 @@ yyreduce:
     break;
 
   case 1150:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7873 "parser.y"
     {
 	(yyval) = cb_int1;
@@ -15076,8 +14369,7 @@ yyreduce:
     break;
 
   case 1151:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7877 "parser.y"
     {
 	(yyval) = cb_int2;
@@ -15085,8 +14377,7 @@ yyreduce:
     break;
 
   case 1152:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7881 "parser.y"
     {
 	(yyval) = cb_int3;
@@ -15094,8 +14385,7 @@ yyreduce:
     break;
 
   case 1153:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7885 "parser.y"
     {
 	(yyval) = cb_int4;
@@ -15103,22 +14393,19 @@ yyreduce:
     break;
 
   case 1154:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7891 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1155:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7892 "parser.y"
     { (yyval) = (yyvsp[(3) - (3)]); }
     break;
 
   case 1158:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7902 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), READ);
@@ -15126,8 +14413,7 @@ yyreduce:
     break;
 
   case 1159:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7906 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), READ);
@@ -15135,8 +14421,7 @@ yyreduce:
     break;
 
   case 1160:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7916 "parser.y"
     {
 	begin_statement ("READY TRACE", 0);
@@ -15145,8 +14430,7 @@ yyreduce:
     break;
 
   case 1161:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7926 "parser.y"
     {
 	begin_statement ("RELEASE", 0);
@@ -15154,8 +14438,7 @@ yyreduce:
     break;
 
   case 1163:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7934 "parser.y"
     {
 	cb_emit_release ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]));
@@ -15163,8 +14446,7 @@ yyreduce:
     break;
 
   case 1164:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7944 "parser.y"
     {
 	begin_statement ("RESET TRACE", 0);
@@ -15173,8 +14455,7 @@ yyreduce:
     break;
 
   case 1165:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7954 "parser.y"
     {
 	begin_statement ("RETURN", TERM_RETURN);
@@ -15182,8 +14463,7 @@ yyreduce:
     break;
 
   case 1167:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7963 "parser.y"
     {
 	cb_emit_return ((yyvsp[(1) - (4)]), (yyvsp[(3) - (4)]));
@@ -15191,8 +14471,7 @@ yyreduce:
     break;
 
   case 1168:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7970 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), RETURN);
@@ -15200,8 +14479,7 @@ yyreduce:
     break;
 
   case 1169:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7974 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), RETURN);
@@ -15209,8 +14487,7 @@ yyreduce:
     break;
 
   case 1170:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7984 "parser.y"
     {
 	begin_statement ("REWRITE", TERM_REWRITE);
@@ -15221,8 +14498,7 @@ yyreduce:
     break;
 
   case 1172:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 7996 "parser.y"
     {
 	cb_emit_rewrite ((yyvsp[(1) - (4)]), (yyvsp[(2) - (4)]), (yyvsp[(3) - (4)]));
@@ -15231,8 +14507,7 @@ yyreduce:
     break;
 
   case 1173:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8004 "parser.y"
     {
 	(yyval) = NULL;
@@ -15240,8 +14515,7 @@ yyreduce:
     break;
 
   case 1174:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8008 "parser.y"
     {
 	(yyval) = cb_int1;
@@ -15249,8 +14523,7 @@ yyreduce:
     break;
 
   case 1175:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8012 "parser.y"
     {
 	(yyval) = cb_int2;
@@ -15258,8 +14531,7 @@ yyreduce:
     break;
 
   case 1176:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8019 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), REWRITE);
@@ -15267,8 +14539,7 @@ yyreduce:
     break;
 
   case 1177:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8023 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), REWRITE);
@@ -15276,8 +14547,7 @@ yyreduce:
     break;
 
   case 1178:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8033 "parser.y"
     {
 	begin_statement ("ROLLBACK", 0);
@@ -15286,8 +14556,7 @@ yyreduce:
     break;
 
   case 1179:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8044 "parser.y"
     {
 	begin_statement ("SEARCH", TERM_SEARCH);
@@ -15295,8 +14564,7 @@ yyreduce:
     break;
 
   case 1181:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8053 "parser.y"
     {
 	cb_emit_search ((yyvsp[(1) - (4)]), (yyvsp[(2) - (4)]), (yyvsp[(3) - (4)]), (yyvsp[(4) - (4)]));
@@ -15304,8 +14572,7 @@ yyreduce:
     break;
 
   case 1182:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8058 "parser.y"
     {
 	current_statement->name = (const char *)"SEARCH ALL";
@@ -15314,22 +14581,19 @@ yyreduce:
     break;
 
   case 1183:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8065 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1184:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8066 "parser.y"
     { (yyval) = (yyvsp[(2) - (2)]); }
     break;
 
   case 1185:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8071 "parser.y"
     {
 	(yyval) = NULL;
@@ -15337,8 +14601,7 @@ yyreduce:
     break;
 
   case 1186:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8076 "parser.y"
     {
 	(yyval) = (yyvsp[(2) - (2)]);
@@ -15346,8 +14609,7 @@ yyreduce:
     break;
 
   case 1187:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8083 "parser.y"
     {
 	(yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)]));
@@ -15355,8 +14617,7 @@ yyreduce:
     break;
 
   case 1188:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8087 "parser.y"
     {
 	(yyval) = cb_list_add ((yyvsp[(2) - (2)]), (yyvsp[(1) - (2)]));
@@ -15364,8 +14625,7 @@ yyreduce:
     break;
 
   case 1189:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8095 "parser.y"
     {
 	(yyval) = cb_build_if_check_break ((yyvsp[(2) - (3)]), (yyvsp[(3) - (3)]));
@@ -15373,8 +14633,7 @@ yyreduce:
     break;
 
   case 1190:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8102 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), SEARCH);
@@ -15382,8 +14641,7 @@ yyreduce:
     break;
 
   case 1191:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8106 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), SEARCH);
@@ -15391,8 +14649,7 @@ yyreduce:
     break;
 
   case 1192:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8116 "parser.y"
     {
 	begin_statement ("SET", 0);
@@ -15403,8 +14660,7 @@ yyreduce:
     break;
 
   case 1193:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8123 "parser.y"
     {
 	cobc_cs_check = 0;
@@ -15412,36 +14668,31 @@ yyreduce:
     break;
 
   case 1200:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8138 "parser.y"
     { (yyval) = cb_int1; }
     break;
 
   case 1201:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8139 "parser.y"
     { (yyval) = cb_int0; }
     break;
 
   case 1202:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8143 "parser.y"
     { (yyval) = cb_int0; }
     break;
 
   case 1203:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8144 "parser.y"
     { (yyval) = cb_int1; }
     break;
 
   case 1204:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8151 "parser.y"
     {
 	cb_emit_setenv ((yyvsp[(2) - (4)]), (yyvsp[(4) - (4)]));
@@ -15449,8 +14700,7 @@ yyreduce:
     break;
 
   case 1205:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8160 "parser.y"
     {
 	cb_emit_set_attribute ((yyvsp[(1) - (3)]), setattr_val_on, setattr_val_off);
@@ -15458,8 +14708,7 @@ yyreduce:
     break;
 
   case 1208:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8172 "parser.y"
     {
 	bit_set_attr ((yyvsp[(2) - (2)]), COB_SCREEN_BELL);
@@ -15467,8 +14716,7 @@ yyreduce:
     break;
 
   case 1209:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8176 "parser.y"
     {
 	bit_set_attr ((yyvsp[(2) - (2)]), COB_SCREEN_BLINK);
@@ -15476,8 +14724,7 @@ yyreduce:
     break;
 
   case 1210:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8180 "parser.y"
     {
 	bit_set_attr ((yyvsp[(2) - (2)]), COB_SCREEN_HIGHLIGHT);
@@ -15485,8 +14732,7 @@ yyreduce:
     break;
 
   case 1211:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8184 "parser.y"
     {
 	bit_set_attr ((yyvsp[(2) - (2)]), COB_SCREEN_LOWLIGHT);
@@ -15494,8 +14740,7 @@ yyreduce:
     break;
 
   case 1212:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8188 "parser.y"
     {
 	bit_set_attr ((yyvsp[(2) - (2)]), COB_SCREEN_REVERSE);
@@ -15503,8 +14748,7 @@ yyreduce:
     break;
 
   case 1213:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8192 "parser.y"
     {
 	bit_set_attr ((yyvsp[(2) - (2)]), COB_SCREEN_UNDERLINE);
@@ -15512,8 +14756,7 @@ yyreduce:
     break;
 
   case 1214:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8196 "parser.y"
     {
 	bit_set_attr ((yyvsp[(2) - (2)]), COB_SCREEN_LEFTLINE);
@@ -15521,8 +14764,7 @@ yyreduce:
     break;
 
   case 1215:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8200 "parser.y"
     {
 	bit_set_attr ((yyvsp[(2) - (2)]), COB_SCREEN_OVERLINE);
@@ -15530,8 +14772,7 @@ yyreduce:
     break;
 
   case 1216:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8209 "parser.y"
     {
 	cb_emit_set_to ((yyvsp[(1) - (4)]), cb_build_ppointer ((yyvsp[(4) - (4)])));
@@ -15539,8 +14780,7 @@ yyreduce:
     break;
 
   case 1217:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8213 "parser.y"
     {
 	cb_emit_set_to ((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]));
@@ -15548,8 +14788,7 @@ yyreduce:
     break;
 
   case 1218:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8222 "parser.y"
     {
 	cb_emit_set_up_down ((yyvsp[(1) - (4)]), (yyvsp[(2) - (4)]), (yyvsp[(4) - (4)]));
@@ -15557,8 +14796,7 @@ yyreduce:
     break;
 
   case 1221:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8236 "parser.y"
     {
 	cb_emit_set_on_off ((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]));
@@ -15566,8 +14804,7 @@ yyreduce:
     break;
 
   case 1224:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8250 "parser.y"
     {
 	cb_emit_set_true ((yyvsp[(1) - (3)]));
@@ -15575,8 +14812,7 @@ yyreduce:
     break;
 
   case 1225:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8254 "parser.y"
     {
 	cb_emit_set_false ((yyvsp[(1) - (3)]));
@@ -15584,8 +14820,7 @@ yyreduce:
     break;
 
   case 1226:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8264 "parser.y"
     {
 	begin_statement ("SORT", 0);
@@ -15593,8 +14828,7 @@ yyreduce:
     break;
 
   case 1228:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8272 "parser.y"
     {
 	cb_tree		x;
@@ -15619,8 +14853,7 @@ yyreduce:
     break;
 
   case 1229:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8293 "parser.y"
     {
 	if ((yyvsp[(5) - (7)]) && CB_VALID_TREE ((yyvsp[(1) - (7)]))) {
@@ -15630,8 +14863,7 @@ yyreduce:
     break;
 
   case 1230:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8302 "parser.y"
     {
 	(yyval) = NULL;
@@ -15639,8 +14871,7 @@ yyreduce:
     break;
 
   case 1231:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8307 "parser.y"
     {
 	cb_tree l;
@@ -15660,22 +14891,19 @@ yyreduce:
     break;
 
   case 1232:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8325 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1233:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8326 "parser.y"
     { (yyval) = cb_list_add ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 1235:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8331 "parser.y"
     {
 	/* The OC sort is a stable sort. ie. Dups are per default in order */
@@ -15684,22 +14912,19 @@ yyreduce:
     break;
 
   case 1236:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8338 "parser.y"
     { (yyval) = cb_null; }
     break;
 
   case 1237:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8339 "parser.y"
     { (yyval) = cb_ref ((yyvsp[(3) - (3)])); }
     break;
 
   case 1238:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8344 "parser.y"
     {
 	if ((yyvsp[(0) - (0)]) && CB_FILE_P (cb_ref ((yyvsp[(0) - (0)])))) {
@@ -15709,8 +14934,7 @@ yyreduce:
     break;
 
   case 1239:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8350 "parser.y"
     {
 	if ((yyvsp[(0) - (2)])) {
@@ -15724,8 +14948,7 @@ yyreduce:
     break;
 
   case 1240:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8360 "parser.y"
     {
 	if ((yyvsp[(0) - (4)])) {
@@ -15741,8 +14964,7 @@ yyreduce:
     break;
 
   case 1241:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8375 "parser.y"
     {
 	if ((yyvsp[(-1) - (0)]) && CB_FILE_P (cb_ref ((yyvsp[(-1) - (0)])))) {
@@ -15752,8 +14974,7 @@ yyreduce:
     break;
 
   case 1242:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8381 "parser.y"
     {
 	if ((yyvsp[(-1) - (2)])) {
@@ -15767,8 +14988,7 @@ yyreduce:
     break;
 
   case 1243:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8391 "parser.y"
     {
 	if ((yyvsp[(-1) - (4)])) {
@@ -15782,8 +15002,7 @@ yyreduce:
     break;
 
   case 1244:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8407 "parser.y"
     {
 	begin_statement ("START", TERM_START);
@@ -15792,8 +15011,7 @@ yyreduce:
     break;
 
   case 1246:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8417 "parser.y"
     {
 	if ((yyvsp[(3) - (4)]) && !(yyvsp[(2) - (4)])) {
@@ -15806,8 +15024,7 @@ yyreduce:
     break;
 
   case 1247:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8429 "parser.y"
     {
 	(yyval) = NULL;
@@ -15815,8 +15032,7 @@ yyreduce:
     break;
 
   case 1248:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8433 "parser.y"
     {
 	(yyval) = (yyvsp[(3) - (3)]);
@@ -15824,8 +15040,7 @@ yyreduce:
     break;
 
   case 1249:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8440 "parser.y"
     {
 	(yyval) = NULL;
@@ -15833,8 +15048,7 @@ yyreduce:
     break;
 
   case 1250:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8444 "parser.y"
     {
 	start_tree = (yyvsp[(3) - (4)]);
@@ -15843,8 +15057,7 @@ yyreduce:
     break;
 
   case 1251:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8449 "parser.y"
     {
 	start_tree = cb_int (COB_FI);
@@ -15853,8 +15066,7 @@ yyreduce:
     break;
 
   case 1252:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8454 "parser.y"
     {
 	start_tree = cb_int (COB_LA);
@@ -15863,50 +15075,43 @@ yyreduce:
     break;
 
   case 1253:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8461 "parser.y"
     { (yyval) = cb_int (COB_EQ); }
     break;
 
   case 1254:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8462 "parser.y"
     { (yyval) = cb_int ((yyvsp[(1) - (2)]) ? COB_LE : COB_GT); }
     break;
 
   case 1255:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8463 "parser.y"
     { (yyval) = cb_int ((yyvsp[(1) - (2)]) ? COB_GE : COB_LT); }
     break;
 
   case 1256:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8464 "parser.y"
     { (yyval) = cb_int ((yyvsp[(1) - (2)]) ? COB_LT : COB_GE); }
     break;
 
   case 1257:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8465 "parser.y"
     { (yyval) = cb_int ((yyvsp[(1) - (2)]) ? COB_GT : COB_LE); }
     break;
 
   case 1258:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8466 "parser.y"
     { (yyval) = cb_int (COB_NE); }
     break;
 
   case 1259:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8471 "parser.y"
     {
 	cb_error_x (CB_TREE (current_statement),
@@ -15915,8 +15120,7 @@ yyreduce:
     break;
 
   case 1262:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8484 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), START);
@@ -15924,8 +15128,7 @@ yyreduce:
     break;
 
   case 1263:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8488 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), START);
@@ -15933,8 +15136,7 @@ yyreduce:
     break;
 
   case 1264:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8498 "parser.y"
     {
 	begin_statement ("STOP RUN", 0);
@@ -15942,8 +15144,7 @@ yyreduce:
     break;
 
   case 1265:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8502 "parser.y"
     {
 	cb_emit_stop_run ((yyvsp[(4) - (4)]));
@@ -15953,22 +15154,20 @@ yyreduce:
     break;
 
   case 1266:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8508 "parser.y"
     {
 	begin_statement ("STOP", 0);
 	cb_verify (cb_stop_literal_statement, "STOP literal");
 	cb_emit_display (CB_LIST_INIT ((yyvsp[(2) - (2)])), cb_int0, cb_int1, NULL,
 			 NULL);
-	cb_emit_accept (NULL, NULL, NULL);
+	cb_emit_accept (cb_null, NULL, NULL);
 	cobc_cs_check = 0;
   }
     break;
 
   case 1267:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8520 "parser.y"
     {
 	(yyval) = current_program->cb_return_code;
@@ -15976,8 +15175,7 @@ yyreduce:
     break;
 
   case 1268:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8524 "parser.y"
     {
 	(yyval) = (yyvsp[(2) - (2)]);
@@ -15985,8 +15183,7 @@ yyreduce:
     break;
 
   case 1269:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8528 "parser.y"
     {
 	if ((yyvsp[(4) - (4)])) {
@@ -15998,8 +15195,7 @@ yyreduce:
     break;
 
   case 1270:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8536 "parser.y"
     {
 	if ((yyvsp[(4) - (4)])) {
@@ -16011,8 +15207,7 @@ yyreduce:
     break;
 
   case 1271:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8547 "parser.y"
     {
 	(yyval) = NULL;
@@ -16020,8 +15215,7 @@ yyreduce:
     break;
 
   case 1272:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8551 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -16029,36 +15223,31 @@ yyreduce:
     break;
 
   case 1273:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8557 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 1274:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8558 "parser.y"
     { (yyval) = cb_space; }
     break;
 
   case 1275:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8559 "parser.y"
     { (yyval) = cb_zero; }
     break;
 
   case 1276:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8560 "parser.y"
     { (yyval) = cb_quote; }
     break;
 
   case 1277:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8567 "parser.y"
     {
 	begin_statement ("STRING", TERM_STRING);
@@ -16066,8 +15255,7 @@ yyreduce:
     break;
 
   case 1279:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8576 "parser.y"
     {
 	cb_emit_string ((yyvsp[(1) - (5)]), (yyvsp[(3) - (5)]), (yyvsp[(4) - (5)]));
@@ -16075,57 +15263,49 @@ yyreduce:
     break;
 
   case 1280:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8582 "parser.y"
     { (yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)])); }
     break;
 
   case 1281:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8583 "parser.y"
     { (yyval) = cb_list_add ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 1282:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8587 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 1283:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8588 "parser.y"
     { (yyval) = CB_BUILD_PAIR (cb_int0, NULL); }
     break;
 
   case 1284:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8589 "parser.y"
     { (yyval) = CB_BUILD_PAIR ((yyvsp[(3) - (3)]), NULL); }
     break;
 
   case 1285:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8593 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1286:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8594 "parser.y"
     { (yyval) = (yyvsp[(4) - (4)]); }
     break;
 
   case 1287:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8599 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), STRING);
@@ -16133,8 +15313,7 @@ yyreduce:
     break;
 
   case 1288:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8603 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), STRING);
@@ -16142,8 +15321,7 @@ yyreduce:
     break;
 
   case 1289:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8613 "parser.y"
     {
 	begin_statement ("SUBTRACT", TERM_SUBTRACT);
@@ -16151,8 +15329,7 @@ yyreduce:
     break;
 
   case 1291:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8622 "parser.y"
     {
 	cb_emit_arithmetic ((yyvsp[(3) - (4)]), '-', cb_build_binary_list ((yyvsp[(1) - (4)]), '+'));
@@ -16160,8 +15337,7 @@ yyreduce:
     break;
 
   case 1292:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8626 "parser.y"
     {
 	cb_emit_arithmetic ((yyvsp[(5) - (6)]), 0, cb_build_binary_list (CB_BUILD_CHAIN ((yyvsp[(3) - (6)]), (yyvsp[(1) - (6)])), '-'));
@@ -16169,8 +15345,7 @@ yyreduce:
     break;
 
   case 1293:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8630 "parser.y"
     {
 	cb_emit_corresponding (cb_build_sub, (yyvsp[(4) - (6)]), (yyvsp[(2) - (6)]), (yyvsp[(5) - (6)]));
@@ -16178,8 +15353,7 @@ yyreduce:
     break;
 
   case 1294:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8637 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), SUBTRACT);
@@ -16187,8 +15361,7 @@ yyreduce:
     break;
 
   case 1295:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8641 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), SUBTRACT);
@@ -16196,8 +15369,7 @@ yyreduce:
     break;
 
   case 1296:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8651 "parser.y"
     {
 	begin_statement ("SUPPRESS", 0);
@@ -16210,8 +15382,7 @@ yyreduce:
     break;
 
   case 1299:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8669 "parser.y"
     {
 	begin_statement ("TERMINATE", 0);
@@ -16220,8 +15391,7 @@ yyreduce:
     break;
 
   case 1301:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8678 "parser.y"
     {
 	begin_implicit_statement ();
@@ -16231,8 +15401,7 @@ yyreduce:
     break;
 
   case 1302:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8684 "parser.y"
     {
 	begin_implicit_statement ();
@@ -16242,8 +15411,7 @@ yyreduce:
     break;
 
   case 1303:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8695 "parser.y"
     {
 	begin_statement ("TRANSFORM", 0);
@@ -16251,8 +15419,7 @@ yyreduce:
     break;
 
   case 1305:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8703 "parser.y"
     {
 	cb_tree		x;
@@ -16263,8 +15430,7 @@ yyreduce:
     break;
 
   case 1306:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8716 "parser.y"
     {
 	begin_statement ("UNLOCK", 0);
@@ -16272,8 +15438,7 @@ yyreduce:
     break;
 
   case 1308:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8724 "parser.y"
     {
 	if (CB_VALID_TREE ((yyvsp[(1) - (2)]))) {
@@ -16288,8 +15453,7 @@ yyreduce:
     break;
 
   case 1312:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8747 "parser.y"
     {
 	begin_statement ("UNSTRING", TERM_UNSTRING);
@@ -16297,8 +15461,7 @@ yyreduce:
     break;
 
   case 1314:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8757 "parser.y"
     {
 	cb_emit_unstring ((yyvsp[(1) - (6)]), (yyvsp[(2) - (6)]), (yyvsp[(3) - (6)]), (yyvsp[(4) - (6)]), (yyvsp[(5) - (6)]));
@@ -16306,36 +15469,31 @@ yyreduce:
     break;
 
   case 1315:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8763 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1316:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8765 "parser.y"
     { (yyval) = (yyvsp[(3) - (3)]); }
     break;
 
   case 1317:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8769 "parser.y"
     { (yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)])); }
     break;
 
   case 1318:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8771 "parser.y"
     { (yyval) = cb_list_add ((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)])); }
     break;
 
   case 1319:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8776 "parser.y"
     {
 	(yyval) = cb_build_unstring_delimited ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]));
@@ -16343,22 +15501,19 @@ yyreduce:
     break;
 
   case 1320:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8782 "parser.y"
     { (yyval) = CB_LIST_INIT ((yyvsp[(2) - (2)])); }
     break;
 
   case 1321:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8784 "parser.y"
     { (yyval) = cb_list_add ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 1322:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8789 "parser.y"
     {
 	(yyval) = cb_build_unstring_into ((yyvsp[(1) - (3)]), (yyvsp[(2) - (3)]), (yyvsp[(3) - (3)]));
@@ -16366,50 +15521,43 @@ yyreduce:
     break;
 
   case 1323:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8795 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1324:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8796 "parser.y"
     { (yyval) = (yyvsp[(3) - (3)]); }
     break;
 
   case 1325:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8800 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1326:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8801 "parser.y"
     { (yyval) = (yyvsp[(3) - (3)]); }
     break;
 
   case 1327:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8805 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1328:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8806 "parser.y"
     { (yyval) = (yyvsp[(3) - (3)]); }
     break;
 
   case 1329:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8811 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), UNSTRING);
@@ -16417,8 +15565,7 @@ yyreduce:
     break;
 
   case 1330:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8815 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), UNSTRING);
@@ -16426,8 +15573,7 @@ yyreduce:
     break;
 
   case 1331:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8825 "parser.y"
     {
 	skip_statements = 0;
@@ -16436,8 +15582,7 @@ yyreduce:
     break;
 
   case 1338:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8843 "parser.y"
     {
 	if (!in_declaratives) {
@@ -16463,8 +15608,7 @@ yyreduce:
     break;
 
   case 1339:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8868 "parser.y"
     {
 	use_global_ind = 0;
@@ -16472,8 +15616,7 @@ yyreduce:
     break;
 
   case 1340:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8872 "parser.y"
     {
 	if (current_program->prog_type == CB_FUNCTION_TYPE) {
@@ -16486,8 +15629,7 @@ yyreduce:
     break;
 
   case 1341:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8884 "parser.y"
     {
 	cb_tree		l;
@@ -16501,8 +15643,7 @@ yyreduce:
     break;
 
   case 1342:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8894 "parser.y"
     {
 	current_program->global_handler[COB_OPEN_INPUT].handler_label = current_section;
@@ -16511,8 +15652,7 @@ yyreduce:
     break;
 
   case 1343:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8899 "parser.y"
     {
 	current_program->global_handler[COB_OPEN_OUTPUT].handler_label = current_section;
@@ -16521,8 +15661,7 @@ yyreduce:
     break;
 
   case 1344:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8904 "parser.y"
     {
 	current_program->global_handler[COB_OPEN_I_O].handler_label = current_section;
@@ -16531,8 +15670,7 @@ yyreduce:
     break;
 
   case 1345:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8909 "parser.y"
     {
 	current_program->global_handler[COB_OPEN_EXTEND].handler_label = current_section;
@@ -16541,8 +15679,7 @@ yyreduce:
     break;
 
   case 1346:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8917 "parser.y"
     {
 	cb_tree		plabel;
@@ -16581,8 +15718,7 @@ yyreduce:
     break;
 
   case 1349:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 8960 "parser.y"
     {
 	cb_tree		l;
@@ -16626,8 +15762,7 @@ yyreduce:
     break;
 
   case 1350:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9000 "parser.y"
     {
 	if (current_program->flag_debugging) {
@@ -16641,8 +15776,7 @@ yyreduce:
     break;
 
   case 1351:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9010 "parser.y"
     {
 	cb_tree		x;
@@ -16667,8 +15801,7 @@ yyreduce:
     break;
 
   case 1356:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9040 "parser.y"
     {
 	if (current_program->nested_level) {
@@ -16678,8 +15811,7 @@ yyreduce:
     break;
 
   case 1357:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9049 "parser.y"
     {
 	emit_statement (cb_build_comment ("USE AT PROGRAM START"));
@@ -16689,8 +15821,7 @@ yyreduce:
     break;
 
   case 1358:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9055 "parser.y"
     {
 	emit_statement (cb_build_comment ("USE AT PROGRAM END"));
@@ -16700,8 +15831,7 @@ yyreduce:
     break;
 
   case 1359:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9065 "parser.y"
     {
 	current_section->flag_real_label = 1;
@@ -16711,8 +15841,7 @@ yyreduce:
     break;
 
   case 1360:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9074 "parser.y"
     {
 	current_section->flag_real_label = 1;
@@ -16722,8 +15851,7 @@ yyreduce:
     break;
 
   case 1363:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9090 "parser.y"
     {
 	begin_statement ("WRITE", TERM_WRITE);
@@ -16734,8 +15862,7 @@ yyreduce:
     break;
 
   case 1365:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9102 "parser.y"
     {
 	if (CB_VALID_TREE ((yyvsp[(1) - (5)]))) {
@@ -16746,22 +15873,19 @@ yyreduce:
     break;
 
   case 1366:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9111 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1367:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9112 "parser.y"
     { (yyval) = (yyvsp[(2) - (2)]); }
     break;
 
   case 1368:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9117 "parser.y"
     {
 	(yyval) = cb_int0;
@@ -16769,8 +15893,7 @@ yyreduce:
     break;
 
   case 1369:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9121 "parser.y"
     {
 	(yyval) = cb_build_write_advancing_lines ((yyvsp[(1) - (4)]), (yyvsp[(3) - (4)]));
@@ -16778,8 +15901,7 @@ yyreduce:
     break;
 
   case 1370:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9125 "parser.y"
     {
 	(yyval) = cb_build_write_advancing_mnemonic ((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]));
@@ -16787,8 +15909,7 @@ yyreduce:
     break;
 
   case 1371:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9129 "parser.y"
     {
 	(yyval) = cb_build_write_advancing_page ((yyvsp[(1) - (3)]));
@@ -16796,22 +15917,19 @@ yyreduce:
     break;
 
   case 1372:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9135 "parser.y"
     { (yyval) = CB_BEFORE; }
     break;
 
   case 1373:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9136 "parser.y"
     { (yyval) = CB_AFTER; }
     break;
 
   case 1376:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9146 "parser.y"
     {
 	TERMINATOR_WARNING ((yyvsp[(-2) - (0)]), WRITE);
@@ -16819,8 +15937,7 @@ yyreduce:
     break;
 
   case 1377:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9150 "parser.y"
     {
 	TERMINATOR_CLEAR ((yyvsp[(-2) - (1)]), WRITE);
@@ -16828,8 +15945,7 @@ yyreduce:
     break;
 
   case 1380:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9167 "parser.y"
     {
 	current_statement->handler_id = COB_EC_IMP_ACCEPT;
@@ -16838,8 +15954,7 @@ yyreduce:
     break;
 
   case 1382:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9177 "parser.y"
     {
 	current_statement->handler_id = COB_EC_IMP_ACCEPT;
@@ -16848,8 +15963,7 @@ yyreduce:
     break;
 
   case 1385:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9190 "parser.y"
     {
 	current_statement->handler_id = COB_EC_IMP_DISPLAY;
@@ -16858,8 +15972,7 @@ yyreduce:
     break;
 
   case 1387:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9200 "parser.y"
     {
 	current_statement->handler_id = COB_EC_IMP_DISPLAY;
@@ -16868,8 +15981,7 @@ yyreduce:
     break;
 
   case 1390:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9215 "parser.y"
     {
 	current_statement->handler_id = COB_EC_SIZE;
@@ -16878,8 +15990,7 @@ yyreduce:
     break;
 
   case 1392:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9225 "parser.y"
     {
 	current_statement->handler_id = COB_EC_SIZE;
@@ -16888,8 +15999,7 @@ yyreduce:
     break;
 
   case 1395:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9242 "parser.y"
     {
 	current_statement->handler_id = COB_EC_OVERFLOW;
@@ -16898,8 +16008,7 @@ yyreduce:
     break;
 
   case 1397:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9253 "parser.y"
     {
 	current_statement->handler_id = COB_EC_OVERFLOW;
@@ -16908,8 +16017,7 @@ yyreduce:
     break;
 
   case 1403:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9276 "parser.y"
     {
 	current_statement->handler_id = COB_EC_I_O_AT_END;
@@ -16918,8 +16026,7 @@ yyreduce:
     break;
 
   case 1404:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9285 "parser.y"
     {
 	current_statement->handler_id = COB_EC_I_O_AT_END;
@@ -16928,8 +16035,7 @@ yyreduce:
     break;
 
   case 1408:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9302 "parser.y"
     {
 	current_statement->handler_id = COB_EC_I_O_EOP;
@@ -16938,8 +16044,7 @@ yyreduce:
     break;
 
   case 1409:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9311 "parser.y"
     {
 	current_statement->handler_id = COB_EC_I_O_EOP;
@@ -16948,8 +16053,7 @@ yyreduce:
     break;
 
   case 1412:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9328 "parser.y"
     {
 	current_statement->handler_id = COB_EC_I_O_INVALID_KEY;
@@ -16958,8 +16062,7 @@ yyreduce:
     break;
 
   case 1414:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9338 "parser.y"
     {
 	current_statement->handler_id = COB_EC_I_O_INVALID_KEY;
@@ -16968,8 +16071,7 @@ yyreduce:
     break;
 
   case 1415:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9348 "parser.y"
     {
 	(yyval) = cb_one;
@@ -16977,8 +16079,7 @@ yyreduce:
     break;
 
   case 1416:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9352 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (2)]);
@@ -16986,8 +16087,7 @@ yyreduce:
     break;
 
   case 1417:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9362 "parser.y"
     {
 	(yyval) = cb_build_cond ((yyvsp[(1) - (1)]));
@@ -16995,8 +16095,7 @@ yyreduce:
     break;
 
   case 1418:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9369 "parser.y"
     {
 	(yyval) = cb_build_expr ((yyvsp[(1) - (1)]));
@@ -17004,8 +16103,7 @@ yyreduce:
     break;
 
   case 1419:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9375 "parser.y"
     {
 	current_expr = NULL;
@@ -17013,8 +16111,7 @@ yyreduce:
     break;
 
   case 1420:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9379 "parser.y"
     {
 	(yyval) = cb_list_reverse (current_expr);
@@ -17022,8 +16119,7 @@ yyreduce:
     break;
 
   case 1424:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9392 "parser.y"
     {
 	if (CB_REFERENCE_P ((yyvsp[(1) - (1)])) && CB_CLASS_NAME_P (cb_ref ((yyvsp[(1) - (1)])))) {
@@ -17035,169 +16131,145 @@ yyreduce:
     break;
 
   case 1425:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9400 "parser.y"
     { push_expr ('(', NULL); }
     break;
 
   case 1426:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9401 "parser.y"
     { push_expr (')', NULL); }
     break;
 
   case 1427:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9403 "parser.y"
     { push_expr ('+', NULL); }
     break;
 
   case 1428:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9404 "parser.y"
     { push_expr ('-', NULL); }
     break;
 
   case 1429:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9405 "parser.y"
     { push_expr ('*', NULL); }
     break;
 
   case 1430:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9406 "parser.y"
     { push_expr ('/', NULL); }
     break;
 
   case 1431:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9407 "parser.y"
     { push_expr ('^', NULL); }
     break;
 
   case 1432:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9409 "parser.y"
     { push_expr ('=', NULL); }
     break;
 
   case 1433:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9410 "parser.y"
     { push_expr ('>', NULL); }
     break;
 
   case 1434:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9411 "parser.y"
     { push_expr ('<', NULL); }
     break;
 
   case 1435:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9412 "parser.y"
     { push_expr (']', NULL); }
     break;
 
   case 1436:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9413 "parser.y"
     { push_expr ('[', NULL); }
     break;
 
   case 1437:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9414 "parser.y"
     { push_expr ('~', NULL); }
     break;
 
   case 1438:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9416 "parser.y"
     { push_expr ('!', NULL); }
     break;
 
   case 1439:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9417 "parser.y"
     { push_expr ('&', NULL); }
     break;
 
   case 1440:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9418 "parser.y"
     { push_expr ('|', NULL); }
     break;
 
   case 1441:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9420 "parser.y"
     { push_expr ('O', NULL); }
     break;
 
   case 1442:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9421 "parser.y"
     { push_expr ('9', NULL); }
     break;
 
   case 1443:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9422 "parser.y"
     { push_expr ('A', NULL); }
     break;
 
   case 1444:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9423 "parser.y"
     { push_expr ('L', NULL); }
     break;
 
   case 1445:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9424 "parser.y"
     { push_expr ('U', NULL); }
     break;
 
   case 1446:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9427 "parser.y"
     { push_expr ('P', NULL); }
     break;
 
   case 1447:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9428 "parser.y"
     { push_expr ('N', NULL); }
     break;
 
   case 1456:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9458 "parser.y"
     {
 	(yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)]));
@@ -17205,8 +16277,7 @@ yyreduce:
     break;
 
   case 1457:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9462 "parser.y"
     {
 	(yyval) = cb_list_add ((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]));
@@ -17214,50 +16285,43 @@ yyreduce:
     break;
 
   case 1461:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9473 "parser.y"
     { (yyval) = cb_build_binary_op ((yyvsp[(1) - (3)]), '+', (yyvsp[(3) - (3)])); }
     break;
 
   case 1462:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9474 "parser.y"
     { (yyval) = cb_build_binary_op ((yyvsp[(1) - (3)]), '-', (yyvsp[(3) - (3)])); }
     break;
 
   case 1463:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9475 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 1464:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9479 "parser.y"
     { (yyval) = cb_build_binary_op ((yyvsp[(1) - (3)]), '*', (yyvsp[(3) - (3)])); }
     break;
 
   case 1465:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9480 "parser.y"
     { (yyval) = cb_build_binary_op ((yyvsp[(1) - (3)]), '/', (yyvsp[(3) - (3)])); }
     break;
 
   case 1466:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9481 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 1467:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9486 "parser.y"
     {
 	(yyval) = cb_build_binary_op ((yyvsp[(1) - (3)]), '^', (yyvsp[(3) - (3)]));
@@ -17265,50 +16329,43 @@ yyreduce:
     break;
 
   case 1468:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9489 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 1469:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9493 "parser.y"
     { (yyval) = (yyvsp[(2) - (2)]); }
     break;
 
   case 1470:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9494 "parser.y"
     { (yyval) = cb_build_binary_op (cb_zero, '-', (yyvsp[(2) - (2)])); }
     break;
 
   case 1471:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9495 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 1472:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9498 "parser.y"
     { (yyval) = (yyvsp[(2) - (3)]); }
     break;
 
   case 1473:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9499 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 1474:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9510 "parser.y"
     {
 	if (current_linage > 1) {
@@ -17324,8 +16381,7 @@ yyreduce:
     break;
 
   case 1475:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9522 "parser.y"
     {
 	if (CB_FILE_P (cb_ref ((yyvsp[(3) - (3)])))) {
@@ -17338,8 +16394,7 @@ yyreduce:
     break;
 
   case 1476:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9531 "parser.y"
     {
 	if (report_count > 1) {
@@ -17355,8 +16410,7 @@ yyreduce:
     break;
 
   case 1477:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9543 "parser.y"
     {
 	if (CB_REPORT_P (cb_ref ((yyvsp[(3) - (3)])))) {
@@ -17369,8 +16423,7 @@ yyreduce:
     break;
 
   case 1478:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9552 "parser.y"
     {
 	if (report_count > 1) {
@@ -17386,8 +16439,7 @@ yyreduce:
     break;
 
   case 1479:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9564 "parser.y"
     {
 	if (CB_REPORT_P (cb_ref ((yyvsp[(3) - (3)])))) {
@@ -17400,22 +16452,19 @@ yyreduce:
     break;
 
   case 1480:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9578 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 1481:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9580 "parser.y"
     { (yyval) = cb_list_append ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 1482:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9585 "parser.y"
     {
 	(yyval) = CB_BUILD_PAIR ((yyvsp[(2) - (2)]), (yyvsp[(1) - (2)]));
@@ -17423,15 +16472,13 @@ yyreduce:
     break;
 
   case 1483:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9593 "parser.y"
     { cb_build_identifier ((yyvsp[(1) - (1)]), 0); }
     break;
 
   case 1484:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9600 "parser.y"
     {
 	cb_tree x;
@@ -17450,8 +16497,7 @@ yyreduce:
     break;
 
   case 1485:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9620 "parser.y"
     {
 	(yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)]));
@@ -17459,8 +16505,7 @@ yyreduce:
     break;
 
   case 1486:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9624 "parser.y"
     {
 	cb_tree		l;
@@ -17482,8 +16527,7 @@ yyreduce:
     break;
 
   case 1487:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9645 "parser.y"
     {
 	if (CB_FILE_P (cb_ref ((yyvsp[(1) - (1)])))) {
@@ -17496,8 +16540,7 @@ yyreduce:
     break;
 
   case 1488:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9686 "parser.y"
     {
 	if (CB_REPORT_P (cb_ref ((yyvsp[(1) - (1)])))) {
@@ -17510,43 +16553,37 @@ yyreduce:
     break;
 
   case 1489:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9699 "parser.y"
     { (yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)])); }
     break;
 
   case 1490:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9701 "parser.y"
     { (yyval) = cb_list_add ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 1491:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9705 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 1492:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9711 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1493:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9713 "parser.y"
     { (yyval) = cb_list_add ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 1494:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9718 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -17559,8 +16596,7 @@ yyreduce:
     break;
 
   case 1497:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9732 "parser.y"
     {
 	CB_REFERENCE ((yyvsp[(1) - (3)]))->chain = (yyvsp[(3) - (3)]);
@@ -17568,8 +16604,7 @@ yyreduce:
     break;
 
   case 1498:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9739 "parser.y"
     {
 	(yyval) = cb_build_reference ((char *)(CB_LITERAL ((yyvsp[(1) - (1)]))->data));
@@ -17579,22 +16614,19 @@ yyreduce:
     break;
 
   case 1499:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9749 "parser.y"
     { (yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)])); }
     break;
 
   case 1500:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9750 "parser.y"
     { (yyval) = cb_list_add ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)])); }
     break;
 
   case 1501:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9755 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -17603,8 +16635,7 @@ yyreduce:
     break;
 
   case 1502:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9763 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -17613,8 +16644,7 @@ yyreduce:
     break;
 
   case 1503:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9771 "parser.y"
     {
 	(yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)]));
@@ -17622,8 +16652,7 @@ yyreduce:
     break;
 
   case 1504:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9775 "parser.y"
     {
 	(yyval) = cb_list_add ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]));
@@ -17631,8 +16660,7 @@ yyreduce:
     break;
 
   case 1505:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9782 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -17642,8 +16670,7 @@ yyreduce:
     break;
 
   case 1508:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9798 "parser.y"
     {
 	if (CB_WORD_COUNT ((yyvsp[(1) - (1)])) > 0) {
@@ -17656,8 +16683,7 @@ yyreduce:
     break;
 
   case 1509:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9812 "parser.y"
     {
 	if (CB_REFERENCE ((yyvsp[(1) - (1)]))->flag_duped || CB_WORD_COUNT ((yyvsp[(1) - (1)])) > 0) {
@@ -17671,8 +16697,7 @@ yyreduce:
     break;
 
   case 1510:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9829 "parser.y"
     {
 	(yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)]));
@@ -17680,8 +16705,7 @@ yyreduce:
     break;
 
   case 1511:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9833 "parser.y"
     {
 	(yyval) = cb_list_add ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]));
@@ -17689,8 +16713,7 @@ yyreduce:
     break;
 
   case 1514:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9842 "parser.y"
     {
 	(yyval) = cb_build_address ((yyvsp[(3) - (3)]));
@@ -17698,8 +16721,7 @@ yyreduce:
     break;
 
   case 1515:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9849 "parser.y"
     {
 	(yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)]));
@@ -17707,8 +16729,7 @@ yyreduce:
     break;
 
   case 1516:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9853 "parser.y"
     {
 	(yyval) = cb_list_add ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]));
@@ -17716,8 +16737,7 @@ yyreduce:
     break;
 
   case 1521:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9864 "parser.y"
     {
 	(yyval) = cb_build_length ((yyvsp[(2) - (2)]));
@@ -17725,8 +16745,7 @@ yyreduce:
     break;
 
   case 1522:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9868 "parser.y"
     {
 	(yyval) = cb_build_length ((yyvsp[(2) - (2)]));
@@ -17734,8 +16753,7 @@ yyreduce:
     break;
 
   case 1523:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9872 "parser.y"
     {
 	(yyval) = cb_build_length ((yyvsp[(2) - (2)]));
@@ -17743,8 +16761,7 @@ yyreduce:
     break;
 
   case 1524:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9876 "parser.y"
     {
 	(yyval) = cb_build_ppointer ((yyvsp[(4) - (4)]));
@@ -17752,8 +16769,7 @@ yyreduce:
     break;
 
   case 1525:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9880 "parser.y"
     {
 	(yyval) = cb_build_address ((yyvsp[(3) - (3)]));
@@ -17761,8 +16777,7 @@ yyreduce:
     break;
 
   case 1526:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9884 "parser.y"
     {
 	cb_tree		x;
@@ -17784,8 +16799,7 @@ yyreduce:
     break;
 
   case 1527:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9905 "parser.y"
     {
 	(yyval) = CB_LIST_INIT ((yyvsp[(1) - (1)]));
@@ -17793,8 +16807,7 @@ yyreduce:
     break;
 
   case 1528:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9909 "parser.y"
     {
 	(yyval) = cb_list_add ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]));
@@ -17802,8 +16815,7 @@ yyreduce:
     break;
 
   case 1536:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9926 "parser.y"
     {
 	(yyval) = cb_build_length ((yyvsp[(2) - (2)]));
@@ -17811,8 +16823,7 @@ yyreduce:
     break;
 
   case 1537:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9930 "parser.y"
     {
 	(yyval) = cb_build_length ((yyvsp[(2) - (2)]));
@@ -17820,8 +16831,7 @@ yyreduce:
     break;
 
   case 1538:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9934 "parser.y"
     {
 	(yyval) = cb_build_length ((yyvsp[(2) - (2)]));
@@ -17829,8 +16839,7 @@ yyreduce:
     break;
 
   case 1554:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 9981 "parser.y"
     {
 	(yyval) = cb_zero;
@@ -17838,43 +16847,37 @@ yyreduce:
     break;
 
   case 1562:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10005 "parser.y"
     { (yyval) = cb_build_identifier ((yyvsp[(1) - (1)]), 0); }
     break;
 
   case 1563:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10009 "parser.y"
     { (yyval) = cb_build_identifier ((yyvsp[(1) - (1)]), 1); }
     break;
 
   case 1564:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10013 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 1565:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10014 "parser.y"
     { (yyval) = (yyvsp[(1) - (2)]); }
     break;
 
   case 1566:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10018 "parser.y"
     { (yyval) = cb_build_identifier ((yyvsp[(1) - (1)]), 0); }
     break;
 
   case 1567:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10023 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (3)]);
@@ -17885,8 +16888,7 @@ yyreduce:
     break;
 
   case 1568:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10030 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (2)]);
@@ -17897,8 +16899,7 @@ yyreduce:
     break;
 
   case 1569:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10037 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (2)]);
@@ -17909,8 +16910,7 @@ yyreduce:
     break;
 
   case 1570:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10044 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -17921,8 +16921,7 @@ yyreduce:
     break;
 
   case 1571:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10054 "parser.y"
     {
 	(yyval) = cb_build_identifier ((yyvsp[(1) - (1)]), 0);
@@ -17930,8 +16929,7 @@ yyreduce:
     break;
 
   case 1572:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10061 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (3)]);
@@ -17945,8 +16943,7 @@ yyreduce:
     break;
 
   case 1573:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10071 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (2)]);
@@ -17960,8 +16957,7 @@ yyreduce:
     break;
 
   case 1574:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10081 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (2)]);
@@ -17975,8 +16971,7 @@ yyreduce:
     break;
 
   case 1575:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10091 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -17990,8 +16985,7 @@ yyreduce:
     break;
 
   case 1576:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10104 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -17999,8 +16993,7 @@ yyreduce:
     break;
 
   case 1577:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10108 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (3)]);
@@ -18009,8 +17002,7 @@ yyreduce:
     break;
 
   case 1578:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10116 "parser.y"
     {
 	(yyval) = (yyvsp[(0) - (3)]);
@@ -18019,8 +17011,7 @@ yyreduce:
     break;
 
   case 1579:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10124 "parser.y"
     {
 	CB_REFERENCE ((yyvsp[(0) - (4)]))->offset = (yyvsp[(2) - (4)]);
@@ -18028,8 +17019,7 @@ yyreduce:
     break;
 
   case 1580:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10128 "parser.y"
     {
 	CB_REFERENCE ((yyvsp[(0) - (5)]))->offset = (yyvsp[(2) - (5)]);
@@ -18038,8 +17028,7 @@ yyreduce:
     break;
 
   case 1581:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10138 "parser.y"
     {
 	if (cb_tree_category ((yyvsp[(1) - (1)])) != CB_CATEGORY_NUMERIC) {
@@ -18055,8 +17044,7 @@ yyreduce:
     break;
 
   case 1582:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10153 "parser.y"
     {
 	int	n;
@@ -18080,8 +17068,7 @@ yyreduce:
     break;
 
   case 1583:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10176 "parser.y"
     {
 	int	n;
@@ -18105,8 +17092,7 @@ yyreduce:
     break;
 
   case 1584:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10199 "parser.y"
     {
 	int	n;
@@ -18126,50 +17112,43 @@ yyreduce:
     break;
 
   case 1585:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10214 "parser.y"
     { (yyval) = cb_space; }
     break;
 
   case 1586:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10215 "parser.y"
     { (yyval) = cb_zero; }
     break;
 
   case 1587:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10216 "parser.y"
     { (yyval) = cb_quote; }
     break;
 
   case 1588:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10217 "parser.y"
     { (yyval) = cb_high; }
     break;
 
   case 1589:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10218 "parser.y"
     { (yyval) = cb_low; }
     break;
 
   case 1590:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10219 "parser.y"
     { (yyval) = cb_null; }
     break;
 
   case 1591:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10224 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -18177,8 +17156,7 @@ yyreduce:
     break;
 
   case 1592:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10228 "parser.y"
     {
 	struct cb_literal	*l;
@@ -18196,8 +17174,7 @@ yyreduce:
     break;
 
   case 1593:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10245 "parser.y"
     {
 	(yyval) = (yyvsp[(1) - (1)]);
@@ -18205,8 +17182,7 @@ yyreduce:
     break;
 
   case 1594:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10249 "parser.y"
     {
 	(yyval) = cb_concat_literals ((yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]));
@@ -18214,57 +17190,49 @@ yyreduce:
     break;
 
   case 1595:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10255 "parser.y"
     { (yyval) = (yyvsp[(1) - (1)]); }
     break;
 
   case 1596:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10256 "parser.y"
     { (yyval) = cb_space; }
     break;
 
   case 1597:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10257 "parser.y"
     { (yyval) = cb_zero; }
     break;
 
   case 1598:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10258 "parser.y"
     { (yyval) = cb_quote; }
     break;
 
   case 1599:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10259 "parser.y"
     { (yyval) = cb_high; }
     break;
 
   case 1600:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10260 "parser.y"
     { (yyval) = cb_low; }
     break;
 
   case 1601:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10261 "parser.y"
     { (yyval) = cb_null; }
     break;
 
   case 1602:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10268 "parser.y"
     {
 	(yyval) = cb_build_intrinsic ((yyvsp[(1) - (2)]), NULL, (yyvsp[(2) - (2)]), 0);
@@ -18272,8 +17240,7 @@ yyreduce:
     break;
 
   case 1603:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10272 "parser.y"
     {
 	(yyval) = cb_build_intrinsic ((yyvsp[(1) - (5)]), CB_LIST_INIT ((yyvsp[(3) - (5)])), (yyvsp[(5) - (5)]), 0);
@@ -18281,8 +17248,7 @@ yyreduce:
     break;
 
   case 1604:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10276 "parser.y"
     {
 	(yyval) = cb_build_intrinsic ((yyvsp[(1) - (5)]), (yyvsp[(3) - (5)]), (yyvsp[(5) - (5)]), 0);
@@ -18290,8 +17256,7 @@ yyreduce:
     break;
 
   case 1605:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10280 "parser.y"
     {
 	(yyval) = cb_build_intrinsic ((yyvsp[(1) - (5)]), (yyvsp[(3) - (5)]), (yyvsp[(5) - (5)]), 0);
@@ -18299,8 +17264,7 @@ yyreduce:
     break;
 
   case 1606:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10284 "parser.y"
     {
 	(yyval) = cb_build_intrinsic ((yyvsp[(1) - (4)]), (yyvsp[(3) - (4)]), NULL, 0);
@@ -18308,8 +17272,7 @@ yyreduce:
     break;
 
   case 1607:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10288 "parser.y"
     {
 	(yyval) = cb_build_intrinsic ((yyvsp[(1) - (5)]), (yyvsp[(3) - (5)]), (yyvsp[(5) - (5)]), 0);
@@ -18317,8 +17280,7 @@ yyreduce:
     break;
 
   case 1608:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10292 "parser.y"
     {
 	(yyval) = cb_build_intrinsic ((yyvsp[(1) - (5)]), (yyvsp[(3) - (5)]), (yyvsp[(5) - (5)]), 0);
@@ -18326,8 +17288,7 @@ yyreduce:
     break;
 
   case 1609:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10296 "parser.y"
     {
 	(yyval) = cb_build_intrinsic ((yyvsp[(1) - (5)]), (yyvsp[(3) - (5)]), (yyvsp[(5) - (5)]), 0);
@@ -18335,8 +17296,7 @@ yyreduce:
     break;
 
   case 1610:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10300 "parser.y"
     {
 	(yyval) = cb_build_intrinsic ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]), NULL, 0);
@@ -18344,8 +17304,7 @@ yyreduce:
     break;
 
   case 1611:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10304 "parser.y"
     {
 	(yyval) = cb_build_intrinsic ((yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]), NULL, 1);
@@ -18353,8 +17312,7 @@ yyreduce:
     break;
 
   case 1623:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10331 "parser.y"
     {
 	(yyval) = NULL;
@@ -18362,8 +17320,7 @@ yyreduce:
     break;
 
   case 1624:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10335 "parser.y"
     {
 	(yyval) = CB_BUILD_PAIR ((yyvsp[(2) - (4)]), NULL);
@@ -18371,8 +17328,7 @@ yyreduce:
     break;
 
   case 1625:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10339 "parser.y"
     {
 	(yyval) = CB_BUILD_PAIR ((yyvsp[(2) - (5)]), (yyvsp[(4) - (5)]));
@@ -18380,8 +17336,7 @@ yyreduce:
     break;
 
   case 1626:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10346 "parser.y"
     {
 	(yyval) = NULL;
@@ -18389,8 +17344,7 @@ yyreduce:
     break;
 
   case 1627:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10350 "parser.y"
     {
 	(yyval) = (yyvsp[(2) - (3)]);
@@ -18398,8 +17352,7 @@ yyreduce:
     break;
 
   case 1628:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10354 "parser.y"
     {
 	(yyval) = NULL;
@@ -18407,8 +17360,7 @@ yyreduce:
     break;
 
   case 1629:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10361 "parser.y"
     {
 	cb_tree	x;
@@ -18419,8 +17371,7 @@ yyreduce:
     break;
 
   case 1630:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10368 "parser.y"
     {
 	cb_tree	x;
@@ -18431,8 +17382,7 @@ yyreduce:
     break;
 
   case 1631:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10375 "parser.y"
     {
 	cb_tree	x;
@@ -18443,8 +17393,7 @@ yyreduce:
     break;
 
   case 1632:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10385 "parser.y"
     {
 	cb_tree	x;
@@ -18455,8 +17404,7 @@ yyreduce:
     break;
 
   case 1633:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10392 "parser.y"
     {
 	cb_tree	x;
@@ -18467,8 +17415,7 @@ yyreduce:
     break;
 
   case 1634:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10402 "parser.y"
     {
 	cb_tree	x;
@@ -18479,8 +17426,7 @@ yyreduce:
     break;
 
   case 1635:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10409 "parser.y"
     {
 	cb_tree	x;
@@ -18491,8 +17437,7 @@ yyreduce:
     break;
 
   case 1636:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10420 "parser.y"
     {
 	non_const_word = 1;
@@ -18500,50 +17445,43 @@ yyreduce:
     break;
 
   case 1637:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10428 "parser.y"
     { (yyval) = cb_int0; }
     break;
 
   case 1638:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10429 "parser.y"
     { (yyval) = cb_int1; }
     break;
 
   case 1639:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10433 "parser.y"
     { (yyval) = cb_int0; }
     break;
 
   case 1640:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10434 "parser.y"
     { (yyval) = cb_int1; }
     break;
 
   case 1641:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10438 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1642:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10439 "parser.y"
     { (yyval) = cb_int1; }
     break;
 
   case 1643:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10444 "parser.y"
     {
 	(yyval) = NULL;
@@ -18551,8 +17489,7 @@ yyreduce:
     break;
 
   case 1644:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10448 "parser.y"
     {
 	(yyval) = (yyvsp[(2) - (2)]);
@@ -18560,8 +17497,7 @@ yyreduce:
     break;
 
   case 1645:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10455 "parser.y"
     {
 	(yyval) = NULL;
@@ -18569,8 +17505,7 @@ yyreduce:
     break;
 
   case 1646:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10459 "parser.y"
     {
 	(yyval) = (yyvsp[(2) - (2)]);
@@ -18578,64 +17513,55 @@ yyreduce:
     break;
 
   case 1647:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10466 "parser.y"
     { (yyval) = cb_int0; }
     break;
 
   case 1648:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10467 "parser.y"
     { (yyval) = cb_int1; }
     break;
 
   case 1649:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10468 "parser.y"
     { (yyval) = cb_int2; }
     break;
 
   case 1650:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10472 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1651:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10473 "parser.y"
     { (yyval) = cb_true; }
     break;
 
   case 1652:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10477 "parser.y"
     { (yyval) = cb_int (cb_flag_optional_file); }
     break;
 
   case 1653:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10478 "parser.y"
     { (yyval) = cb_int1; }
     break;
 
   case 1654:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10479 "parser.y"
     { (yyval) = cb_int0; }
     break;
 
   case 1655:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10484 "parser.y"
     {
 	(yyval) = cb_int0;
@@ -18643,8 +17569,7 @@ yyreduce:
     break;
 
   case 1656:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10488 "parser.y"
     {
 	if ((yyvsp[(2) - (2)])) {
@@ -18657,8 +17582,7 @@ yyreduce:
     break;
 
   case 1657:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10500 "parser.y"
     {
 	(yyval) = NULL;
@@ -18667,8 +17591,7 @@ yyreduce:
     break;
 
   case 1658:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10505 "parser.y"
     {
 	(yyval) = (yyvsp[(3) - (3)]);
@@ -18677,8 +17600,7 @@ yyreduce:
     break;
 
   case 1659:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10513 "parser.y"
     {
 	(yyval) = cb_int (COB_STORE_ROUND | COB_STORE_AWAY_FROM_ZERO);
@@ -18686,8 +17608,7 @@ yyreduce:
     break;
 
   case 1660:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10517 "parser.y"
     {
 	(yyval) = cb_int (COB_STORE_ROUND | COB_STORE_NEAR_AWAY_FROM_ZERO);
@@ -18695,8 +17616,7 @@ yyreduce:
     break;
 
   case 1661:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10521 "parser.y"
     {
 	(yyval) = cb_int (COB_STORE_ROUND | COB_STORE_NEAR_EVEN);
@@ -18704,8 +17624,7 @@ yyreduce:
     break;
 
   case 1662:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10525 "parser.y"
     {
 	(yyval) = cb_int (COB_STORE_ROUND | COB_STORE_NEAR_TOWARD_ZERO);
@@ -18713,8 +17632,7 @@ yyreduce:
     break;
 
   case 1663:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10529 "parser.y"
     {
 	(yyval) = cb_int (COB_STORE_ROUND | COB_STORE_PROHIBITED);
@@ -18722,8 +17640,7 @@ yyreduce:
     break;
 
   case 1664:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10533 "parser.y"
     {
 	(yyval) = cb_int (COB_STORE_ROUND | COB_STORE_TOWARD_GREATER);
@@ -18731,8 +17648,7 @@ yyreduce:
     break;
 
   case 1665:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10537 "parser.y"
     {
 	(yyval) = cb_int (COB_STORE_ROUND | COB_STORE_TOWARD_LESSER);
@@ -18740,8 +17656,7 @@ yyreduce:
     break;
 
   case 1666:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10541 "parser.y"
     {
 	(yyval) = cb_int (COB_STORE_ROUND | COB_STORE_TRUNCATION);
@@ -18749,23 +17664,20 @@ yyreduce:
     break;
 
   case 1667:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10547 "parser.y"
     { (yyval) = NULL; }
     break;
 
   case 1668:
-
-/* Line 1806 of yacc.c  */
+/* Line 1813 of yacc.c  */
 #line 10548 "parser.y"
     { (yyval) = cb_int1; }
     break;
 
 
-
-/* Line 1806 of yacc.c  */
-#line 18769 "parser.c"
+/* Line 1813 of yacc.c  */
+#line 17681 "parser.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -18928,7 +17840,9 @@ yyerrlab1:
       YY_STACK_PRINT (yyss, yyssp);
     }
 
+  YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   *++yyvsp = yylval;
+  YY_IGNORE_MAYBE_UNINITIALIZED_END
 
 
   /* Shift the error token.  */
@@ -18952,7 +17866,7 @@ yyabortlab:
   yyresult = 1;
   goto yyreturn;
 
-#if !defined(yyoverflow) || YYERROR_VERBOSE
+#if !defined yyoverflow || YYERROR_VERBOSE
 /*-------------------------------------------------.
 | yyexhaustedlab -- memory exhaustion comes here.  |
 `-------------------------------------------------*/
@@ -18994,8 +17908,6 @@ yyreturn:
 }
 
 
-
-/* Line 2067 of yacc.c  */
+/* Line 2076 of yacc.c  */
 #line 10719 "parser.y"
-
 
