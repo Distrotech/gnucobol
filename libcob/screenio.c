@@ -1685,7 +1685,7 @@ cob_exit_screen (void)
 void
 cob_field_display (cob_field *f, cob_field *line, cob_field *column,
 		   cob_field *fgc, cob_field *bgc, cob_field *fscroll,
-		   const int attr)
+		   const int fattr)
 {
 	COB_UNUSED (f);
 	COB_UNUSED (line);
@@ -1693,13 +1693,13 @@ cob_field_display (cob_field *f, cob_field *line, cob_field *column,
 	COB_UNUSED (fgc);
 	COB_UNUSED (bgc);
 	COB_UNUSED (fscroll);
-	COB_UNUSED (attr);
+	COB_UNUSED (fattr);
 }
 
 void
 cob_field_accept (cob_field *f, cob_field *line, cob_field *column,
 		  cob_field *fgc, cob_field *bgc, cob_field *fscroll,
-		  cob_field *ftimeout, cob_field *prompt, const int attr)
+		  cob_field *ftimeout, cob_field *prompt, const int fattr)
 {
 	COB_UNUSED (f);
 	COB_UNUSED (line);
@@ -1709,7 +1709,7 @@ cob_field_accept (cob_field *f, cob_field *line, cob_field *column,
 	COB_UNUSED (fscroll);
 	COB_UNUSED (ftimeout);
 	COB_UNUSED (prompt);
-	COB_UNUSED (attr);
+	COB_UNUSED (fattr);
 }
 
 void

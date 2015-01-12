@@ -75,19 +75,21 @@
 #endif
 #define off_t		cob_s64_t
 
-#elif	defined(HAVE_FDATASYNC)
-#define	fdcobsync	fdatasync
-#else
-#define	fdcobsync	fsync
-
-#endif
-
 #ifndef	_O_TEMPORARY
 #define	_O_TEMPORARY	0
 #endif
 
+#else
+#if	defined(HAVE_FDATASYNC)
+#define	fdcobsync	fdatasync
+#else
+#define	fdcobsync	fsync
+#endif
+
 #ifndef	O_BINARY
 #define	O_BINARY	0
+#endif
+
 #endif
 
 /* Force symbol exports */
@@ -840,7 +842,7 @@ cob_seq_write_opt (cob_file *f, const int opt)
 		i = opt & COB_WRITE_MASK;
 		if (!i) {
 			/* AFTER/BEFORE 0 */
-			if (write (f->fd, "\015", (size_t)1) != 1) {
+			if (write (f->fd, "\r", (size_t)1) != 1) {
 				return 1;
 			}
 		} else {

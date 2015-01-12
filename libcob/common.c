@@ -993,11 +993,11 @@ cob_rescan_env_vals (void)
 	if (s) {
 		runtimeptr->cob_disp_to_stderr_env = cob_save_env_value(runtimeptr->cob_disp_to_stderr_env, s);
 
-	if (cob_check_env_true(s)) {
-		cobglobptr->cob_disp_to_stderr = 1;
-	} else {
-		cobglobptr->cob_disp_to_stderr = 0;
-	}
+		if (cob_check_env_true(s)) {
+			cobglobptr->cob_disp_to_stderr = 1;
+		} else {
+			cobglobptr->cob_disp_to_stderr = 0;
+		}
 	}
 
 	/* screenio */

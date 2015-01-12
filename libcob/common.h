@@ -820,6 +820,7 @@ enum cob_exception_id {
 /* End File attributes */
 
 /* Number store defines */
+
 #define COB_STORE_ROUND			(1 << 0)
 #define COB_STORE_KEEP_ON_OVERFLOW	(1 << 1)
 #define COB_STORE_TRUNC_ON_OVERFLOW	(1 << 2)
@@ -838,6 +839,7 @@ enum cob_exception_id {
 	 COB_STORE_TRUNC_ON_OVERFLOW)
 
 /* Screen attribute defines */
+
 #define COB_SCREEN_BLACK		0
 #define COB_SCREEN_BLUE			1
 #define COB_SCREEN_GREEN		2
@@ -941,7 +943,6 @@ typedef struct {
 } cob_decimal;
 
 /* Perform stack structure */
-
 struct cob_frame {
 	void		*return_address_ptr;	/* Return address pointer */
 	unsigned int	perform_through;	/* Perform number */
