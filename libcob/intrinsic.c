@@ -2904,14 +2904,14 @@ cob_intr_current_date (const int offset, const int length)
 			"%4.4d%2.2d%2.2d%2.2d%2.2d%2.2d%2.2d+%2.2ld%2.2ld",
 			tmptr->tm_year + 1900, tmptr->tm_mon + 1, tmptr->tm_mday,
 			tmptr->tm_hour, tmptr->tm_min, tmptr->tm_sec,
-			tmb.millitm / 100, contz / 60, contz % 60);
+			tmb.millitm / 10, contz / 60, contz % 60);
 	} else {
 		contz = tmb.timezone;
 		snprintf (buff, (size_t)23,
 			"%4.4d%2.2d%2.2d%2.2d%2.2d%2.2d%2.2d-%2.2ld%2.2ld",
 			tmptr->tm_year + 1900, tmptr->tm_mon + 1, tmptr->tm_mday,
 			tmptr->tm_hour, tmptr->tm_min, tmptr->tm_sec,
-			tmb.millitm / 100, contz / 60, contz % 60);
+			tmb.millitm / 10, contz / 60, contz % 60);
 	}
 #else	/* defined(_WIN32) && !defined(__CYGWIN__) */
 

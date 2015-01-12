@@ -1,4 +1,8 @@
 
+2015-01-12  Sergey Kashyrin <ska@kiska.net>
+
+	* intrinsic.cpp : Fix for Bug #120 - Function CURRENT-DATE 
+
 2014-12-11  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
 	* screenio.c (cob_exit_screen): check cobglobptr for early errors,
