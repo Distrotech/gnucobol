@@ -3651,8 +3651,14 @@ output_bin_field (const cb_tree x, const cob_u32_t id)
 	}
 	aflags |= COB_FLAG_REAL_BINARY;
 	i = lookup_attr (COB_TYPE_NUMERIC_BINARY, digits, 0, aflags, NULL, 0);
+#if   defined(__SUNPRO_C)
+	output_line ("cob_field\tcontent_fb_%u = { %u, NULL, NULL };", id, size, id);
+	output_line ("content_fb_%u.data = content_%u.data;", id, id);
+	output_line ("content_fb_%u.attr = &%s%d;",id, CB_PREFIX_ATTR, i);
+#else
 	output_line ("cob_field\tcontent_fb_%u = { %u, content_%u.data, &%s%d };",
 		     id, size, id, CB_PREFIX_ATTR, i);
+#endif
 }
 
 static void
