@@ -1,7 +1,12 @@
+2015-01-31  Edward Hart <edward.dan.hart@gmail.com>
+
+	* common.h, intrinsic.c: updated (cob_valid_time_format) and
+	  (cob_valid_datetime_format) to take the decimal point as a parameter
+	  to handle DECIMAL-POINT IS COMMA
 
 2015-01-12  Sergey Kashyrin <ska@kiska.net>
 
-	* intrinsic.cpp : Fix for Bug #120 - Function CURRENT-DATE 
+	* intrinsic.cpp : Fix for Bug #120 - Function CURRENT-DATE
 
 2014-12-11  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 

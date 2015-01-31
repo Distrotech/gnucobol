@@ -571,6 +571,39 @@ prog.cob: 40: Error: FUNCTION 'FORMATTED-DATETIME' does not have an offset time
 
 AT_CLEANUP
 
+AT_SETUP([Invalid formatted date/time args with DECIMAL-POINT IS COMMA])
+AT_KEYWORDS([functions])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       ENVIRONMENT      DIVISION.
+       CONFIGURATION    SECTION.
+       SPECIAL-NAMES.
+           DECIMAL-POINT IS COMMA.
+       PROCEDURE        DIVISION.
+           DISPLAY FUNCTION FORMATTED-TIME ("hhmmss,ss", 1)
+           END-DISPLAY
+           DISPLAY FUNCTION FORMATTED-DATETIME
+                       ("YYYYMMDDThhmmss,ss", 1, 1)
+           END-DISPLAY
+
+           DISPLAY FUNCTION FORMATTED-TIME ("hhmmss.ss", 1)
+           END-DISPLAY
+           DISPLAY FUNCTION FORMATTED-DATETIME
+                       ("YYYYMMDDThhmmss.ss", 1, 1)
+           END-DISPLAY
+
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE -o prog prog.cob], [1], [],
+[prog.cob: 15: Error: FUNCTION 'FORMATTED-TIME' has invalid date/time format
+prog.cob: 17: Error: FUNCTION 'FORMATTED-DATETIME' has invalid date/time format
+])
+
+AT_CLEANUP
+
 AT_SETUP([Continuation Indicator - Literal too long])
 AT_KEYWORDS([misc fixed])
 

@@ -1585,8 +1585,8 @@ COB_EXPIMP cob_field *cob_intr_binop			(cob_field *, const int,
 							 cob_field *);
 
 COB_EXPIMP int cob_valid_date_format			(const char *);
-COB_EXPIMP int cob_valid_datetime_format		(const char *);
-COB_EXPIMP int cob_valid_time_format			(const char *);
+COB_EXPIMP int cob_valid_datetime_format		(const char *, const char);
+COB_EXPIMP int cob_valid_time_format			(const char *, const char);
 
 COB_EXPIMP cob_field *cob_intr_current_date		(const int, const int);
 COB_EXPIMP cob_field *cob_intr_when_compiled		(const int, const int,

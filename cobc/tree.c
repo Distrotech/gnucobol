@@ -516,26 +516,33 @@ iso_8601_func (const enum cb_intr_enum intr)
 static int
 valid_format (const enum cb_intr_enum intr, const char *format)
 {
+	char	decimal_point = current_program->decimal_point;
+
         /* Precondition: iso_8601_func (intr) */
 
-	if (intr == CB_INTR_FORMATTED_CURRENT_DATE) {
-		return cob_valid_datetime_format (format);
-	} else if(intr == CB_INTR_FORMATTED_DATE) {
+	switch (intr) {
+	case CB_INTR_FORMATTED_CURRENT_DATE:
+		return cob_valid_datetime_format (format, decimal_point);
+	case CB_INTR_FORMATTED_DATE:
 		return cob_valid_date_format (format);
-	} else if(intr == CB_INTR_FORMATTED_DATETIME) {
-		return cob_valid_datetime_format (format);
-	} else if(intr == CB_INTR_FORMATTED_TIME) {
-		return cob_valid_time_format (format);
-	} else if(intr == CB_INTR_INTEGER_OF_FORMATTED_DATE) {
+	case CB_INTR_FORMATTED_DATETIME:
+		return cob_valid_datetime_format (format, decimal_point);
+	case CB_INTR_FORMATTED_TIME:
+		return cob_valid_time_format (format, decimal_point);
+	case CB_INTR_INTEGER_OF_FORMATTED_DATE:
 		return cob_valid_date_format (format)
-			|| cob_valid_datetime_format (format);
-	} else if(intr == CB_INTR_SECONDS_FROM_FORMATTED_TIME) {
-		return cob_valid_time_format (format)
-			|| cob_valid_datetime_format (format);
-	} else { /* CB_INTR_TEST_FORMATTED_DATETIME */
-		return cob_valid_time_format (format)
+			|| cob_valid_datetime_format (format, decimal_point);
+	case CB_INTR_SECONDS_FROM_FORMATTED_TIME:
+		return cob_valid_time_format (format, decimal_point)
+			|| cob_valid_datetime_format (format, decimal_point);
+	case CB_INTR_TEST_FORMATTED_DATETIME:
+		return cob_valid_time_format (format, decimal_point)
 			|| cob_valid_date_format (format)
-			|| cob_valid_datetime_format (format);
+			|| cob_valid_datetime_format (format, decimal_point);
+	default:
+		cb_error (_("Invalid date/time function - '%d'"), intr);
+		/* Ignore the content of the format */
+	        return 1;
 	}
 }
 
@@ -556,8 +563,10 @@ try_get_constant_data (cb_tree val)
 static int
 offset_time_format (const char *format)
 {
-        if (cob_valid_time_format (format)
-		   || cob_valid_datetime_format (format)) {
+	char	decimal_point = current_program->decimal_point;
+
+        if (cob_valid_time_format (format, decimal_point)
+	    || cob_valid_datetime_format (format, decimal_point)) {
 		/* Only offset time formats contain a '+'. */
 		return strchr (format, '+') !=  NULL;
 	} else {

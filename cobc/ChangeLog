@@ -1,3 +1,8 @@
+2015-01-31  Edward Hart <edward.dan.hart@gmail.com>
+
+	* tree.c : updated valid_time_format and valid_datetime_format to pass
+	  decimal points
+
 2015-01-06  Brian Tiffin <btiffin@users.sf.net>
 
 	* cobc/parser.y : fixed segfault with STOP "literal" with the

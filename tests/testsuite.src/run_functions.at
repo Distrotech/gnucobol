@@ -835,6 +835,36 @@ AT_CHECK([./prog], [0], [])
 
 AT_CLEANUP
 
+AT_SETUP([FUNCTION FORMATTED-TIME with DECIMAL-POINT IS COMMA])
+AT_KEYWORDS([functions])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+
+       ENVIRONMENT      DIVISION.
+       CONFIGURATION    SECTION.
+       SPECIAL-NAMES.
+           DECIMAL-POINT IS COMMA.
+
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01  str          PIC X(11).
+
+       PROCEDURE        DIVISION.
+           MOVE FUNCTION FORMATTED-TIME ("hh:mm:ss,ss", 45296) TO str
+           IF str <> "12:34:56,00"
+               DISPLAY str END-DISPLAY
+           END-IF
+
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE -o prog prog.cob], [0], , [])
+AT_CHECK([./prog], [0], [])
+
+AT_CLEANUP
+
 AT_SETUP([FUNCTION FORMATTED-TIME with ref modding])
 AT_KEYWORDS([functions])
 

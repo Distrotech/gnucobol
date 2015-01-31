@@ -1508,6 +1508,13 @@ valid_time (const int seconds_from_midnight)
 	return seconds_from_midnight >= 1 && seconds_from_midnight <= 86400;
 }
 
+static int
+valid_offset_time (const int offset)
+{
+	const int minutes_in_day = 1440; /* 60 * 24 */
+	return abs (offset) < minutes_in_day;
+}
+
 static void
 date_of_integer (int days, int *year, int *month, int *day)
 {
@@ -1763,18 +1770,10 @@ rest_is_offset_format (const char *str, const int with_colon)
 	}
 }
 
-static int
-valid_offset_time (const int offset)
-{
-	return abs (offset) <= 1439;
-}
-
 static void
 add_decimal_digits (const int decimal_places, char *buff, ptrdiff_t *buff_pos)
 {
-	/* Precondition: buff, buff_pos != NULL */
-
-	buff[*buff_pos] = '.';
+	buff[*buff_pos] = COB_MODULE_PTR->decimal_point;
 	memset (buff + *buff_pos + 1, '0', decimal_places);
 
 	*buff_pos += 1	+ decimal_places;
@@ -1833,7 +1832,7 @@ parse_time_format_string (const char *str)
 		offset = 8;
 	}
 
-	if (str[offset] == '.') {
+	if (str[offset] == '.' || str[offset] == ',') {
 		format.decimal_places = decimal_places_for_seconds (str, offset);
 		offset += format.decimal_places + 1;
 	} else {
@@ -2109,7 +2108,7 @@ cob_valid_date_format (const char *format)
 }
 
 int
-cob_valid_time_format (const char *format)
+cob_valid_time_format (const char *format, const char decimal_point)
 {
 	int with_colons;
         ptrdiff_t format_offset;
@@ -2125,7 +2124,8 @@ cob_valid_time_format (const char *format)
 		return 0;
 	}
 
-	if (format[format_offset] == '.') {
+	/* Validate number of decimal places */
+	if (format[format_offset] == decimal_point) {
 		decimal_places = decimal_places_for_seconds (format, format_offset);
 		format_offset += decimal_places + 1;
 		if (!(1 <= decimal_places && decimal_places <= max_time_decimal_places)) {
@@ -2133,6 +2133,7 @@ cob_valid_time_format (const char *format)
 		}
 	}
 
+	/* Check for trailing garbage */
 	if (strlen (format) > format_offset
 	    && !rest_is_z (format + format_offset)
 	    && !rest_is_offset_format (format + format_offset, with_colons)) {
@@ -2143,7 +2144,7 @@ cob_valid_time_format (const char *format)
 }
 
 int
-cob_valid_datetime_format (const char *format)
+cob_valid_datetime_format (const char *format, const char decimal_point)
 {
         char	date_format_str[MAX_DATETIME_STR_LENGTH] = { '\0' };
 	char	time_format_str[MAX_DATETIME_STR_LENGTH] = { '\0' };
@@ -2153,7 +2154,7 @@ cob_valid_datetime_format (const char *format)
 	split_around_t (format, date_format_str, time_format_str);
 
 	if (!cob_valid_date_format (date_format_str)
-	    || !cob_valid_time_format (time_format_str)) {
+	    || !cob_valid_time_format (time_format_str, decimal_point)) {
 		return 0;
 	}
 
@@ -5596,7 +5597,7 @@ cob_intr_formatted_time (const int offset, const int length,
 		goto invalid_args;
 	}
 
-	if (!cob_valid_time_format (format_str)) {
+	if (!cob_valid_time_format (format_str, COB_MODULE_PTR->decimal_point)) {
 		goto invalid_args;
 	}
 	format = parse_time_format_string (format_str);
@@ -5677,7 +5678,7 @@ cob_intr_formatted_datetime (const int offset, const int length,
 	cob_set_exception (0);
 
 	/* Validate the formats, dates and times */
-	if (!cob_valid_datetime_format (fmt_str)) {
+	if (!cob_valid_datetime_format (fmt_str, COB_MODULE_PTR->decimal_point)) {
 		goto invalid_args;
 	}
 
