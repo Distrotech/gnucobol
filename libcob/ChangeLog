@@ -1,3 +1,7 @@
+2015-02-26  Edward Hart <edward.dan.hart@gmail.com>
+
+	* screenio.c: fixed buffer overflow in screen section ACCEPT
+
 2015-01-31  Edward Hart <edward.dan.hart@gmail.com>
 
 	* common.h, intrinsic.c: updated (cob_valid_time_format) and

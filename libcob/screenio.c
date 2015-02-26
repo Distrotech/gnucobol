@@ -681,6 +681,7 @@ cob_screen_get_all (const int initial_curs, const int gettimeout)
 	int			gotbacksp;
 	int			ungetched;
 	chtype			promptchar;
+	int		        charswritten;
 
 	curr_index = (size_t)initial_curs;
 	sptr = cob_base_inp + curr_index;
@@ -694,6 +695,7 @@ cob_screen_get_all (const int initial_curs, const int gettimeout)
 	ungetched = 0;
 	rightpos = scolumn + (int)s->field->size - 1;
 	p = s->field->data;
+	charswritten = 0;
 
 	for (; ;) {
 		if (s->prompt) {
@@ -899,7 +901,10 @@ cob_screen_get_all (const int initial_curs, const int gettimeout)
 					keyp = tolower (keyp);
 				}
 			}
-			*p = (unsigned char)keyp;
+
+			*p = (unsigned char) keyp;
+			++charswritten;
+
 			if (s->attr & COB_SCREEN_SECURE) {
 				addch (COB_CH_AS);
 			} else if (s->attr & COB_SCREEN_NO_ECHO) {
@@ -923,6 +928,9 @@ cob_screen_get_all (const int initial_curs, const int gettimeout)
 				}
 			} else {
 				p++;
+			}
+			if (charswritten == s->field->size) {
+				goto screen_return;
 			}
 			continue;
 		}
