@@ -61,7 +61,7 @@
     </ClInclude>
     <ClInclude Include="..\..\libcob\coblocal.h">
       <Filter>Header Files</Filter>
-    </ClInclude>^
+    </ClInclude>
     <ClInclude Include="..\..\libcob\common.h">
       <Filter>Header Files</Filter>
     </ClInclude>

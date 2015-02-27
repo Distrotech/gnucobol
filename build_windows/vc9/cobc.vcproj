@@ -567,31 +567,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\cobc\cobc.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\lib\cobgetopt.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\cobc\codeoptim.def"
-				>
-			</File>
-			<File
-				RelativePath="..\..\cobc\config.def"
-				>
-			</File>
-			<File
 				RelativePath="config.h"
 				>
 			</File>
 			<File
 				RelativePath="defaults.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\cobc\flag.def"
 				>
 			</File>
 			<File
@@ -603,11 +583,35 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\cobc\cobc.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\cobc\tree.h"
 				>
 			</File>
 			<File
+				RelativePath="..\..\cobc\codeoptim.def"
+				>
+			</File>
+			<File
+				RelativePath="..\..\cobc\config.def"
+				>
+			</File>
+			<File
+				RelativePath="..\..\cobc\flag.def"
+				>
+			</File>
+			<File
+				RelativePath="..\..\cobc\ppparse.def"
+				>
+			</File>
+			<File
 				RelativePath="..\..\cobc\warning.def"
+				>
+			</File>
+			<File
+				RelativePath="..\..\libcob\cobgetopt.h"
 				>
 			</File>
 		</Filter>

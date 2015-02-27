@@ -182,7 +182,6 @@
     <None Include="..\..\lib\ChangeLog" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\lib\cobgetopt.h" />
     <ClInclude Include="..\..\lib\gettext.h" />
     <ClInclude Include="config.h" />
   </ItemGroup>

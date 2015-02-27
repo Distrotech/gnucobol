@@ -92,7 +92,7 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -153,7 +153,7 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -281,6 +281,7 @@
     <None Include="..\..\cobc\codeoptim.def" />
     <None Include="..\..\cobc\config.def" />
     <None Include="..\..\cobc\flag.def" />
+    <None Include="..\..\cobc\ppparse.def" />
     <None Include="..\..\cobc\warning.def" />
     <None Include="..\..\cobc\ChangeLog" />
   </ItemGroup>
