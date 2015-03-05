@@ -6030,6 +6030,16 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 #endif
 	output_newline ();
 
+	/* Check INITIAL programms being non-recursive */
+	if (CB_EXCEPTION_ENABLE (COB_EC_PROGRAM_RECURSIVE_CALL)
+		&& prog->flag_initial) {
+		output_line ("/* Check active count */");
+		output_line ("if (unlikely(module->module_active)) {");
+		/* FIXME: Should raise COB_EC_PROGRAM_RECURSIVE_CALL instead */
+		output_line ("\tcob_fatal_error (COB_FERROR_RECURSIVE);");
+		output_line ("}");
+	}
+
 	/* Recursive module initialization */
 	if (prog->flag_recursive) {
 		output_module_init (prog);
@@ -6433,11 +6443,7 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 
 	if (prog->flag_recursive) {
 		output_line ("/* Free cob_module structure */");
-#if	1	/* RXWRXW Mod */
 		output_line ("cob_cache_free (module);");
-#else
-		output_line ("cob_free (module);");
-#endif
 		output_newline ();
 	}
 
@@ -6754,10 +6760,8 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 		output (" = 0;\n");
 	}
 
-#if	1	/* RXWRXW Mod */
 	output_line ("cob_cache_free (module);");
 	output_line ("module = NULL;");
-#endif
 	output_newline ();
 
 cancel_end:

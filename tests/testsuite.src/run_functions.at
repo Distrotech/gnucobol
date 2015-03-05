@@ -443,14 +443,14 @@ AT_DATA([prog.cob], [
        PROCEDURE        DIVISION.
            OPEN INPUT TEST-FILE.
            DISPLAY FUNCTION EXCEPTION-FILE
+                   NO ADVANCING
            END-DISPLAY.
            STOP RUN.
 ])
 
 AT_CHECK([$COMPILE -o prog prog.cob], [0], , [])
 AT_CHECK([./prog], [0],
-[35TEST-FILE
-])
+[35TEST-FILE])
 
 AT_CLEANUP
 

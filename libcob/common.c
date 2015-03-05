@@ -1441,7 +1441,7 @@ cob_fatal_error (const int fatal_error)
 {
 	const char	*msg;
 	unsigned char	*file_status;
-	char		*filename;
+	char		*err_cause;
 	int		status;
 
 	switch (fatal_error) {
@@ -1473,7 +1473,8 @@ cob_fatal_error (const int fatal_error)
 		cob_runtime_error (_("Invalid entry into module"));
 		break;
 	case COB_FERROR_RECURSIVE:
-		cob_runtime_error (_("Invalid recursive COBOL CALL"));
+		cob_runtime_error (_("Invalid recursive COBOL CALL to '%s'"),
+				   COB_MODULE_PTR->module_name);
 		break;
 	case COB_FERROR_FREE:
 		cob_runtime_error (_("Call to cob_free with NULL pointer"));
@@ -1546,12 +1547,12 @@ cob_fatal_error (const int fatal_error)
 			msg = _("Unknown file error");
 			break;
 		}
-		filename = cob_malloc ((size_t)COB_FILE_BUFF);
+		err_cause = cob_malloc ((size_t)COB_FILE_BUFF);
 		cob_field_to_string (cobglobptr->cob_error_file->assign,
-				     filename, (size_t)COB_FILE_MAX);
+				     err_cause, (size_t)COB_FILE_MAX);
 		cob_runtime_error (_("%s (Status = %02d) File : '%s'"),
-				   msg, status, filename);
-		cob_free (filename);
+				   msg, status, err_cause);
+		cob_free (err_cause);
 		break;
 	case COB_FERROR_FUNCTION:
 		cob_runtime_error (_("Attempt to use non-implemented function"));
@@ -3834,16 +3835,17 @@ cob_set_locale (cob_field *locale, const int category)
 #endif
 }
 
-char*
-cob_int_to_string(int i, char* number) {
+char *
+cob_int_to_string (int i, char* number)
+{
 	if(!number) return NULL;
 	sprintf(number, "%i", i);
 	return number;
 }
 
-char*
-cob_int_to_formatted_bytestring(int i, char* number) {
-
+char *
+cob_int_to_formatted_bytestring (int i, char* number)
+{
 	double d;
 	char* strB;
 
@@ -3865,8 +3867,9 @@ cob_int_to_formatted_bytestring(int i, char* number) {
 	return number;
 }
 
-char*
-cob_strcat(char* str1, char* str2) {
+char *
+cob_strcat (char* str1, char* str2)
+{
 	size_t l;
 	char *temp1, *temp2;
 
@@ -3894,9 +3897,9 @@ cob_strcat(char* str1, char* str2) {
 	return strbuff;
 }
 
-char*
-cob_strjoin(char** strarray, int size, char* separator) {
-
+char *
+cob_strjoin (char** strarray, int size, char* separator)
+{
 	char* result;
 	int i;
 
@@ -3911,7 +3914,9 @@ cob_strjoin(char** strarray, int size, char* separator) {
 	return result;
 }
 
-char* cob_save_env_value(char* env_var, char* env_val) {
+char *
+cob_save_env_value (char* env_var, char* env_val)
+{
 	if (!env_val) return NULL;
 
 	if (env_var) cob_free(env_var);
@@ -3921,8 +3926,10 @@ char* cob_save_env_value(char* env_var, char* env_val) {
 	return env_var;
 }
 
-static void var_print(const char *msg, const char *val, const char *default_val,
-		const unsigned int format) {
+static void
+var_print (const char *msg, const char *val, const char *default_val,
+		const unsigned int format)
+{
 	char	*p;
 	char	*token;
 	size_t	n;
@@ -3996,17 +4003,17 @@ static void var_print(const char *msg, const char *val, const char *default_val,
 
 
 void
-print_runtime_env(void) {
+print_runtime_env (void)
+{
 	char* no_default;
 	char* not_set;
 	char* intstring;
 	char* intstring2;
 
-	printf("GNU Cobol runtime environment\n\n");
-	printf("All values were resolved from current environment. \n\n");
-	/* Alles aus common.c --> cob_init und cob_init_... - einigermaßen sinnvoll sortiert (ggf. Zwischenüberschriften ...*/
+	printf ("GNU Cobol runtime environment\n\n");
+	printf ("All values were resolved from current environment. \n\n");
 
-	if(!cob_initialized) {
+	if (!cob_initialized) {
 		cob_init(cob_argc, cob_argv);
 	}
 
@@ -4015,131 +4022,129 @@ print_runtime_env(void) {
 	intstring = (char*) cob_fast_malloc(10);
 	intstring2 = (char*) cob_fast_malloc(10);
 
-	printf(_("Call environment\n"));
+	printf (_("Call environment\n"));
 
-	var_print("COB_LIBRARY_PATH", runtimeptr->cob_library_path_env, not_set,
-			2);
-	var_print("resolve_path",
+	var_print ("COB_LIBRARY_PATH", runtimeptr->cob_library_path_env, not_set, 2);
+	var_print ("resolve_path",
 			cob_strjoin(runtimeptr->resolve_path, *(runtimeptr->resolve_size),
 					(char*) PATHSEPS), not_set, 3);
-	var_print("COB_PRE_LOAD", runtimeptr->cob_preload_env, not_set, 2);
-	var_print("base_preload_ptr",
+	var_print ("COB_PRE_LOAD", runtimeptr->cob_preload_env, not_set, 2);
+	var_print ("base_preload_ptr",
 			runtimeptr->cob_preload_resolved, not_set, 3);
-	var_print("COB_LOAD_CASE", runtimeptr->name_convert_env, not_set, 2);
-	var_print("name_convert",
+	var_print ("COB_LOAD_CASE", runtimeptr->name_convert_env, not_set, 2);
+	var_print ("name_convert",
 			cob_int_to_string(*(runtimeptr->name_convert), intstring),
 			no_default, 3);
-	var_print("COB_PHYSICAL_CANCEL", runtimeptr->physical_cancel_env,
+	var_print ("COB_PHYSICAL_CANCEL", runtimeptr->physical_cancel_env,
 			not_set, 2);
-	var_print("physical_cancel",
+	var_print ("physical_cancel",
 			cob_int_to_string(*(runtimeptr->physical_cancel), intstring),
 			no_default, 3);
 
-	printf(_("\n\nFile I/O\n"));
-	var_print("COB_SYNC", runtimeptr->cob_do_sync_env, not_set, 2);
-	var_print("cob_do_sync",
+	printf (_("\n\nFile I/O\n"));
+	var_print ("COB_SYNC", runtimeptr->cob_do_sync_env, not_set, 2);
+	var_print ("cob_do_sync",
 			cob_int_to_string(*(runtimeptr->cob_do_sync), intstring),
 			no_default, 3);
-	var_print("COB_LS_USES_CR", runtimeptr->cob_ls_uses_cr_env, not_set, 2);
-	var_print("cob_ls_uses_cr",
+	var_print ("COB_LS_USES_CR", runtimeptr->cob_ls_uses_cr_env, not_set, 2);
+	var_print ("cob_ls_uses_cr",
 			cob_int_to_string(*(runtimeptr->cob_ls_uses_cr), intstring),
 			no_default, 3);
 
-	var_print("COB_SORT_MEMORY", runtimeptr->cob_sort_memory_env, not_set,
-			2);
-	var_print("cob_sort_memory",
+	var_print ("COB_SORT_MEMORY", runtimeptr->cob_sort_memory_env, not_set, 2);
+	var_print ("cob_sort_memory",
 			cob_int_to_formatted_bytestring(*(runtimeptr->cob_sort_memory),
 					intstring),
 			cob_int_to_formatted_bytestring(COB_SORT_MEMORY, intstring2), 3);
-	var_print("COB_SORT_CHUNK", runtimeptr->cob_sort_chunk_env, not_set, 2);
-	var_print("cob_sort_chunk",
+	var_print ("COB_SORT_CHUNK", runtimeptr->cob_sort_chunk_env, not_set, 2);
+	var_print ("cob_sort_chunk",
 			cob_int_to_formatted_bytestring(*(runtimeptr->cob_sort_chunk),
 					intstring),
 			cob_int_to_formatted_bytestring(COB_SORT_CHUNK, intstring2), 3);
-	var_print("COB_FILE_PATH", runtimeptr->cob_file_path_env, not_set, 2);
-	var_print("cob_file_path", runtimeptr->cob_file_path, not_set, 3);
-	var_print("COB_LS_NULLS", runtimeptr->cob_ls_nulls_env, not_set, 2);
-	var_print("cob_ls_nulls",
+	var_print ("COB_FILE_PATH", runtimeptr->cob_file_path_env, not_set, 2);
+	var_print ("cob_file_path", runtimeptr->cob_file_path, not_set, 3);
+	var_print ("COB_LS_NULLS", runtimeptr->cob_ls_nulls_env, not_set, 2);
+	var_print ("cob_ls_nulls",
 			cob_int_to_string(*(runtimeptr->cob_ls_nulls), intstring),
 			no_default, 3);
-	var_print("COB_LS_FIXED", runtimeptr->cob_ls_fixed_env, not_set, 2);
-	var_print("cob_ls_fixed",
+	var_print ("COB_LS_FIXED", runtimeptr->cob_ls_fixed_env, not_set, 2);
+	var_print ("cob_ls_fixed",
 			cob_int_to_string(*(runtimeptr->cob_ls_fixed), intstring),
 			no_default, 3);
-	var_print("COB_VARSEQ_FORMAT", runtimeptr->cob_varseq_type_env,
+	var_print ("COB_VARSEQ_FORMAT", runtimeptr->cob_varseq_type_env,
 			_("0 (default), [2-byte record-length] [0000] [record-data]"), 2);
-	var_print("cob_varseq_type",
+	var_print ("cob_varseq_type",
 			cob_int_to_string(*(runtimeptr->cob_varseq_type), intstring),
 			_("0 (default), [2-byte record-length] [0000] [record-data]"), 3);
-	var_print("COB_UNIX_LF", runtimeptr->cob_unix_lf_env, not_set,
-			2);
-	var_print("cob_unix_lf",
+	var_print ("COB_UNIX_LF", runtimeptr->cob_unix_lf_env, not_set, 2);
+	var_print ("cob_unix_lf",
 			cob_int_to_string(cobglobptr->cob_unix_lf, intstring),
 			no_default, 3);
 
 	if (runtimeptr->cob_local_edit) {
-		printf(_("\n\nLocale Properties\n"));
-		var_print("COB_LOCALE_NUMERIC_EDITED", runtimeptr->cob_local_edit_env,
+		printf (_("\n\nLocale Properties\n"));
+		var_print ("COB_LOCALE_NUMERIC_EDITED", runtimeptr->cob_local_edit_env,
 				not_set, 2);
-		var_print("cob_local_edit",
+		var_print ("cob_local_edit",
 				cob_int_to_string(*(runtimeptr->cob_local_edit), intstring),
 				no_default, 3);
 	}
 
-	printf(_("\n\nScreen I/O\n"));
-	var_print("COB_REDIRECT_DISPLAY",
+	printf (_("\n\nScreen I/O\n"));
+	var_print ("COB_REDIRECT_DISPLAY",
 			runtimeptr->cob_disp_to_stderr_env, not_set, 2);
-	var_print("cob_disp_to_stderr",
+	var_print ("cob_disp_to_stderr",
 			cob_int_to_string(cobglobptr->cob_disp_to_stderr,
 					intstring), no_default, 3);
-	var_print("COB_BELL", runtimeptr->cob_beep_str_env, not_set, 2);
-	var_print("cob_beep_value", cob_int_to_string(cobglobptr->cob_beep_value, intstring), (char*) "0", 3);
-	var_print("COB_TIMEOUT_SCALE", runtimeptr->cob_timeout_scale_env,
+	var_print ("COB_BELL", runtimeptr->cob_beep_str_env, not_set, 2);
+	var_print ("cob_beep_value", cob_int_to_string(cobglobptr->cob_beep_value, intstring), (char*) "0", 3);
+	var_print ("COB_TIMEOUT_SCALE", runtimeptr->cob_timeout_scale_env,
 			not_set, 2);
-	var_print("cob_timeout_scale",
+	var_print ("cob_timeout_scale",
 			cob_int_to_string(cobglobptr->cob_timeout_scale,
 					intstring), "1000", 3);
-	var_print("COB_SCREEN_EXCEPTIONS",
+	var_print ("COB_SCREEN_EXCEPTIONS",
 			runtimeptr->cob_extended_status_env, not_set, 2);
-	var_print("cob_extended_status",
+	var_print ("cob_extended_status",
 			cob_int_to_string(cobglobptr->cob_extended_status,
 					intstring), no_default, 3);
-	var_print("COB_SCREEN_ESC", runtimeptr->cob_use_esc_env,
+	var_print ("COB_SCREEN_ESC", runtimeptr->cob_use_esc_env,
 			not_set, 2);
-	var_print("cob_screen_esc",
+	var_print ("cob_screen_esc",
 			cob_int_to_string(cobglobptr->cob_use_esc, intstring),
 			no_default, 3);
-	var_print("COB_LEGACY", runtimeptr->cob_legacy_env,
+	var_print ("COB_LEGACY", runtimeptr->cob_legacy_env,
 				not_set, 2);
-	var_print("cob_legacy",
+	var_print ("cob_legacy",
 				cob_int_to_string(*(runtimeptr->cob_legacy), intstring),
 				no_default, 3);
 	
-	printf(_("\n\nMiscellaneous\n"));
-	var_print("COB_SET_TRACE", runtimeptr->cob_line_trace_env, not_set, 2);
-	var_print("cob_line_trace", cob_int_to_string(cob_line_trace, intstring), no_default, 3);
-	cob_check_trace_file();
-	var_print("COB_TRACE_FILE", cob_trace_env, not_set, 2);
-	if(cob_trace_file != stderr) {
-		var_print("cob_trace_file", cob_trace_env, NULL, 3);
+	printf (_("\n\nMiscellaneous\n"));
+	var_print ("COB_SET_TRACE", runtimeptr->cob_line_trace_env, not_set, 2);
+	var_print ("cob_line_trace", cob_int_to_string(cob_line_trace, intstring), no_default, 3);
+	cob_check_trace_file ();
+	var_print ("COB_TRACE_FILE", cob_trace_env, not_set, 2);
+	if (cob_trace_file != stderr) {
+		var_print ("cob_trace_file", cob_trace_env, NULL, 3);
 	}
 	else {
-		var_print("cob_trace_file", _("stderr (default)"), NULL, 3);
+		var_print ("cob_trace_file", _("stderr (default)"), NULL, 3);
 	}
-	var_print("COB_DISABLE_WARNINGS",
+	var_print ("COB_DISABLE_WARNINGS",
 			runtimeptr->cob_display_warn_env, not_set, 2);
-	var_print("cob_display_warn",
+	var_print ("cob_display_warn",
 			cob_int_to_string(cobglobptr->cob_display_warn,
 					intstring), no_default, 3);
-	var_print("COB_ENV_MANGLE", runtimeptr->cob_env_mangle_env,
+	var_print ("COB_ENV_MANGLE", runtimeptr->cob_env_mangle_env,
 			not_set, 2);
-	var_print("cob_env_mangle",
+	var_print ("cob_env_mangle",
 			cob_int_to_string(cobglobptr->cob_env_mangle, intstring),
 			no_default, 3);
 }
 
 void
-print_version(void) {
+print_version (void)
+{
 	char* cobc_buffer;
 	char month[32];
 	int day, year;
@@ -4175,7 +4180,8 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."));
 }
 
 void
-print_info(void) {
+print_info (void)
+{
 	char	buff[16];
 	char	*s;
 
