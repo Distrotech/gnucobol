@@ -1,3 +1,16 @@
+
+2015-03-06  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* m4/gettext.m4: Upgrade to gettext-0.19.4.
+	* m4/iconv.m4: Upgrade to gettext-0.19.4.
+	* m4/lib-ld.m4: Upgrade to gettext-0.19.4.
+	* m4/lib-link.m4: Upgrade to gettext-0.19.4.
+	* m4/lib-prefix.m4: Upgrade to gettext-0.19.4.
+	* m4/nls.m4: Upgrade to gettext-0.19.4.
+	* m4/po.m4: Upgrade to gettext-0.19.4.
+	* m4/progtest.m4: Upgrade to gettext-0.19.4.
+	* configure.ac (AM_GNU_GETTEXT_VERSION): Bump to 0.19.4.
+
 2014-12-04  Edward Hart <edward-h@users.sf.net>
 
 	* configure.ac : #44 Disable optimisation with --enable-debug

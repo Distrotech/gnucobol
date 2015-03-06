@@ -1,3 +1,8 @@
+2015-03-06  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* Makefile.in.in: Upgrade to gettext-0.19.4.
+	* Rules-quot: Upgrade to gettext-0.19.4.
+
 2014-01-20  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
 	* gettext extra message catalogues en@quot and en@boldquot added
