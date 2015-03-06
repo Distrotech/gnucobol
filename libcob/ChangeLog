@@ -120,6 +120,10 @@
 	* common.c, common.h, system.def : Added cob_sys_getopt_long_long
 	* makefile.am : Added cobgetopt.c, cobgetopt.h
 
+2014-03-10  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
+
+	* common.c: support for user-defined LOCALEDIR via environment
+
 2014-03-03  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
 	* common.c, common.h : Rewriting cob_sig_handler, printing caught signal to

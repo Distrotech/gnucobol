@@ -1596,9 +1596,6 @@ program_identification:
 function_identification:
   FUNCTION_ID TOK_DOT program_name as_literal TOK_DOT
   {
-#if	0	/* RXWRXW - FUNCTION-ID */
-	cb_error (_("FUNCTION-ID is not yet implemented"));
-#endif
 	current_section = NULL;
 	current_paragraph = NULL;
 	if (CB_LITERAL_P ($3)) {
@@ -1694,7 +1691,7 @@ configuration_header:
 	check_headers_present (COBC_HD_ENVIRONMENT_DIVISION, 0, 0, 0);
 	header_check |= COBC_HD_CONFIGURATION_SECTION;
 	if (current_program->nested_level) {
-		cb_error (_("CONFIGURATION SECTION not allowed in nested programs"));
+		cb_error (_("%s not allowed in nested programs"), "CONFIGURATION SECTION");
 	}
   }
 ;
@@ -1916,7 +1913,7 @@ special_names_paragraph:
 			       COBC_HD_CONFIGURATION_SECTION, 0, 0);
 	header_check |= COBC_HD_SPECIAL_NAMES;
 	if (current_program->nested_level) {
-		cb_error (_("SPECIAL-NAMES not allowed in nested programs"));
+		cb_error (_("%s not allowed in nested programs"), "SPECIAL-NAMES");
 	}
   }
 ;
@@ -1960,7 +1957,7 @@ mnemonic_name_clause:
 			       COBC_HD_CONFIGURATION_SECTION,
 			       COBC_HD_SPECIAL_NAMES, 0);
 	if (current_program->nested_level) {
-		cb_error (_("SPECIAL-NAMES not allowed in nested programs"));
+		cb_error (_("%s not allowed in nested programs"), "SPECIAL-NAMES");
 		save_tree = NULL;
 	} else {
 		save_tree = lookup_system_name (CB_NAME ($1));
@@ -2043,7 +2040,7 @@ alphabet_name_clause:
 			       COBC_HD_CONFIGURATION_SECTION,
 			       COBC_HD_SPECIAL_NAMES, 0);
 	if (current_program->nested_level) {
-		cb_error (_("SPECIAL-NAMES not allowed in nested programs"));
+		cb_error (_("%s not allowed in nested programs"), "SPECIAL-NAMES");
 		$$ = NULL;
 	} else {
 		/* Returns null on error */
@@ -2165,7 +2162,7 @@ symbolic_characters_clause:
 			       COBC_HD_CONFIGURATION_SECTION,
 			       COBC_HD_SPECIAL_NAMES, 0);
 	if (current_program->nested_level) {
-		cb_error (_("SPECIAL-NAMES not allowed in nested programs"));
+		cb_error (_("%s not allowed in nested programs"), "SPECIAL-NAMES");
 	} else if ($1) {
 		CB_CHAIN_PAIR (current_program->symbolic_char_list, $1, $2);
 	}
@@ -2261,7 +2258,7 @@ class_name_clause:
 			       COBC_HD_CONFIGURATION_SECTION,
 			       COBC_HD_SPECIAL_NAMES, 0);
 	if (current_program->nested_level) {
-		cb_error (_("SPECIAL-NAMES not allowed in nested programs"));
+		cb_error (_("%s not allowed in nested programs"), "SPECIAL-NAMES");
 	} else {
 		/* Returns null on error */
 		x = cb_build_class_name ($2, $4);
@@ -2312,7 +2309,7 @@ locale_clause:
 			       COBC_HD_CONFIGURATION_SECTION,
 			       COBC_HD_SPECIAL_NAMES, 0);
 	if (current_program->nested_level) {
-		cb_error (_("SPECIAL-NAMES not allowed in nested programs"));
+		cb_error (_("%s not allowed in nested programs"), "SPECIAL-NAMES");
 	} else {
 		/* Returns null on error */
 		l = cb_build_locale_name ($2, $4);
@@ -2336,7 +2333,7 @@ currency_sign_clause:
 			       COBC_HD_CONFIGURATION_SECTION,
 			       COBC_HD_SPECIAL_NAMES, 0);
 	if (current_program->nested_level) {
-		cb_error (_("SPECIAL-NAMES not allowed in nested programs"));
+		cb_error (_("%s not allowed in nested programs"), "SPECIAL-NAMES");
 		error_ind = 1;
 	}
 	check_repeated ("CURRENCY", SYN_CLAUSE_1);
@@ -2427,7 +2424,7 @@ decimal_point_clause:
 			       COBC_HD_CONFIGURATION_SECTION,
 			       COBC_HD_SPECIAL_NAMES, 0);
 	if (current_program->nested_level) {
-		cb_error (_("SPECIAL-NAMES not allowed in nested programs"));
+		cb_error (_("%s not allowed in nested programs"), "SPECIAL-NAMES");
 	} else {
 		check_repeated ("DECIMAL-POINT", SYN_CLAUSE_2);
 		current_program->decimal_point = ',';
@@ -2446,7 +2443,7 @@ numeric_sign_clause:
 			       COBC_HD_CONFIGURATION_SECTION,
 			       COBC_HD_SPECIAL_NAMES, 0);
 	if (current_program->nested_level) {
-		cb_error (_("SPECIAL-NAMES not allowed in nested programs"));
+		cb_error (_("%s not allowed in nested programs"), "SPECIAL-NAMES");
 	} else {
 		current_program->flag_trailing_separate = 1;
 	}
@@ -2462,7 +2459,7 @@ cursor_clause:
 			       COBC_HD_CONFIGURATION_SECTION,
 			       COBC_HD_SPECIAL_NAMES, 0);
 	if (current_program->nested_level) {
-		cb_error (_("SPECIAL-NAMES not allowed in nested programs"));
+		cb_error (_("%s not allowed in nested programs"), "SPECIAL-NAMES");
 	} else {
 		check_repeated ("CURSOR", SYN_CLAUSE_3);
 		current_program->cursor_pos = $3;
@@ -2480,7 +2477,7 @@ crt_status_clause:
 			       COBC_HD_CONFIGURATION_SECTION,
 			       COBC_HD_SPECIAL_NAMES, 0);
 	if (current_program->nested_level) {
-		cb_error (_("SPECIAL-NAMES not allowed in nested programs"));
+		cb_error (_("%s not allowed in nested programs"), "SPECIAL-NAMES");
 	} else {
 		check_repeated ("CRT STATUS", SYN_CLAUSE_4);
 		current_program->crt_status = $4;
@@ -2498,7 +2495,7 @@ screen_control:
 			       COBC_HD_CONFIGURATION_SECTION,
 			       COBC_HD_SPECIAL_NAMES, 0);
 	if (current_program->nested_level) {
-		cb_error (_("SPECIAL-NAMES not allowed in nested programs"));
+		cb_error (_("%s not allowed in nested programs"), "SPECIAL-NAMES");
 	} else {
 		check_repeated ("SCREEN CONTROL", SYN_CLAUSE_5);
 		PENDING ("SCREEN CONTROL");
@@ -2515,7 +2512,7 @@ event_status:
 			       COBC_HD_CONFIGURATION_SECTION,
 			       COBC_HD_SPECIAL_NAMES, 0);
 	if (current_program->nested_level) {
-		cb_error (_("SPECIAL-NAMES not allowed in nested programs"));
+		cb_error (_("%s not allowed in nested programs"), "SPECIAL-NAMES");
 	} else {
 		check_repeated ("EVENT STATUS", SYN_CLAUSE_6);
 		PENDING ("EVENT STATUS");
@@ -3135,7 +3132,7 @@ file_description_clause:
 	}
 #endif
 	if (current_program->prog_type == CB_FUNCTION_TYPE) {
-		cb_error (_("GLOBAL is invalid in a user FUNCTION"));
+		cb_error (_("%s is invalid in a user FUNCTION"), "GLOBAL");
 	} else {
 		current_file->flag_global = 1;
 		current_program->flag_file_global = 1;
@@ -3444,7 +3441,7 @@ report_clause:
   report_keyword rep_name_list
   {
 	check_repeated ("REPORT", SYN_CLAUSE_11);
-	cb_warning (_("REPORT WRITER not implemented"));
+	PENDING("REPORT WRITER");
 	if (current_file->organization != COB_ORG_LINE_SEQUENTIAL &&
 	    current_file->organization != COB_ORG_SEQUENTIAL) {
 		cb_error (_("REPORT clause with wrong file type"));
@@ -3647,7 +3644,7 @@ const_global:
 | _is GLOBAL
   {
 	if (current_program->prog_type == CB_FUNCTION_TYPE) {
-		cb_error (_("GLOBAL is invalid in a user FUNCTION"));
+		cb_error (_("%s is invalid in a user FUNCTION"), "GLOBAL");
 		$$= NULL;
 	} else {
 		$$ = cb_null;
@@ -3843,21 +3840,21 @@ external_clause:
   {
 	check_pic_repeated ("EXTERNAL", SYN_CLAUSE_2);
 	if (current_storage != CB_STORAGE_WORKING) {
-		cb_error (_("EXTERNAL not allowed here"));
+		cb_error (_("%s not allowed here"), "EXTERNAL");
 	} else if (current_field->level != 1 && current_field->level != 77) {
-		cb_error (_("EXTERNAL only allowed at 01/77 level"));
+		cb_error (_("%s only allowed at 01/77 level"), "EXTERNAL");
 	} else if (!qualifier) {
-		cb_error (_("EXTERNAL requires a data name"));
+		cb_error (_("%s requires a data name"), "EXTERNAL");
 #if	0	/* RXWRXW - Global/External */
 	} else if (current_field->flag_is_global) {
-		cb_error (_("GLOBAL and EXTERNAL are mutually exclusive"));
+		cb_error (_("%s and %s are mutually exclusive"), "GLOBAL", "EXTERNAL");
 #endif
 	} else if (current_field->flag_item_based) {
-		cb_error (_("BASED and EXTERNAL are mutually exclusive"));
+		cb_error (_("%s and %s are mutually exclusive"), "BASED", "EXTERNAL");
 	} else if (current_field->redefines) {
-		cb_error (_("EXTERNAL and REDEFINES are mutually exclusive"));
+		cb_error (_("%s and %s are mutually exclusive"), "EXTERNAL", "REDEFINES");
 	} else if (current_field->flag_occurs) {
-		cb_error (_("EXTERNAL and OCCURS are mutually exclusive"));
+		cb_error (_("%s and %s are mutually exclusive"), "EXTERNAL", "OCCURS");
 	} else {
 		current_field->flag_external = 1;
 		current_program->flag_has_external = 1;
@@ -3883,17 +3880,17 @@ global_clause:
   {
 	check_pic_repeated ("GLOBAL", SYN_CLAUSE_3);
 	if (current_field->level != 1 && current_field->level != 77) {
-		cb_error (_("GLOBAL only allowed at 01/77 level"));
+		cb_error (_("%s only allowed at 01/77 level"), "GLOBAL");
 	} else if (!qualifier) {
-		cb_error (_("GLOBAL requires a data name"));
+		cb_error (_("%s requires a data name"), "GLOBAL");
 #if	0	/* RXWRXW - Global/External */
 	} else if (current_field->flag_external) {
-		cb_error (_("GLOBAL and EXTERNAL are mutually exclusive"));
+		cb_error (_("%s and %s are mutually exclusive"), "GLOBAL", "EXTERNAL");
 #endif
 	} else if (current_program->prog_type == CB_FUNCTION_TYPE) {
-		cb_error (_("GLOBAL is invalid in a user FUNCTION"));
+		cb_error (_("%s is invalid in a user FUNCTION"), "GLOBAL");
 	} else if (current_storage == CB_STORAGE_LOCAL) {
-		cb_error (_("GLOBAL not allowed here"));
+		cb_error (_("%s not allowed here"), "GLOBAL");
 	} else {
 		current_field->flag_is_global = 1;
 	}
@@ -4159,9 +4156,9 @@ occurs_clause:
 			  COB_MAX_SUBSCRIPTS);
 	}
 	if (current_field->flag_item_based) {
-		cb_error (_("BASED and OCCURS are mutually exclusive"));
+		cb_error (_("%s and %s are mutually exclusive"), "BASED", "OCCURS");
 	} else if (current_field->flag_external) {
-		cb_error (_("EXTERNAL and OCCURS are mutually exclusive"));
+		cb_error (_("%s and %s are mutually exclusive"), "EXTERNAL", "OCCURS");
 	}
 	current_field->flag_occurs = 1;
   }
@@ -4177,9 +4174,9 @@ occurs_clause:
 			  COB_MAX_SUBSCRIPTS);
 	}
 	if (current_field->flag_item_based) {
-		cb_error (_("BASED and OCCURS are mutually exclusive"));
+		cb_error (_("%s and %s are mutually exclusive"), "BASED", "OCCURS");
 	} else if (current_field->flag_external) {
-		cb_error (_("EXTERNAL and OCCURS are mutually exclusive"));
+		cb_error (_("%s and %s are mutually exclusive"), "EXTERNAL", "OCCURS");
 	}
 	current_field->flag_occurs = 1;
   }
@@ -4328,19 +4325,19 @@ based_clause:
 	if (current_storage != CB_STORAGE_WORKING &&
 	    current_storage != CB_STORAGE_LINKAGE &&
 	    current_storage != CB_STORAGE_LOCAL) {
-		cb_error (_("BASED not allowed here"));
+		cb_error (_("%s not allowed here"), "BASED");
 	} else if (current_field->level != 1 && current_field->level != 77) {
-		cb_error (_("BASED only allowed at 01/77 level"));
+		cb_error (_("%s only allowed at 01/77 level"), "BASED");
 	} else if (!qualifier) {
-		cb_error (_("BASED requires a data name"));
+		cb_error (_("%s requires a data name"), "BASED");
 	} else if (current_field->flag_external) {
-		cb_error (_("BASED and EXTERNAL are mutually exclusive"));
+		cb_error (_("%s and %s are mutually exclusive"), "BASED", "EXTERNAL");
 	} else if (current_field->redefines) {
-		cb_error (_("BASED and REDEFINES are mutually exclusive"));
+		cb_error (_("%s and %s are mutually exclusive"), "BASED", "REDEFINES");
 	} else if (current_field->flag_any_length) {
-		cb_error (_("BASED and ANY LENGTH are mutually exclusive"));
+		cb_error (_("%s and %s are mutually exclusive"), "BASED", "ANY LENGTH");
 	} else if (current_field->flag_occurs) {
-		cb_error (_("BASED and OCCURS are mutually exclusive"));
+		cb_error (_("%s and %s are mutually exclusive"), "BASED", "OCCURS");
 	} else {
 		current_field->flag_item_based = 1;
 	}
@@ -4420,7 +4417,7 @@ any_length_clause:
   {
 	check_pic_repeated ("ANY", SYN_CLAUSE_14);
 	if (current_field->flag_item_based) {
-		cb_error (_("BASED and ANY clause are mutually exclusive"));
+		cb_error (_("%s and %s are mutually exclusive"), "BASED", "ANY clause");
 	} else {
 		current_field->flag_any_length = 1;
 	}
@@ -4429,7 +4426,7 @@ any_length_clause:
   {
 	check_pic_repeated ("ANY", SYN_CLAUSE_14);
 	if (current_field->flag_item_based) {
-		cb_error (_("BASED and ANY clause are mutually exclusive"));
+		cb_error (_("%s and %s are mutually exclusive"), "BASED", "ANY clause");
 	} else {
 		current_field->flag_any_length = 1;
 		current_field->flag_any_numeric = 1;
@@ -4446,7 +4443,7 @@ local_storage_section:
 	header_check |= COBC_HD_LOCAL_STORAGE_SECTION;
 	current_storage = CB_STORAGE_LOCAL;
 	if (current_program->nested_level) {
-		cb_error (_("LOCAL-STORAGE not allowed in nested programs"));
+		cb_error (_("%s not allowed in nested programs"), "LOCAL-STORAGE");
 	}
   }
   record_description_list
@@ -4480,7 +4477,7 @@ linkage_section:
 report_section:
 | REPORT SECTION TOK_DOT
   {
-	cb_warning (_("REPORT SECTION not implemented"));
+	PENDING("REPORT SECTION");
 	current_storage = CB_STORAGE_REPORT;
 	cb_clear_real_field ();
   }
@@ -5243,7 +5240,7 @@ procedure_type:
 | _by VALUE
   {
 	if (current_program->flag_chained) {
-		cb_error (_("BY VALUE not allowed in CHAINED program"));
+		cb_error (_("%s not allowed in CHAINED programs"), "BY VALUE");
 	} else {
 		call_mode = CB_CALL_BY_VALUE;
 	}
@@ -6251,7 +6248,7 @@ call_type:
   {
 	if (current_program->flag_chained) {
 		cb_error_x (CB_TREE (current_statement),
-			    _("BY CONTENT not allowed in CHAINED program"));
+			    _("%s not allowed in CHAINED programs"), "BY CONTENT");
 	} else {
 		call_mode = CB_CALL_BY_CONTENT;
 	}
@@ -6260,7 +6257,7 @@ call_type:
   {
 	if (current_program->flag_chained) {
 		cb_error_x (CB_TREE (current_statement),
-			    _("BY VALUE not allowed in CHAINED program"));
+			    _("%s not allowed in CHAINED programs"), "BY VALUE");
 	} else {
 		call_mode = CB_CALL_BY_VALUE;
 	}
@@ -6763,9 +6760,9 @@ entry_body:
   LITERAL call_using
   {
 	if (current_program->nested_level) {
-		cb_error (_("ENTRY is invalid in nested program"));
+		cb_error (_("%s is invalid in nested program"), "ENTRY");
 	} else if (current_program->prog_type == CB_FUNCTION_TYPE) {
-		cb_error (_("ENTRY is invalid in a user FUNCTION"));
+		cb_error (_("%s is invalid in a user FUNCTION"), "ENTRY");
 	} else if (cb_verify (cb_entry_statement, "ENTRY")) {
 		if (!cobc_check_valid_name ((char *)(CB_LITERAL ($1)->data), 1U)) {
 			emit_entry ((char *)(CB_LITERAL ($1)->data), 1, $2);
@@ -7611,7 +7608,7 @@ open_body:
 
 	if ($2 && $4) {
 		cb_error_x (CB_TREE (current_statement),
-			    _("SHARING and LOCK clauses are mutually exclusive"));
+			    _("%s and %s are mutually exclusive"), "SHARING", "LOCK clauses");
 	}
 	if ($4) {
 		x = $4;
@@ -7632,7 +7629,7 @@ open_body:
 
 	if ($3 && $5) {
 		cb_error_x (CB_TREE (current_statement),
-			    _("SHARING and LOCK clauses are mutually exclusive"));
+			    _("%s and %s are mutually exclusive"), "SHARING", "LOCK clauses");
 	}
 	if ($5) {
 		x = $5;
@@ -8871,7 +8868,7 @@ use_global:
 | GLOBAL
   {
 	if (current_program->prog_type == CB_FUNCTION_TYPE) {
-		cb_error (_("GLOBAL is invalid in a user FUNCTION"));
+		cb_error (_("%s is invalid in a user FUNCTION"), "GLOBAL");
 	} else {
 		use_global_ind = 1;
 		current_program->flag_global_use = 1;
@@ -9039,7 +9036,7 @@ use_start_end:
   _at PROGRAM program_start_end
   {
 	if (current_program->nested_level) {
-		cb_error (_("USE AT is invalid in nested program"));
+		cb_error (_("%s is invalid in nested program"), "USE AT");
 	}
   }
 ;

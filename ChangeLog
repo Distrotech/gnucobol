@@ -1,4 +1,10 @@
 
+2014-08-07  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
+
+	* general: message strings revised (not all done yet);
+	  similar message strings combined (23 translatable strings removed);
+	  removed line breaks from translatable strings
+
 2015-03-06  gettextize  <bug-gnu-gettext@gnu.org>
 
 	* m4/gettext.m4: Upgrade to gettext-0.19.4.

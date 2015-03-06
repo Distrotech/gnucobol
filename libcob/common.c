@@ -1,6 +1,7 @@
 /*
    Copyright (C) 2001,2002,2003,2004,2005,2006,2007 Keisuke Nishida
    Copyright (C) 2007-2012 Roger While
+   Copyright (C) 2014,2015 Simon Sobisch
 
    This file is part of GNU Cobol.
 
@@ -59,6 +60,8 @@
 #ifdef	HAVE_LOCALE_H
 #include <locale.h>
 #endif
+
+#include "lib/gettext.h"
 
 /* Force symbol exports */
 #define	COB_LIB_EXPIMP
@@ -417,9 +420,9 @@ cob_sig_handler (int sig)
 #else
 	fprintf (stderr, _("Caught Signal"));
 #endif
-	putc (' ', stderr);
-	fprintf (stderr, _("(Signal %s)"), signal_name);
-	putc ('\n', stderr);
+	fprintf (stderr, " (");
+	fprintf (stderr, _("Signal %s"), signal_name);
+	fprintf (stderr, ")\n");
 
 	if (cob_initialized) {
 		cob_terminate_routines ();
@@ -1445,9 +1448,11 @@ cob_fatal_error (const int fatal_error)
 	int		status;
 
 	switch (fatal_error) {
+#if 0 /* Currently not in use, should enter unknown error */
 	case COB_FERROR_NONE:
 		cob_runtime_error (_("cob_init() has not been called"));
 		break;
+#endif
 	case COB_FERROR_CANCEL:
 		cob_runtime_error (_("Attempt to CANCEL active program"));
 		break;
@@ -1477,7 +1482,7 @@ cob_fatal_error (const int fatal_error)
 				   COB_MODULE_PTR->module_name);
 		break;
 	case COB_FERROR_FREE:
-		cob_runtime_error (_("Call to cob_free with NULL pointer"));
+		cob_runtime_error (_("Call to %s with NULL pointer"), "cob_free");
 		break;
 	case COB_FERROR_FILE:
 		file_status = cobglobptr->cob_error_file->file_status;
@@ -1520,7 +1525,7 @@ cob_fatal_error (const int fatal_error)
 			msg = _("Record overflow");
 			break;
 		case COB_STATUS_46_READ_ERROR:
-			msg = _("Failed to read");
+			msg = _("Failed to READ");
 			break;
 		case COB_STATUS_47_INPUT_DENIED:
 			msg = _("READ/START not allowed");
@@ -3095,7 +3100,7 @@ cob_sys_system (const void *cmdline)
 		cmd = cmdline;
 		i = (int)COB_MODULE_PTR->cob_procedure_params[0]->size;
 		if (unlikely(i > COB_MEDIUM_MAX)) {
-			cob_runtime_error (_("Parameter to SYSTEM call is larger than 8192 characters"));
+			cob_runtime_error (_("Parameter to SYSTEM call is larger than %d characters"), COB_MEDIUM_MAX);
 			cob_stop_run (1);
 		}
 		i--;
@@ -4010,8 +4015,10 @@ print_runtime_env (void)
 	char* intstring;
 	char* intstring2;
 
-	printf ("GNU Cobol runtime environment\n\n");
-	printf ("All values were resolved from current environment. \n\n");
+	puts (_("GNU Cobol runtime environment"));
+	putchar ('\n');
+	puts (_("All values were resolved from current environment."));
+	putchar ('\n');
 
 	if (!cob_initialized) {
 		cob_init(cob_argc, cob_argv);
@@ -4022,7 +4029,7 @@ print_runtime_env (void)
 	intstring = (char*) cob_fast_malloc(10);
 	intstring2 = (char*) cob_fast_malloc(10);
 
-	printf (_("Call environment\n"));
+	puts (_("Handling of CALLs"));
 
 	var_print ("COB_LIBRARY_PATH", runtimeptr->cob_library_path_env, not_set, 2);
 	var_print ("resolve_path",
@@ -4041,7 +4048,9 @@ print_runtime_env (void)
 			cob_int_to_string(*(runtimeptr->physical_cancel), intstring),
 			no_default, 3);
 
-	printf (_("\n\nFile I/O\n"));
+	putchar ('\n');
+	putchar ('\n');
+	puts (_("File I/O"));
 	var_print ("COB_SYNC", runtimeptr->cob_do_sync_env, not_set, 2);
 	var_print ("cob_do_sync",
 			cob_int_to_string(*(runtimeptr->cob_do_sync), intstring),
@@ -4082,7 +4091,9 @@ print_runtime_env (void)
 			no_default, 3);
 
 	if (runtimeptr->cob_local_edit) {
-		printf (_("\n\nLocale Properties\n"));
+		putchar ('\n');
+		putchar ('\n');
+		puts (_("Locale Properties"));
 		var_print ("COB_LOCALE_NUMERIC_EDITED", runtimeptr->cob_local_edit_env,
 				not_set, 2);
 		var_print ("cob_local_edit",
@@ -4090,7 +4101,9 @@ print_runtime_env (void)
 				no_default, 3);
 	}
 
-	printf (_("\n\nScreen I/O\n"));
+	putchar ('\n');
+	putchar ('\n');
+	puts (_("Screen I/O"));
 	var_print ("COB_REDIRECT_DISPLAY",
 			runtimeptr->cob_disp_to_stderr_env, not_set, 2);
 	var_print ("cob_disp_to_stderr",
@@ -4119,7 +4132,9 @@ print_runtime_env (void)
 				cob_int_to_string(*(runtimeptr->cob_legacy), intstring),
 				no_default, 3);
 	
-	printf (_("\n\nMiscellaneous\n"));
+	putchar ('\n');
+	putchar ('\n');
+	puts (_("Miscellaneous"));
 	var_print ("COB_SET_TRACE", runtimeptr->cob_line_trace_env, not_set, 2);
 	var_print ("cob_line_trace", cob_int_to_string(cob_line_trace, intstring), no_default, 3);
 	cob_check_trace_file ();
@@ -4169,7 +4184,7 @@ print_version (void)
 		PACKAGE_NAME, PACKAGE_VERSION, PATCH_LEVEL);
 	puts ("Copyright (C) 2001,2002,2003,2004,2005,2006,2007 Keisuke Nishida");
 	puts ("Copyright (C) 2006-2012 Roger While");
-	puts ("Copyright (C) 2009,2010,2012,2014 Simon Sobisch");
+	puts ("Copyright (C) 2009,2010,2012,2014,2015 Simon Sobisch");
 	puts (_("This is free software; see the source for copying conditions.  There is NO\n\
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."));
 	printf (_("Built     %s"), cobc_buffer);
@@ -4259,6 +4274,9 @@ cob_init (const int argc, char **argv)
 	char		*s;
 #if	defined(HAVE_READLINK) || defined(HAVE_GETEXECNAME)
 	const char	*path;
+#endif
+#ifdef	ENABLE_NLS
+	const char* localedir;
 #endif
 	int		i;
 
@@ -4350,6 +4368,16 @@ cob_init (const int argc, char **argv)
 			cobglobptr->cob_locale = cob_strdup (s);
 		}
 	}
+#endif
+
+#ifdef	ENABLE_NLS
+	localedir = getenv("LOCALEDIR");
+	if (localedir != NULL) {
+		bindtextdomain (PACKAGE, localedir);
+	} else {
+		bindtextdomain (PACKAGE, LOCALEDIR);
+	}
+	textdomain (PACKAGE);
 #endif
 
 #ifdef	_WIN32

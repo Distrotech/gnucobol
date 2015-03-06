@@ -1126,7 +1126,7 @@ scan_x (char *text, const int mark)
 	}
 	/* Fall through */
 error:
-	cb_error (_("Invalid X literal: %s"), text);
+	cb_error (_("Invalid %c literal: %s"), 'X', text);
 	yylval = cb_error_node;
 	return LITERAL;
 }
@@ -1192,7 +1192,7 @@ scan_h (char *text, const int mark)
 	return LITERAL;
 
 error:
-	cb_error (_("Invalid H literal: %s"), text);
+	cb_error (_("Invalid %c literal: %s"), 'H', text);
 	yylval = cb_error_node;
 	return LITERAL;
 }
@@ -1300,7 +1300,7 @@ scan_floating_numeric (const char *text)
 	}
 
 	/* Determine scale */
-	/* Base scale is decimal part of the significand */
+	/* Base scale is decimal part of the significant */
 	scale = (int)size2;
 	/* Adjust according to exponent */
 	if (exponent < 0) {

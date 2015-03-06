@@ -1,7 +1,7 @@
 /*
    Copyright (C) 2001,2002,2003,2004,2005,2006,2007 Keisuke Nishida
    Copyright (C) 2006-2012 Roger While
-   Copyright (C) 2009,2010,2012,2014 Simon Sobisch
+   Copyright (C) 2009,2010,2012,2014,2015 Simon Sobisch
 
    This file is part of GNU Cobol.
 
@@ -54,6 +54,8 @@
 
 #include "cobc.h"
 #include "tree.h"
+
+#include "lib/gettext.h"
 
 #include "libcob.h"
 
@@ -656,7 +658,7 @@ cobc_free(void * mptr)
 {
 #ifdef	COB_TREE_DEBUG
 	if (unlikely(!mptr)) {
-		cobc_abort_pr (_("Call to cobc_free with NULL pointer"));
+		cobc_abort_pr (_("Call to %s with NULL pointer", "cobc_free"));
 		cobc_abort_terminate ();
 	}
 #endif
@@ -671,7 +673,7 @@ cobc_strdup (const char *dupstr)
 
 #ifdef	COB_TREE_DEBUG
 	if (unlikely(!dupstr)) {
-		cobc_abort_pr (_("Call to cobc_strdup with NULL pointer"));
+		cobc_abort_pr (_("Call to %s with NULL pointer", "cobc_strdup"));
 		cobc_abort_terminate ();
 	}
 #endif
@@ -722,7 +724,7 @@ cobc_main_strdup (const char *dupstr)
 
 #ifdef	COB_TREE_DEBUG
 	if (unlikely(!dupstr)) {
-		cobc_abort_pr (_("Call to cobc_main_strdup with NULL pointer"));
+		cobc_abort_pr (_("Call to %s with NULL pointer", "cobc_main_strdup"));
 		cobc_abort_terminate ();
 	}
 #endif
@@ -824,7 +826,7 @@ cobc_parse_strdup (const char *dupstr)
 
 #ifdef	COB_TREE_DEBUG
 	if (unlikely(!dupstr)) {
-		cobc_abort_pr (_("Call to cobc_parse_strdup with NULL pointer"));
+		cobc_abort_pr (_("Call to %s with NULL pointer", "cobc_parse_strdup"));
 		cobc_abort_terminate ();
 	}
 #endif
@@ -925,7 +927,7 @@ cobc_plex_strdup (const char *dupstr)
 
 #ifdef	COB_TREE_DEBUG
 	if (unlikely(!dupstr)) {
-		cobc_abort_pr (_("Call to cobc_plex_strdup with NULL pointer"));
+		cobc_abort_pr (_("Call to %s with NULL pointer", "cobc_plex_strdup"));
 		cobc_abort_terminate ();
 	}
 #endif
@@ -942,7 +944,7 @@ cobc_check_string (const char *dupstr)
 
 #ifdef	COB_TREE_DEBUG
 	if (unlikely(!dupstr)) {
-		cobc_abort_pr (_("Call to cobc_check_string with NULL pointer"));
+		cobc_abort_pr (_("Call to %s with NULL pointer", "cobc_check_string"));
 		cobc_abort_terminate ();
 	}
 #endif
@@ -1279,7 +1281,7 @@ cobc_stradd_dup (const char *str1, const char *str2)
 
 #ifdef	COB_TREE_DEBUG
 	if (unlikely(!str1 || !str2)) {
-		cobc_abort_pr (_("Call to cobc_stradd_dup with NULL pointer"));
+		cobc_abort_pr (_("Call to %s with NULL pointer", "cobc_stradd_dup"));
 		cobc_abort_terminate ();
 	}
 #endif
@@ -1529,7 +1531,7 @@ cobc_print_version (void)
 		PACKAGE_NAME, PACKAGE_VERSION, PATCH_LEVEL);
 	puts ("Copyright (C) 2001,2002,2003,2004,2005,2006,2007 Keisuke Nishida");
 	puts ("Copyright (C) 2006-2012 Roger While");
-	puts ("Copyright (C) 2009,2010,2012,2014 Simon Sobisch");
+	puts ("Copyright (C) 2009,2010,2012,2014,2015 Simon Sobisch");
 	puts (_("This is free software; see the source for copying conditions.  There is NO\n\
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."));
 	printf (_("Built     %s"), cb_oc_build_stamp);
@@ -1767,8 +1769,8 @@ cobc_print_usage (char * prog)
 	puts (_("  -x                    Build an executable program"));
 	puts (_("  -m                    Build a dynamically loadable module (default)"));
 	puts (_("  -std=<dialect>        Warnings/features for a specific dialect:"));
-	puts (_("                          cobol2002   Cobol 2002"));
-	puts (_("                          cobol85     Cobol 85"));
+	puts (_("                          cobol2002   COBOL 2002"));
+	puts (_("                          cobol85     COBOL 85"));
 	puts (_("                          ibm         IBM Compatible"));
 	puts (_("                          mvs         MVS Compatible"));
 	puts (_("                          bs2000      BS2000 Compatible"));
@@ -3192,11 +3194,11 @@ preprocess (struct filename *fn)
 					stderr);
 				putc ('\n', stderr);
 #ifdef	_WIN32
-				fputs (_("Check that 'cobxref' is in %%PATH%%"),
-					stderr);
+				fprintf (stderr, _("Check that 'cobxref' is in %s"),
+					"%%PATH%%");
 #else
-				fputs (_("Check that 'cobxref' is in $PATH"),
-					stderr);
+				fprintf (stderr, _("Check that 'cobxref' is in %s"),
+					"$PATH");
 #endif
 				putc ('\n', stderr);
 				fputs (_("No listing produced"),
@@ -3891,6 +3893,11 @@ main (int argc, char **argv)
 	struct sigaction	sa;
 	struct sigaction	osa;
 #endif
+#ifdef	ENABLE_NLS
+	struct stat	localest;
+	const char* localedir;
+#endif
+
 
 	file_list = NULL;
 	cb_listing_file = NULL;
@@ -4039,7 +4046,14 @@ main (int argc, char **argv)
 #endif
 
 #ifdef	ENABLE_NLS
-	bindtextdomain (PACKAGE, LOCALEDIR);
+	localedir = getenv("LOCALEDIR");
+	if (localedir != NULL
+	&& !stat (localedir, &localest)
+	&& (S_ISDIR (localest.st_mode))) {
+		bindtextdomain (PACKAGE, localedir);
+	} else {
+		bindtextdomain (PACKAGE, LOCALEDIR);
+	}
 	textdomain (PACKAGE);
 #endif
 
@@ -4266,7 +4280,7 @@ main (int argc, char **argv)
 
 	if (output_name && cb_compile_level < CB_LEVEL_LIBRARY &&
 	    (argc - iargs) > 1) {
-		cobc_err_exit (_("-o option invalid in this combination"));
+		cobc_err_exit (_("%s option invalid in this combination"), "-o");
 	}
 
 	if (cb_flag_notrunc) {

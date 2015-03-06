@@ -163,6 +163,10 @@
 	  Computing COMP-3 failed in MSVC-build versions,
 	  in output_storage() calls '%' should be '%%'.
 
+2014-03-10  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
+
+	* cobc.c: support for user-defined LOCALEDIR via environment
+
 2014-03-07  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
 	* field.c : Added check for maximum size of group/alphanumeric items

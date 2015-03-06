@@ -665,7 +665,7 @@ set_choice:
 		p++;
 		size = strlen (p) - 1;
 		if (p[size] != quote) {
-			cb_error (_("Invalid SOURCEFORMAT directive"));
+			cb_error (_("Invalid %s directive"), "SOURCEFORMAT");
 		}
 		p[size] = 0;
 	}
@@ -674,7 +674,7 @@ set_choice:
 	} else if (!strcasecmp (p, "FREE")) {
 		cb_source_format = CB_FORMAT_FREE;
 	} else {
-		cb_error (_("Invalid SOURCEFORMAT directive"));
+		cb_error (_("Invalid %s directive"), "SOURCEFORMAT");
 	}
   }
 | NOFOLDCOPYNAME
@@ -693,7 +693,7 @@ set_choice:
 		p++;
 		size = strlen (p) - 1;
 		if (p[size] != quote) {
-			cb_error (_("Invalid FOLD-COPY-NAME directive"));
+			cb_error (_("Invalid %s directive"), "FOLD-COPY-NAME");
 		}
 		p[size] = 0;
 	}
@@ -702,7 +702,7 @@ set_choice:
 	} else if (!strcasecmp (p, "LOWER")) {
 		cb_fold_copy = COB_FOLD_LOWER;
 	} else {
-		cb_error (_("Invalid FOLD-COPY-NAME directive"));
+		cb_error (_("Invalid %s directive"), "FOLD-COPY-NAME");
 	}
   }
 ;
@@ -733,7 +733,7 @@ format_type:
   }
 | GARBAGE
   {
-	cb_error (_("Invalid SOURCE directive"));
+	cb_error (_("Invalid %s directive"), "SOURCE");
 	YYERROR;
   }
 ;
@@ -798,7 +798,7 @@ define_directive:
   }
 | variable_or_literal
   {
-	cb_error (_("Invalid DEFINE/SET directive"));
+	cb_error (_("Invalid %s directive"), "DEFINE/SET");
   }
 ;
 
@@ -806,7 +806,7 @@ define_directive:
 turn_directive:
   ec_list CHECKING on_or_off
   {
-	cb_warning (_("TURN directive not yet implemented"));
+	cb_warning (_("%s directive not yet implemented"), "TURN");
   }
 ;
 
@@ -869,7 +869,7 @@ if_directive:
   }
 | variable_or_literal
   {
-	cb_error (_("Invalid IF/ELIF directive"));
+	cb_error (_("Invalid %s directive"), "IF/ELIF");
   }
 ;
 
