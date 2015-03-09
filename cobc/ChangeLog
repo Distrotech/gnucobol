@@ -1,4 +1,9 @@
 
+2015-03-09  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
+
+	* typeck.c : added more checks of overlapping MOVE,
+	  generate MOVEs as overlapping if it's not sure it isn't
+
 2015-03-05  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
 	* codegen.c : added check of recursive CALL for INITIAL programs

@@ -345,3 +345,55 @@ AT_CHECK([$COMPILE_ONLY prog.cob], [1], ,
 ])
 
 AT_CLEANUP
+
+
+AT_SETUP([MOVE: Overlapping])
+AT_KEYWORDS([move])
+
+AT_DATA([prog.cob], [
+        IDENTIFICATION DIVISION.
+        PROGRAM-ID. prog.
+        DATA DIVISION.
+        WORKING-STORAGE SECTION.
+        01  STRUCTURE1.
+            05 FIELD1-1  PIC X(5).
+            05 FIELD1-2  PIC X(10).
+        01  STRUCTURE2   REDEFINES STRUCTURE1.
+            05 FIELD2-1  PIC X(10).
+            05 FIELD2-2  PIC X(5).
+        01  FILLER       REDEFINES STRUCTURE1.
+            05 FILLER    PIC X(01).
+            05 FIELD     PIC X(02) OCCURS 7.
+        77  NUMVAR       PIC 9(02) VALUE 1.
+        78  CONST4       VALUE 4.
+        PROCEDURE DIVISION.
+           MOVE FIELD1-2 TO STRUCTURE1.
+           MOVE FIELD1-2 TO FIELD1-1.
+           MOVE FIELD1-1 TO FIELD1-2, FIELD2-2.
+           MOVE FIELD1-2 TO FIELD2-1.
+           MOVE FIELD2-1 TO FIELD2-2.
+           MOVE FIELD2-1   (2:5) TO FIELD1-2.
+           MOVE STRUCTURE1 (2:4) TO STRUCTURE1 (5:4).
+           MOVE STRUCTURE1 (2:4) TO STRUCTURE1 (6:4).
+           MOVE STRUCTURE1 (1:NUMVAR)  TO STRUCTURE1 (3:13).
+           MOVE STRUCTURE1 (CONST4:2) TO STRUCTURE1 (3:2).
+           MOVE STRUCTURE1 (6:4) TO STRUCTURE1 (2:4).
+           MOVE STRUCTURE1 (6:4) TO STRUCTURE1 (2: ).
+           MOVE FIELD (6)   TO STRUCTURE1 (13:2).
+           MOVE FIELD (5)   TO STRUCTURE1 (13:2).
+           MOVE FIELD (NUMVAR)   TO STRUCTURE1 (13:2).
+           MOVE FIELD (CONST4)   TO STRUCTURE1 (13:2).
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE prog.cob], [0], , [prog.cob: 18: Warning: Overlapping MOVE may produce unpredictable results
+prog.cob: 21: Warning: Overlapping MOVE may produce unpredictable results
+prog.cob: 23: Warning: Overlapping MOVE may produce unpredictable results
+prog.cob: 24: Warning: Overlapping MOVE may produce unpredictable results
+prog.cob: 27: Warning: Overlapping MOVE may produce unpredictable results
+prog.cob: 29: Warning: Overlapping MOVE may produce unpredictable results
+prog.cob: 30: Warning: Overlapping MOVE may produce unpredictable results
+])
+AT_CHECK([./prog], [0], [], [])
+
+AT_CLEANUP
