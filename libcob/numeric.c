@@ -2635,11 +2635,13 @@ cob_exit_numeric (void)
 	cob_decimal	*d1;
 	size_t		i;
 
-	d1 = cob_decimal_base;
-	for (i = 0; i < COB_MAX_DEC_STRUCT; d1++, i++) {
-		mpz_clear (d1->value);
+	if (cob_decimal_base) {
+		d1 = cob_decimal_base;
+		for (i = 0; i < COB_MAX_DEC_STRUCT; d1++, i++) {
+			mpz_clear (d1->value);
+		}
+		cob_free (cob_decimal_base);
 	}
-	cob_free (cob_decimal_base);
 
 	mpz_clear (cob_d_remainder.value);
 

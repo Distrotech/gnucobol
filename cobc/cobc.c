@@ -2088,7 +2088,7 @@ process_command_line (const int argc, char **argv)
 			if (strlen (cob_optarg) > COB_SMALL_MAX) {
 				cobc_err_exit (COBC_INV_PAR , "-conf");
 			}
-			sub_ret = cb_load_conf (cob_optarg, 1, 0);
+			sub_ret = cb_load_conf (cob_optarg, 0);
 			if (sub_ret != 0) ret = sub_ret;
 			break;
 

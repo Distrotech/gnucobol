@@ -5846,13 +5846,15 @@ cob_exit_intrinsic (void)
 	mpz_clear (cob_mpzt);
 	mpz_clear (cob_mexp);
 
-	calc_temp = calc_base;
-	for (i = 0; i < COB_DEPTH_LEVEL; ++i, ++calc_temp) {
-		if (calc_temp->calc_field.data) {
-			cob_free (calc_temp->calc_field.data);
+	if (calc_base) {
+		calc_temp = calc_base;
+		for (i = 0; i < COB_DEPTH_LEVEL; ++i, ++calc_temp) {
+			if (calc_temp->calc_field.data) {
+				cob_free (calc_temp->calc_field.data);
+			}
 		}
+		cob_free (calc_base);
 	}
-	cob_free (calc_base);
 }
 
 void

@@ -191,7 +191,7 @@
 extern "C" {
 #endif
 
-/* Structure with pointers to the current runtime variables. */
+/* Structure with pointers to the value of runtime variables during evaluation */
 typedef struct runtime_env {
 	/* call.c */
 	unsigned int* physical_cancel;
@@ -232,6 +232,7 @@ typedef struct runtime_env {
 	char* cob_legacy_env;
 
 	/* others */
+	char *cob_runtime_config_env;
 	char *cob_line_trace_env;
 	char* cob_display_warn_env;
 	char* cob_env_mangle_env;

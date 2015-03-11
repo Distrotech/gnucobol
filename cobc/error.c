@@ -1,7 +1,7 @@
 /*
    Copyright (C) 2001,2002,2003,2004,2005,2006,2007 Keisuke Nishida
    Copyright (C) 2007-2012 Roger While
-   Copyright (C) 2014 Simon Sobisch
+   Copyright (C) 2014-2015 Simon Sobisch
 
    This file is part of GNU Cobol.
 
@@ -151,10 +151,10 @@ configuration_error (const char *fname, const int line, const char *fmt, ...)
 	}
 
 	if (fname) {
+		fprintf (stderr, "%s: ", fname);
 		if (line) {
-			fprintf (stderr, "%s:%d: ", fname, line);
+			fprintf (stderr, "%d: ", line);
 		} else {
-			fprintf (stderr, "%s: ", fname);
 		}
 	} else {
 		fputs ("cb_conf: ", stderr);

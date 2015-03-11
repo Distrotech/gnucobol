@@ -1,6 +1,6 @@
 /*
    Copyright (C) 2004-2012 Roger While
-   Copyright (C) 2012,2014 Simon Sobisch
+   Copyright (C) 2012,2014,2015 Simon Sobisch
 
    This file is part of GNU Cobol.
 
@@ -34,14 +34,19 @@
 #include <locale.h>
 #endif
 
-static const char short_options[] = "hirV";
+static int arg_shift = 1;
+
+static const char short_options[] = "hirc:V";
 
 #define	CB_NO_ARG	no_argument
+#define	CB_RQ_ARG	required_argument
+#define	CB_OP_ARG	optional_argument
 
 static const struct option long_options[] = {
 	{"help",		CB_NO_ARG, NULL, 'h'},
 	{"info",		CB_NO_ARG, NULL, 'i'},
 	{"runtime-env",	CB_NO_ARG, NULL, 'r'},
+	{"config",	CB_RQ_ARG, NULL, 'C'},
 	{"version",   	CB_NO_ARG, NULL, 'V'},
 	{NULL, 0, NULL, 0}
 };
@@ -77,7 +82,7 @@ cobcrun_print_version (void)
 	printf ("cobcrun (%s) %s.%d\n",
 		PACKAGE_NAME, PACKAGE_VERSION, PATCH_LEVEL);
 	puts ("Copyright (C) 2004-2012 Roger While");
-	puts ("Copyright (C) 2012,2014 Simon Sobisch");
+	puts ("Copyright (C) 2012,2014,2015 Simon Sobisch");
 	puts (_("This is free software; see the source for copying conditions.  There is NO\n\
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."));
 	printf (_("Built     %s"), buff);
@@ -89,7 +94,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."));
 static void
 cobcrun_print_usage (char * prog)
 {
-	printf (_("Usage: %s PROGRAM [param ...]"), prog);
+	printf (_("Usage: %s [options] PROGRAM [param ...]"), prog);
 	putchar ('\n');
 	printf (_("  or:  %s options"), prog);
 	putchar ('\n');
@@ -98,92 +103,121 @@ cobcrun_print_usage (char * prog)
 	putchar ('\n');
 	putchar ('\n');
 	puts (_("Options:"));
-	puts (_("  -h, -help             Display this help and exit"));
-	puts (_("  -V, -version          Display runtime version"));
-	puts (_("  -i, -info             Display runtime information (build/environment)"));
-	puts (_("  -r, -runtime-env             Display runtime information (build/environment)"));
+	puts (_("  -h, -help                   Display this help and exit"));
+	puts (_("  -V, -version                Display cobcrun and runtime version"));
+	puts (_("  -i, -info                   Display runtime information (build/environment)"));
+	puts (_("  -c <file>, -config=<file>   Set runtime configuration from <file>"));
+	puts (_("  -r, -runtime-env            Display current runtime configuration"));
 }
 
+/* Set current argument from getopt as environment value */
 static int
+cobcrun_setenv (const char * environment)
+{
+#if !HAVE_SETENV
+	int len;
+	char * p;
+
+	len = strlen (environment) + strlen (cob_optarg) + 2U;
+	p = cob_fast_malloc (len);
+	sprintf (p, "%s=%s", environment, cob_optarg);
+	return putenv (p);
+#else
+	return setenv(environment, cob_optarg, 1);
+#endif
+}
+
+void
 process_command_line (int argc, char *argv[])
 {
-	int			c, idx;
-
-	/* At least one option or module name needed */
-	if (argc <= 1) {
-		cobcrun_print_usage (argv[0]);
-		return 1;
-	}
+	int			argnum, c, idx;
 
 #ifdef _WIN32
-	/* Translate first command line argument from WIN to UNIX style */
-	if (strrchr(argv[1], '/') == argv[1]) {
-		argv[1][0] = '-';
-	}
-#endif
-
-	/* Process first command line argument only if not a module */
-	if (argv[1][0] != '-') {
-		return 99;
-	}
-
-	c = cob_getopt_long_long (argc, argv, short_options,
-					  long_options, &idx, 1);
-	if (c > 0) {
-		switch (c) {
-		case '?':
-			/* Unknown option or ambiguous */
-			return 1;
-
-		case 'h':
-			/* --help */
-			cobcrun_print_usage (argv[0]);
-			return 0;
-
-		case 'i':
-			/* --info */
-			print_info ();
-			return 0;
-
-		case 'r':
-			/* --runtime-env */
-			print_runtime_env ();
-			return 0;
-
-		case 'V':
-			/* --version */
-			cobcrun_print_version ();
-			putchar('\n');
-			print_version();
-			return 0;
+	/* Translate command line arguments from WIN to UNIX style */
+	argnum = 1;
+	while (++argnum <= argc) {
+		if (strrchr(argv[argnum - 1], '/') == argv[argnum - 1]) {
+			argv[argnum - 1][0] = '-';
 		}
 	}
+#endif
+	
+	while ((c = cob_getopt_long_long (argc, argv, short_options,
+					  long_options, &idx, 1)) >= 0) {
+		if (c > 0) {
+			switch (c) {
+			case '?':
+				/* Unknown option or ambiguous */
+				exit (1);
+			
+			case 'c':
+			case 'C':
+				/* --config=<file> */
+				if (strlen (cob_optarg) > COB_SMALL_MAX) {
+					fputs (_("Invalid configuration file name"), stderr);
+					putc ('\n', stderr);
+					fflush (stderr);
+					exit (1);
+				}
+				arg_shift++;
+				cobcrun_setenv ("COB_RUNTIME_CONFIG");
+				/* shift argument again if two part argument was used */
+				if (c == 'c') {
+					arg_shift++;
+				}
+				break;
 
-	return 99;
+			case 'h':
+				/* --help */
+				cobcrun_print_usage (argv[0]);
+				exit (0);
+
+			case 'i':
+				/* --info */
+				print_info ();
+				exit (0);
+
+			case 'r':
+				/* --runtime-env */
+				cob_init (0, &argv[0]);
+				print_runtime_env ();
+				exit (0);
+
+			case 'V':
+				/* --version */
+				cobcrun_print_version ();
+				putchar ('\n');
+				print_version();
+				exit (0);
+			}
+		}
+	}
 }
 
 int
 main (int argc, char **argv)
 {
-	int pcl_return;
 	cob_call_union	unifunc;
 
 #ifdef	HAVE_SETLOCALE
 	setlocale (LC_ALL, "");
 #endif
 
-	pcl_return = process_command_line (argc, argv);
+	process_command_line (argc, argv);
 
-	if (pcl_return != 99) {
-		return pcl_return;
+	/* At least one option or module name needed */
+	if (argc <= arg_shift) {
+		cobcrun_print_usage (argv[0]);
+		exit (1);
 	}
-	if (strlen (argv[1]) > 31) {
+
+	if (strlen (argv[arg_shift]) > 31) {
 		fputs (_("PROGRAM name exceeds 31 characters"), stderr);
 		putc ('\n', stderr);
 		return 1;
 	}
-	cob_init (argc - 1, &argv[1]);
-	unifunc.funcvoid = cob_resolve (argv[1]);
+	cob_init (argc - arg_shift, &argv[arg_shift]);
+	unifunc.funcvoid = cob_resolve (argv[arg_shift]);
 	if (unifunc.funcvoid == NULL) {
 		cob_call_error ();
 	}

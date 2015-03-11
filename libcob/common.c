@@ -127,10 +127,10 @@ static char			**cob_argv;
 static struct cob_alloc_cache	*cob_alloc_base;
 static const char		*cob_last_sfile;
 
-static cob_global		*cobglobptr;
+static cob_global		*cobglobptr = NULL;
 static runtime_env		*runtimeptr;
 
-static char			*runtime_err_str;
+static char			*runtime_err_str = NULL;
 
 static const cob_field_attr	const_alpha_attr =
 				{COB_TYPE_ALPHANUMERIC, 0, 0, 0, NULL};
@@ -206,6 +206,12 @@ static struct handlerlist {
 	struct handlerlist	*next;
 	int			(*proc)(char *s);
 } *hdlrs;
+
+/* Configuration includes */
+static struct includelist {
+	struct includelist	*next;
+	const char *name;
+} *conf_includes;
 
 /* Local functions */
 
@@ -1425,7 +1431,10 @@ cob_runtime_error (const char *fmt, ...)
 
 	/* Prefix */
 	if (cob_source_file) {
-		fprintf (stderr, "%s: %u: ", cob_source_file, cob_source_line);
+		fprintf (stderr, "%s: ", cob_source_file);
+		if (cob_source_line) {
+			fprintf (stderr, "%u: ", cob_source_line);
+		}
 	}
 	fputs ("libcob: ", stderr);
 
@@ -3843,18 +3852,18 @@ cob_set_locale (cob_field *locale, const int category)
 char *
 cob_int_to_string (int i, char* number)
 {
-	if(!number) return NULL;
-	sprintf(number, "%i", i);
+	if (!number) return NULL;
+	sprintf (number, "%i", i);
 	return number;
 }
 
 char *
 cob_int_to_formatted_bytestring (int i, char* number)
 {
-	double d;
-	char* strB;
+	double		d;
+	char		*strB;
 
-	if(!number) return NULL;
+	if (!number) return NULL;
 
 	strB = (char*) cob_fast_malloc(3);
 
@@ -3868,45 +3877,47 @@ cob_int_to_formatted_bytestring (int i, char* number)
 		d = 0;
 		strB = (char*) "B";
 	}
-	sprintf(number, "%3.2f %s", d, strB);
+	sprintf (number, "%3.2f %s", d, strB);
 	return number;
 }
 
 char *
 cob_strcat (char* str1, char* str2)
 {
-	size_t l;
-	char *temp1, *temp2;
+	size_t		l;
+	char		*temp1, *temp2;
 
-	l = strlen(str1) + strlen(str2) + 1;
+	l = strlen (str1) + strlen (str2) + 1;
 
 	/*
 	 * If one of the parameter is the buffer itself,
 	 * we copy the buffer before continuing.
 	 */
 	if (str1 == strbuff) {
-		temp1 = cob_strdup(str1);
+		temp1 = cob_strdup (str1);
 	} else {
 		temp1 = str1;
 	}
 	if (str2 == strbuff) {
-		temp2 = cob_strdup(str2);
+		temp2 = cob_strdup (str2);
 	} else {
 		temp2 = str2;
 	}
 
-	cob_free(strbuff);
+	if (strbuff) {
+		cob_free (strbuff);
+	}
 	strbuff = (char*) cob_fast_malloc(l);
 
-	sprintf(strbuff, "%s%s", temp1, temp2);
+	sprintf (strbuff, "%s%s", temp1, temp2);
 	return strbuff;
 }
 
 char *
 cob_strjoin (char** strarray, int size, char* separator)
 {
-	char* result;
-	int i;
+	char	*result;
+	int		i;
 
 	if(!strarray || size <= 0 || !separator) return NULL;
 
@@ -4007,6 +4018,228 @@ var_print (const char *msg, const char *val, const char *default_val,
 }
 
 
+
+#if 0 /* remove if not needed */
+static void
+invalid_value (const char *name, const char *val)
+{
+	cob_runtime_error (
+		_("Invalid value '%s' for configuration entry '%s'"), val, name);
+}
+
+static void
+unsupported_value (const char *name, const char *val)
+{
+	cob_runtime_error (
+		_("Unsupported value '%s' for configuration entry '%s'"), val, name);
+}
+#endif
+
+static int
+cb_config_entry (char *buff, int line)
+{
+	char		*e, *s;
+	char		*env;
+	char		name[COB_MINI_BUFF];
+	char		val[COB_SMALL_BUFF];
+
+	cob_source_line = line;
+
+	/* Get name */
+	s = strpbrk (buff, " \t:=");
+	if (s != NULL) {
+		s[0] = 0;
+		strcpy (name, buff);
+	}
+	
+	/* Get value */
+	/* Move pointer to beginning of value */
+	if (s != NULL) {
+		for (s++; *s && strchr (" \t:=", *s); s++) {
+			;
+		}
+	} else {
+		s = buff;
+	}
+	/* Set end pointer to first # (comment) or end of value */
+	for (e = s + 1; *e && !strchr ("#", *e); e++) {
+		;
+	}
+	/* Remove trailing white-spaces */
+	for (--e; e >= s && strchr (" \t\r\n", *e); e--) {
+		;
+	}
+	e[1] = 0;
+	if (s != buff) {
+		strcpy (val, s);
+	} else {
+		strcpy (name, buff);
+		strcpy (val, "");
+	}
+
+	if (strcasecmp (name, "!copy") == 0) {
+		if (strcmp(val, "") == 0) {
+			cob_runtime_error (_("'%s' needs a value!"), "!copy");
+			return -1;
+		}
+		strcpy (buff, val);
+		return 1;
+	}
+
+	if (strcasecmp (name, "!unset") == 0) {
+		/* unset var */
+		if (strcmp(val, "") == 0) {
+			cob_runtime_error (_("'%s' needs a value!"), "!unset");
+			return -1;
+		}
+		strcpy (name, val);
+		strcpy (val, "");
+	} else {
+		/* don't do anything if environment is already set */
+		if (strcmp(val, "") == 0) {
+			cob_runtime_error (_("WARNING - '%s' without a value - ignored!"), name);
+			return 2;
+		}
+		if ((env = getenv (name)) != NULL &&
+			strcmp(env, "") != 0) {
+			return 0; 
+		}
+	}
+	
+
+#if HAVE_SETENV
+	setenv (name, val, 1);
+#else
+	sprintf (buff, "%s=%s", name, val);
+	putenv (cob_strdup(buff));
+#endif
+
+
+	if (strcmp (val, "") == 0) {
+		/* If runtime configuration table is added:
+		   TODO: check for a setting here and evaluate it */
+	}
+
+	return 0;
+}
+
+int
+cob_load_config_file (const char *config_file)
+{
+	struct includelist	*c, *cc;
+	const unsigned char	*x;
+
+	char		buff[COB_MEDIUM_BUFF];
+
+	int			sub_ret, ret;
+	int			line;
+
+	FILE		*conf_fd;
+	cob_source_file = config_file;
+
+	/* check for recursion */
+	c = cc = conf_includes;
+	while (c != NULL) {
+		if (strcmp(c->name, config_file) == 0) {
+			cob_runtime_error (_("Recursive inclusion!"));
+			return -2;
+		}
+		cc = c;
+		c = c->next;
+	}
+	/* add current entry to list*/
+	c = cob_malloc (sizeof(struct includelist));
+	c->next = NULL;
+	c->name = config_file;
+	if (conf_includes != NULL) {
+		cc->next = c;
+	} else {
+		conf_includes = c;
+	}
+
+	/* Open the configuration file */
+	conf_fd = fopen (config_file, "r");
+	if (conf_fd == NULL) {
+		fflush (stderr);
+		cob_source_line = 0;
+		cob_runtime_error (_("No such file or directory"));
+		return -1;
+	}
+
+
+	/* Read the configuration file */
+	ret = 0;
+	line = 0;
+	while (fgets (buff, COB_SMALL_BUFF, conf_fd)) {
+		line++;
+
+		/* Skip line comments, empty lines */
+		if (buff[0] == '#' || buff[0] == '\n') {
+			continue;
+		}
+
+		/* Skip blank lines */
+		for (x = (const unsigned char *)buff; *x; x++) {
+			if (isgraph (*x)) {
+				break;
+			}
+		}
+		if (!*x) {
+			continue;
+		}
+
+		/* Evaluate config line */
+		sub_ret = cb_config_entry (buff, line);
+
+		/* Include another configuration file */
+		if (sub_ret == 1) {
+			sub_ret = cob_load_config_file (buff);
+			cob_source_file = config_file;
+			if (sub_ret == -2) {
+				ret = -1;
+				cob_source_line = line;
+				cob_runtime_error(_("Configuration file was included here."));
+				break;
+			}
+		}
+		if (sub_ret < ret) ret = sub_ret;
+	}
+	fclose (conf_fd);
+	cob_source_file = NULL;
+
+	/* remove current entry from list*/
+	if (cc) {
+		cc->next = NULL;
+	}
+	cob_free (c);
+
+	return ret;
+}
+
+int
+cob_load_config (void)
+{
+	char		*env;
+	char		conf_file[COB_SMALL_BUFF];
+
+
+	
+	/* If runtime configuration table is added:
+	   TODO: Initialize the configuration table, if needed */
+	
+	/* Get the name for the configuration file */
+	if ((env = getenv ("COB_RUNTIME_CONFIG")) != NULL) {
+		strcpy (conf_file, env);
+		runtimeptr->cob_runtime_config_env
+			= cob_save_env_value(runtimeptr->cob_runtime_config_env, env);
+	} else {
+		sprintf (conf_file, "%s%s%s", COB_CONFIG_DIR, SLASH_STR, "runtime.cfg");
+	}
+
+	conf_includes = NULL;
+	return cob_load_config_file (conf_file);
+}
+
 void
 print_runtime_env (void)
 {
@@ -4019,15 +4252,23 @@ print_runtime_env (void)
 	putchar ('\n');
 	puts (_("All values were resolved from current environment."));
 	putchar ('\n');
-
+	
+#if 0	/* Simon: Should not happen - is it neccessary any where?
+		   We may change this to a runtime error */
 	if (!cob_initialized) {
 		cob_init(cob_argc, cob_argv);
 	}
+#endif
 
 	no_default = (char*) _("No");
 	not_set = (char*) _("not set");
 	intstring = (char*) cob_fast_malloc(10);
 	intstring2 = (char*) cob_fast_malloc(10);
+
+	puts (_("Configuration file"));
+	var_print ("COB_RUNTIME_CONFIG", runtimeptr->cob_runtime_config_env, not_set, 2);
+	putchar ('\n');
+	putchar ('\n');
 
 	puts (_("Handling of CALLs"));
 
@@ -4212,14 +4453,14 @@ print_info (void)
 	putchar ('\n');
 	printf (_("C version %s%s"), OC_C_VERSION_PRF, OC_C_VERSION);
 	putchar ('\n');
+
 	puts (_("GNU Cobol information"));
 
-//	if ((s = getenv ("COB_LIBRARY_PATH")) != NULL) {
-//		var_print ("COB_LIBRARY_PATH",	s, "", 1);
-//	}
 	var_print ("COB_MODULE_EXT", COB_MODULE_EXT, "", 0);
+#if 0 /* only relevant for cobc */
 	var_print ("COB_OBJECT_EXT", COB_OBJECT_EXT, "", 0);
 	var_print ("COB_EXEEXT", COB_EXEEXT, "", 0);
+#endif
 
 #if	defined(USE_LIBDL) || defined(_WIN32)
 	var_print (_("Dynamic loading"),	_("System"), "", 0);
@@ -4280,9 +4521,12 @@ cob_init (const int argc, char **argv)
 #endif
 	int		i;
 
+#if 0	/* Simon: Should not happen - is it neccessary any where?
+		   We may change this to a runtime warning/error */
 	if (cob_initialized) {
 		return;
 	}
+#endif
 
 	cobglobptr = NULL;
 	runtimeptr = (struct runtime_env*) cob_malloc(sizeof(struct runtime_env));
@@ -4369,6 +4613,11 @@ cob_init (const int argc, char **argv)
 		}
 	}
 #endif
+
+	/* Load runtime configuration file */
+	if (unlikely(cob_load_config() < 0)) {
+		cob_stop_run (1);
+	}
 
 #ifdef	ENABLE_NLS
 	localedir = getenv("LOCALEDIR");

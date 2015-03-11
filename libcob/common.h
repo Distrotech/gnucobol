@@ -1208,17 +1208,19 @@ struct cobjmp_buf {
 
 /*******************************/
 /* Functions in common.c */
-COB_EXPIMP void print_runtime_env(void);
-COB_EXPIMP void print_info(void);
-COB_EXPIMP void print_version(void);
-char* cob_int_to_string(int, char*);
-char* cob_int_to_formatted_bytestring(int, char*);
-char* cob_strcat(char*, char*);
-char* cob_strjoin(char**, int, char*);
+COB_EXPIMP void print_info			(void);
+COB_EXPIMP void print_version		(void);
+COB_EXPIMP int cob_load_config		(void);
+COB_EXPIMP void print_runtime_env	(void);
+
+char* cob_int_to_string				(int, char*);
+char* cob_int_to_formatted_bytestring	(int, char*);
+char* cob_strcat					(char*, char*);
+char* cob_strjoin					(char**, int, char*);
 
 /* General functions */
 
-COB_EXPIMP cob_global		*cob_get_global_ptr	(void);
+COB_EXPIMP cob_global			*cob_get_global_ptr	(void);
 
 COB_EXPIMP void	cob_init			(const int, char **);
 COB_EXPIMP void	cob_module_enter		(cob_module **, cob_global **,

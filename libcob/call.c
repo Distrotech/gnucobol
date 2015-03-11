@@ -1223,28 +1223,30 @@ cob_exit_call (void)
 	}
 
 #ifndef	COB_ALT_HASH
-	for (i = 0; i < HASH_SIZE; ++i) {
-		p = call_table[i];
-#else
-		p = call_table;
-#endif
-		for (; p;) {
-			q = p;
-			p = p->next;
-			if (q->name) {
-				cob_free ((void *)q->name);
-			}
-			if (q->path) {
-				cob_free ((void *)q->path);
-			}
-			cob_free (q);
-		}
-#ifndef	COB_ALT_HASH
-	}
 	if (call_table) {
-		cob_free (call_table);
+		for (i = 0; i < HASH_SIZE; ++i) {
+			p = call_table[i];
+#else
+			p = call_table;
+#endif
+			for (; p;) {
+				q = p;
+				p = p->next;
+				if (q->name) {
+					cob_free ((void *)q->name);
+				}
+				if (q->path) {
+					cob_free ((void *)q->path);
+				}
+				cob_free (q);
+			}
+#ifndef	COB_ALT_HASH
+		}
+		if (call_table) {
+			cob_free (call_table);
+		}
+		call_table = NULL;
 	}
-	call_table = NULL;
 #endif
 
 	for (h = base_preload_ptr; h;) {

@@ -1,4 +1,9 @@
 
+2015-03-10  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
+
+	* added new configuration type "runtime configuration": runtime.cfg which
+	  will include all runtime flags and short documentation of these (TODO)
+
 2014-10-29  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
 	* added new configuration acu.conf (most values marked as not verified yet)

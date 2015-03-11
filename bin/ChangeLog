@@ -1,4 +1,9 @@
 
+2015-03-06  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net> 
+
+	* cobcrun.c : new option --config=<file> / -c <file> for setting the
+	  runtime configuration file to be loaded during initialisation
+
 2014-08-25  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net> 
 
 	* cobcrun.c : Changed output of --help for help2man
@@ -7,20 +12,20 @@
 2014-05-06  Philipp Böhme <phi.boehme@googlemail.com>
 
 	* cobcrun.c : Added --runtime-env for displaying current runtime variables.;
-		--version shows both version numbers of cobcrun (new) and libcob.;
-		moved print_info (along with print_var) to libcob/common.c
+	  --version shows both version numbers of cobcrun (new) and libcob.;
+	  moved print_info (along with print_var) to libcob/common.c
 
 2014-02-17  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net> 
 
 	* cobcrun.c : Tweaked --info for showing current settings (environment) along
-		with settings hard-wired during build (COB_xyz),
-		removed entries in output that belongs to cobc only
+	  with settings hard-wired during build (COB_xyz),
+	  removed entries in output that belongs to cobc only
 
 2012-05-09  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
 	* cobcrun.c : Added conversion for enabling options in WIN style;
-		Use getopt for option parsing;
-		Set LC_ALL "" for native messages
+	  Use getopt for option parsing;
+	  Set LC_ALL "" for native messages
 
 2010-06-28  Roger While <simrw@sim-basis.de>
 

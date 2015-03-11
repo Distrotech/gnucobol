@@ -1,4 +1,11 @@
 
+2015-03-10  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
+
+	* commonc.c (cob_load_config, cob_load_config_file, cb_config_entry): new
+	  functions for loading a runtime configuration file
+	* call.c, common.c, intrinsic.c, numeric.c: fix segfault on early exit
+	  during runtime initialisation
+
 2015-02-26  Edward Hart <edward.dan.hart@gmail.com>
 
 	* screenio.c: fixed buffer overflow in screen section ACCEPT
