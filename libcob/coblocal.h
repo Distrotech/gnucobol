@@ -166,6 +166,12 @@
 #define	COB_CHK_PARMS(x,z)
 #endif
 
+/* byte offset to structure member */
+#if !defined(_OFFSET_OF_) && !defined(offsetof)
+#define _OFFSET_OF_
+#define offsetof(s_name,m_name) (int)(long)&(((s_name*)0))->m_name
+#endif
+
 /* Convert a digit (e.g., '0') into an integer (e.g., 0) */
 #define COB_D2I(x)		((x) & 0x0F)
 #if	0	/* RXWRXW - D2I */
@@ -176,86 +182,120 @@
 #define COB_I2D(x)		((x) + '0')
 
 #define	COB_MODULE_PTR		cobglobptr->cob_current_module
-
 #define	COB_TERM_BUFF		cobglobptr->cob_term_buff
-#define	COB_DISP_TO_STDERR	cobglobptr->cob_disp_to_stderr
-#define	COB_BEEP_VALUE		cobglobptr->cob_beep_value
 #define	COB_ACCEPT_STATUS	cobglobptr->cob_accept_status
-#define	COB_TIMEOUT_SCALE	cobglobptr->cob_timeout_scale
-#define	COB_EXTENDED_STATUS	cobglobptr->cob_extended_status
-#define	COB_USE_ESC		cobglobptr->cob_use_esc
 #define	COB_MAX_Y_COORD		cobglobptr->cob_max_y
 #define	COB_MAX_X_COORD		cobglobptr->cob_max_x
+
+#define	COB_DISP_TO_STDERR	cobsetptr->cob_disp_to_stderr
+#define	COB_BEEP_VALUE		cobsetptr->cob_beep_value
+#define	COB_TIMEOUT_SCALE	cobsetptr->cob_timeout_scale
+#define	COB_EXTENDED_STATUS	cobsetptr->cob_extended_status
+#define	COB_USE_ESC		cobsetptr->cob_use_esc
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* Structure with pointers to the value of runtime variables during evaluation */
-typedef struct runtime_env {
+/* Global settings structure */
+
+typedef struct __cob_settings {
+	unsigned int	cob_display_warn;	/* Display warnings */
+	unsigned int	cob_env_mangle;		/* Mangle env names */
+	unsigned int	cob_line_trace;	
+	unsigned int	cob_config_cur;		/* Current runtime.cfg file being processed */
+	unsigned int	cob_config_num;		/* Number of different runtime.cfg files read */
+	char		**cob_config_file;	/* Keep all file names for later reporting */
+	char		*cob_trace_filename;
+	char		*cob_user_name;
+	char		*cob_debug_log;
+
 	/* call.c */
-	unsigned int* physical_cancel;
-	char* physical_cancel_env;
-	unsigned int* name_convert;
-	char* name_convert_env;
-	char** resolve_path;	/* COB_LIBRARY_PATH */
-	char* cob_library_path_env;
-	size_t* resolve_size;	/* Array size of resolve_path*/
-	char* cob_preload_resolved;
-	char* cob_preload_env;
+	unsigned int	physical_cancel;
+	unsigned int	name_convert;
+	char		*cob_preload_str;
+	char		*cob_library_path;
 
 	/* fileio.c */
-	unsigned int* cob_do_sync;
-	char* cob_do_sync_env;
-	unsigned int* cob_ls_uses_cr;
-	char* cob_ls_uses_cr_env;
-	size_t* cob_sort_memory;
-	char* cob_sort_memory_env;
-	size_t* cob_sort_chunk;
-	char* cob_sort_chunk_env;
-	char* cob_file_path;
-	char* cob_file_path_env;
-	unsigned int* cob_ls_nulls;
-	char* cob_ls_nulls_env;
-	unsigned int* cob_ls_fixed;
-	char* cob_ls_fixed_env;
-	size_t* cob_varseq_type;
-	char* cob_varseq_type_env;
-	char* cob_unix_lf_env;
+	unsigned int	cob_unix_lf;		/* Use POSIX LF */
+	unsigned int	cob_do_sync;
+	unsigned int	cob_ls_uses_cr;
+	unsigned int	cob_ls_nulls;
+	unsigned int	cob_ls_fixed;
+	unsigned int	cob_varseq_type;
+	char 		*cob_file_path;
+	char		*bdb_home;
+	size_t		cob_sort_memory;
+	size_t		cob_sort_chunk;
 
 	/* move.c */
-	unsigned int* cob_local_edit;
-	char* cob_local_edit_env;
+	unsigned int	cob_local_edit;
 
 	/* screenio.c */
-	cob_u32_t* cob_legacy;
-	char* cob_legacy_env;
+	unsigned int 	cob_legacy;
+	unsigned int	cob_disp_to_stderr;	/* Redirect to stderr */
+	unsigned int	cob_beep_value;		/* Bell disposition */
+	unsigned int	cob_extended_status;	/* Extended status */
+	unsigned int	cob_use_esc;		/* Check ESC key */
+	int		cob_timeout_scale;	/* timeout scale */
+} cob_settings;
 
-	/* others */
-	char *cob_runtime_config_env;
-	char *cob_line_trace_env;
-	char* cob_display_warn_env;
-	char* cob_env_mangle_env;
 
-    /* others rescanned on SET ENVIRONMENT */
-	char* cob_disp_to_stderr_env;
-	char* cob_beep_str_env;
-	char* cob_timeout_scale_env;
-	char* cob_accept_status_env;
-	char* cob_extended_status_env;
-	char* cob_use_esc_env;
+struct config_enum {
+	char		*match;			/* Alternate word that could be used */
+	char		*value;			/* Internal value for this 'word' */
+};
 
-} runtime_env;
+/* Format of table for capturing run-time config information */
+
+struct config_tbl {
+	char		*env_name;		/* Env Var name */
+	char		*conf_name;		/* Name used in run-time config file */
+	char		*default_val;		/* Default value */
+	struct config_enum *enums;		/* Table of Alternate values */
+	int		env_group;		/* Grouping for display of run-time options */
+	int		data_type;		/* Data type */
+	int		data_loc;		/* Location within structure */
+	int		data_len;		/* Length of referenced field */
+	int		config_num;		/* Set by which runtime.cfg file */
+	int		set_by;			/* value set by a different keyword */
+	long		min_value;		/* Minium accepted value */
+	long		max_value;		/* Maximum accepted value */
+};
+
+#define ENV_NOT		(1 << 1)		/* Negate True/False value setting */
+#define ENV_INT		(1 << 2)		/* an 'int' */
+#define ENV_SIZE	(1 << 3)		/* size; number with K - kb, M - mb, G - GB */
+#define ENV_BOOL	(1 << 4)		/* int boolean; Yes, True, 1, No, False, 0, ... */
+#define ENV_CHAR	(1 << 5)		/* inline 'char[]' field */
+#define ENV_STR		(1 << 6)		/* a pointer to a string */
+#define ENV_PATH	(1 << 7)		/* a pointer to a file system path */
+#define ENV_ENUM	(1 << 8)		/* Value must in 'enum' list */
+
+#define STS_ENVSET	(1 << 15)		/* value set via Env Var */
+#define STS_CNFSET	(1 << 16)		/* value set via config file */
+#define STS_ENVCLR	(1 << 17)		/* value removed from Env Var */
+#define STS_RESET	(1 << 18)		/* value was reset back to default */
+
+#define GRP_HIDE	0
+#define GRP_CALL	1
+#define GRP_FILE	2
+#define GRP_SCREEN	3
+#define GRP_MISC	4
+#define GRP_MAX 	5
+
+#define SETPOS(member)	offsetof(cob_settings,member),sizeof(cobsetptr->member),0,0
+
 
 /* Local function prototypes */
 COB_HIDDEN void		cob_init_numeric	(cob_global *);
-COB_HIDDEN void		cob_init_termio		(cob_global *);
-COB_HIDDEN void		cob_init_fileio		(cob_global *, runtime_env* runtimeptr);
-COB_HIDDEN void		cob_init_call		(cob_global *, runtime_env* runtimeptr);
+COB_HIDDEN void		cob_init_termio		(cob_global *, cob_settings *);
+COB_HIDDEN void		cob_init_fileio		(cob_global *, cob_settings *);
+COB_HIDDEN void		cob_init_call		(cob_global *, cob_settings *);
 COB_HIDDEN void		cob_init_intrinsic	(cob_global *);
 COB_HIDDEN void		cob_init_strings	(void);
-COB_HIDDEN void		cob_init_move		(cob_global *, runtime_env* runtimeptr);
-COB_HIDDEN void		cob_init_screenio	(cob_global *, runtime_env* runtimeptr);
+COB_HIDDEN void		cob_init_move		(cob_global *, cob_settings *);
+COB_HIDDEN void		cob_init_screenio	(cob_global *, cob_settings *);
 
 COB_HIDDEN void		cob_exit_screen		(void);
 
@@ -289,6 +329,7 @@ COB_HIDDEN void		cob_parameter_check	(const char *, const int);
 COB_HIDDEN void		cob_runtime_error	(const char *, ...) COB_A_FORMAT12;
 
 COB_HIDDEN char*	cob_save_env_value	(char*, char*);
+COB_HIDDEN cob_settings *cob_get_settings_ptr	(void);
 
 #ifdef __cplusplus
 }

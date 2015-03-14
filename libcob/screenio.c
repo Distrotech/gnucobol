@@ -90,8 +90,7 @@ struct cob_inp_struct {
 /* Local variables */
 
 static cob_global		*cobglobptr;
-static cob_u32_t		cob_legacy;
-static char*			cob_legacy_env;
+static cob_settings		*cobsetptr;
 
 /* Local variables when screenio activated */
 
@@ -461,23 +460,12 @@ cob_screen_init (void)
 	global_return = 0;
 	cob_current_y = 0;
 	cob_current_x = 0;
-	cob_legacy = 0;
 	fore_color = 0;
 	back_color = 0;
 
 	fflush (stdout);
 	fflush (stderr);
 
-	/*
-	 * TODO: needs Documentation
-	 */
-	if ((s = getenv ("COB_LEGACY")) != NULL) {
-		if (cob_check_env_true(s)) {
-			cob_legacy_env = cob_save_env_value(cob_legacy_env, s);
-
-			cob_legacy = 1U;
-		}
-	}
 
 #if	0	/* RXWRXW sigtin */
 #ifndef _WIN32
@@ -1029,7 +1017,7 @@ cob_prep_input (cob_screen *s)
 		}
 		break;
 	case COB_SCREEN_TYPE_FIELD:
-		cob_screen_puts (s, s->field, cob_legacy);
+		cob_screen_puts (s, s->field, cobsetptr->cob_legacy);
 		if (s->attr & COB_SCREEN_INPUT) {
 			if (totl_index >= COB_INP_FLD_MAX) {
 				return 1;
@@ -1042,10 +1030,10 @@ cob_prep_input (cob_screen *s)
 		}
 		break;
 	case COB_SCREEN_TYPE_VALUE:
-		cob_screen_puts (s, s->value, cob_legacy);
+		cob_screen_puts (s, s->value, cobsetptr->cob_legacy);
 		if (s->occurs) {
 			for (n = 1; n < s->occurs; ++n) {
-				cob_screen_puts (s, s->value, cob_legacy);
+				cob_screen_puts (s, s->value, cobsetptr->cob_legacy);
 			}
 		}
 		break;
@@ -1824,22 +1812,8 @@ cob_sys_get_scr_size (unsigned char *line, unsigned char *col)
 }
 
 void
-cob_init_screenio (cob_global *lptr, runtime_env* runtimeptr)
+cob_init_screenio (cob_global *lptr, cob_settings *sptr)
 {
-	char* s;
-
-	/*
-	 * TODO: needs Documentation
-	 */
-	if ((s = getenv ("COB_LEGACY")) != NULL) {
-		if (cob_check_env_true(s)) {
-			cob_legacy_env = cob_save_env_value(cob_legacy_env, s);
-
-			cob_legacy = 1U;
-		}
-	}
-
 	cobglobptr = lptr;
-	runtimeptr->cob_legacy_env = cob_legacy_env;
-	runtimeptr->cob_legacy = &cob_legacy;
+	cobsetptr  = sptr;
 }

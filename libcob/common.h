@@ -1160,27 +1160,17 @@ typedef struct __cob_global {
 	unsigned int		cob_orig_line;		/* Program source line */
 	unsigned int		cob_got_exception;	/* Exception active */
 	unsigned int		cob_screen_initialized;	/* Screen initialized */
-	unsigned int		cob_unix_lf;		/* Use POSIX LF */
-	unsigned int		cob_display_warn;	/* Display warnings */
-	unsigned int		cob_first_init;		/* First call after init */
-	unsigned int		cob_env_mangle;		/* Mangle env names */
 
 	/* Library routine variables */
 
 	/* screenio / termio */
 	unsigned char		*cob_term_buff;		/* Screen I/O buffer */
-
-	unsigned int		cob_disp_to_stderr;	/* Redirect to stderr */
-	unsigned int		cob_beep_value;		/* Bell disposition */
 	int			cob_accept_status;	/* ACCEPT STATUS */
-	int			cob_timeout_scale;	/* timeout scale */
-	unsigned int		cob_extended_status;	/* Extended status */
-	unsigned int		cob_use_esc;		/* Check ESC key */
+
 	int			cob_max_y;		/* Screen max y */
 	int			cob_max_x;		/* Screen max x */
 
 } cob_global;
-
 
 /* File I/O function pointer structure */
 struct cob_fileio_funcs {

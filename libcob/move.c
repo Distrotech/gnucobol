@@ -40,6 +40,7 @@
 #include "coblocal.h"
 
 static cob_global	*cobglobptr;
+static cob_settings	*cobsetptr;
 
 #if	0	/* RXWRXW local edit symbols */
 static unsigned int	cob_locale_edit;
@@ -1679,40 +1680,8 @@ cob_get_llint (cob_field *f)
 }
 
 void
-cob_init_move (cob_global *lptr, runtime_env* runtimeptr)
+cob_init_move (cob_global *lptr, cob_settings *sptr)
 {
-#if	0	/* RXWRXW - Local edit sym */
-#ifdef	HAVE_LOCALECONV
-	struct lconv	*p;
-	char		*s;
-#endif
-#endif
-
 	cobglobptr = lptr;
-
-#if	0	/* RXWRXW localeconv */
-	cob_locale_edit = 0;
-	cob_lc_dec = 0;
-	cob_lc_thou = 0;
-#ifdef	HAVE_LOCALECONV
-	s = getenv ("COB_LOCALE_NUMERIC_EDITED");
-	if (cob_check_env_true(s)) {
-		p = localeconv ();
-		if (strlen (p->mon_decimal_point) != 1) {
-			return;
-		}
-		if (strlen (p->mon_thousands_sep) != 1) {
-			return;
-		}
-		cob_locale_edit = 1;
-		runtimeptr->cob_local_edit = &cob_local_edit;
-		cob_lc_dec = *((unsigned char *)(p->mon_decimal_point));
-		cob_lc_thou = *((unsigned char *)(p->mon_thousands_sep));
-	}
-#else
-	COB_UNUSED(runtimeptr);
-#endif
-#else
-	COB_UNUSED(runtimeptr);
-#endif
+	cobsetptr  = sptr;
 }

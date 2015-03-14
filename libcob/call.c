@@ -156,14 +156,12 @@ static struct call_hash		**call_table;
 #endif
 
 static struct struct_handle	*base_preload_ptr;
-static char					*cob_preload_env;
-static char					*cob_preload_resolved;
 static struct struct_handle	*base_dynload_ptr;
 
 static cob_global		*cobglobptr;
+static cob_settings		*cobsetptr;
 
 static char			**resolve_path;
-static char			*cob_library_path_env;
 static char			*resolve_error;
 static char			*resolve_alloc;
 static char			*resolve_error_buff;
@@ -176,11 +174,7 @@ static lt_dlhandle		mainhandle;
 
 static size_t			call_lastsize;
 static size_t			resolve_size;
-static unsigned int		name_convert;
-static char*			name_convert_env;
 static unsigned int		cob_jmp_primed;
-static unsigned int		physical_cancel;
-static char*			physical_cancel_env;
 
 #undef	COB_SYSTEM_GEN
 #if 0
@@ -279,7 +273,6 @@ set_resolve_error (const char *msg, const char *entry)
 		  "%s '%s'", msg, entry);
 	resolve_error = resolve_error_buff;
 	cob_set_exception (COB_EC_PROGRAM_NOT_FOUND);
-	cobglobptr->cob_first_init = 0;
 }
 
 static void
@@ -390,7 +383,7 @@ do_cancel_module (struct call_hash *p, struct call_hash **base_hash,
 	if (nocancel) {
 		return;
 	}
-	if (!physical_cancel) {
+	if (!cobsetptr->physical_cancel) {
 		return;
 	}
 	if (p->no_phys_cancel) {
@@ -514,12 +507,12 @@ cache_preload (const char *path)
 #endif
 
 
-	if(!cob_preload_resolved) {
-		cob_preload_resolved = cob_strdup(path);
+	if(!cobsetptr->cob_preload_str) {
+		cobsetptr->cob_preload_str = cob_strdup(path);
 	}
 	else {
-		cob_preload_resolved = cob_strcat((char*) PATHSEPS, cob_preload_resolved);
-		cob_preload_resolved = cob_strcat((char*) path, cob_preload_resolved);
+		cobsetptr->cob_preload_str = cob_strcat((char*) PATHSEPS, cobsetptr->cob_preload_str);
+		cobsetptr->cob_preload_str = cob_strcat((char*) path, cobsetptr->cob_preload_str);
 	}
 
 	return 1;
@@ -671,7 +664,6 @@ cob_resolve_internal (const char *name, const char *dirent,
 		if (func != NULL) {
 			insert (name, func, mainhandle, NULL, NULL, 1);
 			resolve_error = NULL;
-			cobglobptr->cob_first_init = 0;
 			return func;
 		}
 	}
@@ -714,15 +706,15 @@ cob_resolve_internal (const char *name, const char *dirent,
 	s = (const unsigned char *)name;
 
 	/* Check if name needs conversion */
-	if (unlikely(name_convert != 0)) {
+	if (unlikely(cobsetptr->name_convert != 0)) {
 		if (!call_entry2_buff) {
 			call_entry2_buff = cob_malloc ((size_t)COB_SMALL_BUFF);
 		}
 		p = call_entry2_buff;
 		for (; *s; ++s, ++p) {
-			if (name_convert == 1 && isupper (*s)) {
+			if (cobsetptr->name_convert == 1 && isupper (*s)) {
 				*p = (cob_u8_t) tolower (*s);
-			} else if (name_convert == 2 && islower (*s)) {
+			} else if (cobsetptr->name_convert == 2 && islower (*s)) {
 				*p = (cob_u8_t) toupper (*s);
 			} else {
 				*p = *s;
@@ -1285,7 +1277,7 @@ cob_exit_call (void)
 }
 
 void
-cob_init_call (cob_global *lptr, runtime_env* runtimeptr)
+cob_init_call (cob_global *lptr, cob_settings* sptr)
 {
 	char				*buff;
 	char				*s;
@@ -1299,6 +1291,7 @@ cob_init_call (cob_global *lptr, runtime_env* runtimeptr)
 #endif
 
 	cobglobptr = lptr;
+	cobsetptr = sptr;
 
 	base_preload_ptr = NULL;
 	base_dynload_ptr = NULL;
@@ -1314,9 +1307,7 @@ cob_init_call (cob_global *lptr, runtime_env* runtimeptr)
 	call_table = NULL;
 	call_lastsize = 0;
 	resolve_size = 0;
-	name_convert = 0;
 	cob_jmp_primed = 0;
-	physical_cancel = 0;
 
 #ifndef	HAVE_DESIGNATED_INITS
 	memset (valid_char, 0, sizeof(valid_char));
@@ -1335,43 +1326,13 @@ cob_init_call (cob_global *lptr, runtime_env* runtimeptr)
 	call_filename_buff = cob_malloc ((size_t)COB_NORMAL_BUFF);
 	call_entry_buff = cob_malloc ((size_t)COB_SMALL_BUFF);
 
-	s = getenv ("COB_PHYSICAL_CANCEL");
-	if (s) {
-		physical_cancel_env = cob_save_env_value(physical_cancel_env, s);
-
-		if (*s == 'Y' || *s == 'y' || *s == '1') {
-			physical_cancel = 1;
-		}
-	} else {
-		s = getenv ("default_cancel_mode");
-		if (s) {
-			if (*s == '0') {
-				physical_cancel = 1;
-			}
-		}
-	}
-
-	s = getenv ("COB_LOAD_CASE");
-	if (s != NULL) {
-		name_convert_env = cob_save_env_value(name_convert_env, s);
-
-		if (strcasecmp (s, "LOWER") == 0) {
-			name_convert = 1;
-		} else if (strcasecmp (s, "UPPER") == 0) {
-			name_convert = 2;
-		}
-	}
-
 	buff = cob_fast_malloc ((size_t)COB_MEDIUM_BUFF);
-	s = getenv ("COB_LIBRARY_PATH");
-	if (s == NULL) {
+	if (cobsetptr->cob_library_path == NULL) {
 		snprintf (buff, (size_t)COB_MEDIUM_MAX, ".%s%s",
 			  PATHSEPS, COB_LIBRARY_PATH);
 	} else {
-		cob_library_path_env = cob_save_env_value(cob_library_path_env, s);
-
 		snprintf (buff, (size_t)COB_MEDIUM_MAX, "%s%s.%s%s",
-			  s, PATHSEPS, PATHSEPS, COB_LIBRARY_PATH);
+			  cobsetptr->cob_library_path, PATHSEPS, PATHSEPS, COB_LIBRARY_PATH);
 	}
 	cob_set_library_path (buff);
 
@@ -1381,11 +1342,9 @@ cob_init_call (cob_global *lptr, runtime_env* runtimeptr)
 	mainhandle = lt_dlopen (NULL);
 #endif
 
-	s = getenv ("COB_PRE_LOAD");
-	if (s != NULL) {
-		cob_preload_env = cob_save_env_value(cob_preload_env, s);
+	if (cobsetptr->cob_preload_str != NULL) {
 
-		p = cob_strdup (s);
+		p = cob_strdup (cobsetptr->cob_preload_str);
 		s = strtok (p, PATHSEPS);
 		for (; s; s = strtok (NULL, PATHSEPS)) {
 #ifdef __OS400__
@@ -1415,13 +1374,4 @@ cob_init_call (cob_global *lptr, runtime_env* runtimeptr)
 	call_buffer = cob_fast_malloc ((size_t)CALL_BUFF_SIZE);
 	call_lastsize = CALL_BUFF_SIZE;
 
-	runtimeptr->physical_cancel = &physical_cancel;
-	runtimeptr->physical_cancel_env = physical_cancel_env;
-	runtimeptr->name_convert = &name_convert;
-	runtimeptr->name_convert_env = name_convert_env;
-	runtimeptr->resolve_path = resolve_path;
-	runtimeptr->resolve_size = &resolve_size;
-	runtimeptr->cob_library_path_env = cob_library_path_env;
-	if(cob_preload_resolved) runtimeptr->cob_preload_resolved = cob_strdup(cob_preload_resolved);
-	runtimeptr->cob_preload_env = cob_preload_env;
 }

@@ -41,6 +41,7 @@
 /* Local variables */
 
 static cob_global		*cobglobptr;
+static cob_settings		*cobsetptr;
 
 static const unsigned short	bin_digits[] =
 	{ 1, 3, 5, 8, 10, 13, 15, 17, 20 };
@@ -338,7 +339,8 @@ cob_accept (cob_field *f)
 }
 
 void
-cob_init_termio (cob_global *lptr)
+cob_init_termio (cob_global *lptr, cob_settings *sptr)
 {
 	cobglobptr = lptr;
+	cobsetptr  = sptr;
 }
