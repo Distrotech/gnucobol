@@ -444,7 +444,6 @@ cob_screen_attr (cob_field *fgc, cob_field *bgc, const int attr)
 static void
 cob_screen_init (void)
 {
-	char	*s;
 
 #ifdef	HAVE_LIBPDCURSES
 	size_t	i;

@@ -242,16 +242,16 @@ typedef struct __cob_settings {
 
 
 struct config_enum {
-	char		*match;			/* Alternate word that could be used */
-	char		*value;			/* Internal value for this 'word' */
+	const char	*match;			/* Alternate word that could be used */
+	const char	*value;			/* Internal value for this 'word' */
 };
 
 /* Format of table for capturing run-time config information */
 
 struct config_tbl {
-	char		*env_name;		/* Env Var name */
-	char		*conf_name;		/* Name used in run-time config file */
-	char		*default_val;		/* Default value */
+	const char	*env_name;		/* Env Var name */
+	const char	*conf_name;		/* Name used in run-time config file */
+	const char	*default_val;		/* Default value */
 	struct config_enum *enums;		/* Table of Alternate values */
 	int		env_group;		/* Grouping for display of run-time options */
 	int		data_type;		/* Data type */

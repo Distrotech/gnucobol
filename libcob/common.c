@@ -152,7 +152,6 @@ static const char		*cob_current_section = NULL;;
 static const char		*cob_current_paragraph = NULL;;
 static const char		*cob_source_file = NULL;;
 static const char		*cob_source_statement = NULL;;
-static const char		*cob_trace_env = NULL;
 static FILE			*cob_trace_file = NULL;
 static unsigned int		cob_source_line = 0;
 
@@ -205,13 +204,14 @@ static struct handlerlist {
 	int			(*proc)(char *s);
 } *hdlrs;
 
-static char *setting_group[] = {" hidden setting ","Call environment","File I/O","Screen I/O","Miscellaneous"};
+static const char *setting_group[] = {" hidden setting ","Call environment","File I/O","Screen I/O","Miscellaneous"};
 
 static char	not_set[] = "not set";
 static struct config_enum lwrupr[] = {{"LOWER","1"},{"UPPER","2"},{not_set,"0"},{NULL,NULL}};
 static struct config_enum beepopts[] = {{"FLASH","1"},{"SPEAKER","2"},{"FALSE","9"},{"NONE","0"},{NULL,NULL}};
 static struct config_enum timeopts[] = {{"1","100"},{"2","10"},{"3","1"},{NULL,NULL}};
 static struct config_enum syncopts[] = {{"P","1"},{NULL,NULL}};
+static struct config_enum varseqopts[] = {{"0","0"},{"1","1"},{"2","2"},{"3","3"},{NULL,NULL}};
 static char	varseq_dflt[8] = "0";
 
 
@@ -236,7 +236,7 @@ static struct config_tbl gc_conf[] = {
 #ifdef  _WIN32
 	{"COB_UNIX_LF","unix_lf",		"0",	NULL,GRP_FILE,ENV_BOOL,SETPOS(cob_unix_lf)},
 #endif
-	{"COB_VARSEQ_FORMAT","varseq_format",	varseq_dflt,NULL,GRP_FILE,ENV_INT,SETPOS(cob_varseq_type)},
+	{"COB_VARSEQ_FORMAT","varseq_format",	varseq_dflt,varseqopts,GRP_FILE,ENV_INT|ENV_ENUM,SETPOS(cob_varseq_type)},
 	{"USERNAME","username",			NULL,	NULL,GRP_MISC,ENV_STR,SETPOS(cob_user_name)},
 	{"LOGNAME","logname",			NULL,	NULL,GRP_HIDE,ENV_STR,SETPOS(cob_user_name)},
 	{"COB_FILE_PATH","file_path",		NULL,	NULL,GRP_FILE,ENV_PATH,SETPOS(cob_file_path)},
@@ -1065,7 +1065,7 @@ cob_rescan_env_vals (void)
 	int		i, j;
 	char		*env, *sv_src_file;
 
-	sv_src_file = cob_source_file;
+	sv_src_file = (char*)cob_source_file;
 	cob_source_file = "environment variables";
 	/* Check for possible environment variables */
 	for (i=0; i < NUM_CONFIG; i++) {
@@ -4144,7 +4144,7 @@ set_config_val(char *value, int pos)
 	if(gc_conf[pos].enums) {		/* Translate 'word' into alternate 'value' */
 		for (i=0; gc_conf[pos].enums[i].match != NULL; i++) {
 			if(strcasecmp(value,gc_conf[pos].enums[i].match) == 0) {
-				ptr = value = gc_conf[pos].enums[i].value;
+				ptr = value = (char*)gc_conf[pos].enums[i].value;
 				break;
 			}
 		}
@@ -4242,13 +4242,13 @@ static char *
 get_config_val(char *value, int pos, char *orgvalue)
 {
 	void 	*data;
-	char	*ptr = value,*str;
+	char	*str;
 	double	dval;
 	long	numval = 0;
 	int	i,data_type,data_loc,data_len;
 	data_type = gc_conf[pos].data_type;
-	data_loc = gc_conf[pos].data_loc;
-	data_len = gc_conf[pos].data_len;
+	data_loc  = gc_conf[pos].data_loc;
+	data_len  = gc_conf[pos].data_len;
 
 	data = (void*)((char *)cobsetptr + data_loc);
 
@@ -4277,7 +4277,7 @@ get_config_val(char *value, int pos, char *orgvalue)
 			else
 				sprintf(value,"%.2f KB",dval/1024.0);
 		} else {
-			sprintf(value,"%d",numval);
+			sprintf(value,"%ld",numval);
 		}
 
 	} else if((data_type & ENV_BOOL)) {	/* Boolean: Yes/No,True/False,... */
@@ -4472,7 +4472,7 @@ cb_config_entry (char *buf, int line)
 		gc_conf[i].set_by = 0;
 		gc_conf[i].config_num = cobsetptr->cob_config_cur - 1;
 		if(gc_conf[i].default_val) {
-			set_config_val(gc_conf[i].default_val,i);
+			set_config_val((char*)gc_conf[i].default_val,i);
 		} else
 		if ((gc_conf[i].data_type & ENV_STR)
 		||  (gc_conf[i].data_type & ENV_PATH)) {	/* String/Path stored as a string */
@@ -4482,7 +4482,7 @@ cb_config_entry (char *buf, int line)
 				free((void*)str);
 			}
 		} else {
-			set_config_val("0",i);
+			set_config_val((char*)"0",i);
 		}
 		return 0;
 	}
@@ -4514,7 +4514,7 @@ cb_config_entry (char *buf, int line)
 	return 0;
 }
 
-int
+static int
 cob_load_config_file (const char *config_file, int isoptional)
 {
 	char			buff[COB_MEDIUM_BUFF];
@@ -4601,7 +4601,7 @@ cob_load_config (void)
 {
 	char		*env;
 	char		conf_file[COB_SMALL_BUFF];
-	int		isoptional = 1, sts, i, j;
+	int		isoptional = 1, sts, i;
 
 	
 	/* Get the name for the configuration file */
@@ -4627,7 +4627,7 @@ cob_load_config (void)
 		if(gc_conf[i].default_val
 		&& !(gc_conf[i].data_type & STS_CNFSET)
 		&& !(gc_conf[i].data_type & STS_ENVSET)) {
-			set_config_val(gc_conf[i].default_val,i);
+			set_config_val((char*)gc_conf[i].default_val,i);
 		}
 	}
 

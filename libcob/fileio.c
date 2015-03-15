@@ -6335,10 +6335,6 @@ cob_exit_fileio (void)
 void
 cob_init_fileio (cob_global *lptr, cob_settings *sptr)
 {
-	char		*s;
-	cob_sli_t	memsiz;
-	int		n;
-	struct	stat	st;
 
 	cobglobptr = lptr;
 	cobsetptr  = sptr;
