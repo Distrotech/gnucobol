@@ -1071,8 +1071,11 @@ cob_rescan_env_vals (void)
 	for (i=0; i < NUM_CONFIG; i++) {
 		if(gc_conf[i].env_name
 		&& (env = getenv(gc_conf[i].env_name)) != NULL) {
-			if(set_config_val(env,i)) {
+			if(*env != 0					/* If *env -> Nul then ignore this */
+			&& set_config_val(env,i)) {
+#if HAVE_SETENV
 				unsetenv(gc_conf[i].env_name);		/* Remove invalid setting */
+#endif
 			} else {
 				gc_conf[i].data_type |= STS_ENVSET;
 				if(gc_conf[i].env_group == GRP_HIDE) {
@@ -4435,8 +4438,15 @@ cb_config_entry (char *buf, int line)
 					break;
 				}
 			}
+#if HAVE_SETENV
+			unsetenv(value);
+#else
+			env = calloc(1,strlen(value)+2);
+			sprintf(env,"%s=",value);
+			putenv(env);
+
+#endif
 		}
-		unsetenv(value);
 		return 0;
 	}
 
@@ -4517,10 +4527,18 @@ cb_config_entry (char *buf, int line)
 static int
 cob_load_config_file (const char *config_file, int isoptional)
 {
-	char			buff[COB_MEDIUM_BUFF];
+	char			buff[COB_MEDIUM_BUFF], filename[COB_MEDIUM_BUFF];
 	int			sub_ret, ret, i;
 	int			line;
 	FILE			*conf_fd;
+
+	for(i=0; config_file[i] != 0 && config_file[i] != SLASH_INT; i++);
+	if(config_file[i] == 0) {			/* Just a name, No directory */
+		if(access(config_file, F_OK) != 0) {	/* and file does not exist */
+			sprintf (filename, "%s%s%s", COB_CONFIG_DIR, SLASH_STR, config_file);
+			config_file = filename;		/* Prefix COB_CONFIG_DIR */
+		}
+	}
 
 	cob_source_file = config_file;
 
