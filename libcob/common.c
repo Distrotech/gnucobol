@@ -350,8 +350,8 @@ cob_exit_common (void)
 	if(cobsetptr) {
 		if(cobsetptr->cob_config_file) {
 			for (i=0; i < cobsetptr->cob_config_num; i++) 
-				free((void*)cobsetptr->cob_config_file[i]);
-			free((void*)cobsetptr->cob_config_file);
+				cob_free((void*)cobsetptr->cob_config_file[i]);
+			cob_free((void*)cobsetptr->cob_config_file);
 		}
 		/* Free all strings pointed to by cobsetptr */
 		for (i=0; i < NUM_CONFIG; i++) {
@@ -360,7 +360,7 @@ cob_exit_common (void)
 				data = (void*)((char *)cobsetptr + gc_conf[i].data_loc);
 				memcpy(&str,data,sizeof(char *));
 				if( str != NULL) {
-					free((void*)str);
+					cob_free((void*)str);
 				}
 			}
 		}
@@ -4043,18 +4043,18 @@ var_print (const char *msg, const char *val, const char *default_val,
 /*
 	Expand a string with environment variable in it
 */
-static char *				/* Return malloced string */
-expand_env_string(
+char *				/* Return malloced string */
+cob_expand_env_string(
 	char	*strval)
 {
-	int	i,j,k,envlen = 2560;
+	int	i,j,k,envlen = 1280;
 	char	*env,*str = strval;
 	char	ename[128],*penv;
-	env = calloc(1,envlen);
+	env = cob_malloc(envlen);
 	if(env) {
 		for (j=k=0; strval[k] != 0; k++) {
 			if(j >= (envlen-128)) {	/* String almost full?; Expand it */
-				envlen += 512;
+				envlen += 256;
 				env = realloc(env,envlen);
 			}
 			if(strval[k] == '$'
@@ -4066,13 +4066,9 @@ expand_env_string(
 					ename[i++] = strval[k];
 				}
 				ename[i++] = 0;
-				if( (penv = getenv(ename)) != NULL) {
-					if((j + strlen(penv)) > (envlen - 128)) {
-						envlen += strlen(penv) + 512;
-						env = realloc(env,envlen);
-					}
-					j += sprintf(&env[j],"%s",penv);
-				} else if(strval[k] == ':') {	/* Copy 'default' value */
+				penv = getenv(ename);
+				if(penv == NULL
+				&& strval[k] == ':') {	/* Copy 'default' value */
 					k++;
 					if(strval[k] == '-') k++;
 					while(strval[k] != '}' && strval[k] != 0) {
@@ -4082,6 +4078,18 @@ expand_env_string(
 						}
 						env[j++] = strval[k++];
 					}
+				} else if(strcmp(ename,"COB_CONFIG_DIR") == 0) {
+					penv = (char*)COB_CONFIG_DIR;
+				} else if(strcmp(ename,"COB_COPY_DIR") == 0) {
+					penv = (char*)COB_COPY_DIR;
+				}
+				if(penv != NULL) {
+					if((j + strlen(penv)) > (envlen - 128)) {
+						envlen += strlen(penv) + 256;
+						env = realloc(env,envlen);
+					}
+					j += sprintf(&env[j],"%s",penv);
+					penv = NULL;
 				}
 				while(strval[k] != '}' && strval[k] != 0)
 					k++;
@@ -4094,7 +4102,7 @@ expand_env_string(
 		}
 		env[j] = 0;
 		str = strdup(env);
-		free(env);
+		cob_free(env);
 	}
 	return str;
 }
@@ -4225,9 +4233,9 @@ set_config_val(char *value, int pos)
 		||(data_type & ENV_PATH)) {	/* String/Path to be stored as a string */
 		memcpy(&str,data,sizeof(char *));
 		if( str != NULL) {
-			free((void*)str);
+			cob_free((void*)str);
 		}
-		str = expand_env_string(value);
+		str = cob_expand_env_string(value);
 		memcpy(data,&str,sizeof(char *));
 
 	} else if((data_type & ENV_CHAR)) {	/* 'char' field inline */
@@ -4409,11 +4417,11 @@ cb_config_entry (char *buf, int line)
 			return 2;
 		}
 		/* check additional value for inline env vars ${varname:-default} */
-		str = expand_env_string(value2);
-		env = calloc(1,strlen(value)+strlen(str)+2);
+		str = cob_expand_env_string(value2);
+		env = cob_malloc(strlen(value)+strlen(str)+2);
 		sprintf(env,"%s=%s",value,str);
 		putenv(env);
-		free(str);
+		cob_free(str);
 		for (i=0; i < NUM_CONFIG; i++) {		/* Set value from config file */
 			if(gc_conf[i].env_name
 			&& strcasecmp(value,gc_conf[i].env_name) == 0) {/* no longer cleared by runtime.cfg */
@@ -4441,7 +4449,7 @@ cb_config_entry (char *buf, int line)
 #if HAVE_SETENV
 			unsetenv(value);
 #else
-			env = calloc(1,strlen(value)+2);
+			env = cob_malloc(strlen(value)+2);
 			sprintf(env,"%s=",value);
 			putenv(env);
 
@@ -4455,9 +4463,9 @@ cb_config_entry (char *buf, int line)
 		if (strcmp(value, "") == 0) {
 			return -1;
 		}
-		str = expand_env_string(value);
+		str = cob_expand_env_string(value);
 		strcpy (buf, str);
-		free(str);
+		cob_free(str);
 		return 1;
 	}
 
@@ -4465,9 +4473,9 @@ cb_config_entry (char *buf, int line)
 		if (strcmp(value, "") == 0) {
 			return -1;
 		}
-		str = expand_env_string(value);
+		str = cob_expand_env_string(value);
 		strcpy (buf, str);
-		free(str);
+		cob_free(str);
 		return 3;
 	}
 
@@ -4489,7 +4497,7 @@ cb_config_entry (char *buf, int line)
 			data = (void*)((char *)cobsetptr + gc_conf[i].data_loc);
 			memcpy(&str,data,sizeof(char *));
 			if( str != NULL) {
-				free((void*)str);
+				cob_free((void*)str);
 			}
 		} else {
 			set_config_val((char*)"0",i);
@@ -4562,7 +4570,7 @@ cob_load_config_file (const char *config_file, int isoptional)
 	}
 	if(conf_fd != NULL) {
 		if(cobsetptr->cob_config_file == NULL) {
-			cobsetptr->cob_config_file = calloc(1, sizeof(char *));
+			cobsetptr->cob_config_file = cob_malloc( sizeof(char *));
 		} else {
 			cobsetptr->cob_config_file = realloc(cobsetptr->cob_config_file, sizeof(char *)*(cobsetptr->cob_config_num+1));
 		}
