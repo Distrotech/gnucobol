@@ -4053,7 +4053,7 @@ cob_expand_env_string(
 	env = cob_malloc(envlen);
 	if(env) {
 		for (j=k=0; strval[k] != 0; k++) {
-			if(j >= (envlen-128)) {	/* String almost full?; Expand it */
+			if(j >= (envlen-128)) {		/* String almost full?; Expand it */
 				envlen += 256;
 				env = realloc(env,envlen);
 			}
@@ -4067,21 +4067,22 @@ cob_expand_env_string(
 				}
 				ename[i++] = 0;
 				penv = getenv(ename);
-				if(penv == NULL
-				&& strval[k] == ':') {	/* Copy 'default' value */
-					k++;
-					if(strval[k] == '-') k++;
-					while(strval[k] != '}' && strval[k] != 0) {
-						if(j >= (envlen-50)) {	/* String almost full?; Expand it */
-							envlen += 128;
-							env = realloc(env,envlen);
+				if(penv == NULL) {
+					if(strval[k] == ':') {	/* Copy 'default' value */
+						k++;
+						if(strval[k] == '-') k++;	/* ${name:-default} */
+						while(strval[k] != '}' && strval[k] != 0) {
+							if(j >= (envlen-50)) {
+								envlen += 128;
+								env = realloc(env,envlen);
+							}
+							env[j++] = strval[k++];
 						}
-						env[j++] = strval[k++];
+					} else if(strcmp(ename,"COB_CONFIG_DIR") == 0) {
+						penv = (char*)COB_CONFIG_DIR;
+					} else if(strcmp(ename,"COB_COPY_DIR") == 0) {
+						penv = (char*)COB_COPY_DIR;
 					}
-				} else if(strcmp(ename,"COB_CONFIG_DIR") == 0) {
-					penv = (char*)COB_CONFIG_DIR;
-				} else if(strcmp(ename,"COB_COPY_DIR") == 0) {
-					penv = (char*)COB_COPY_DIR;
 				}
 				if(penv != NULL) {
 					if((j + strlen(penv)) > (envlen - 128)) {
