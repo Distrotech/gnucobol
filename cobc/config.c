@@ -84,8 +84,8 @@ static struct config_struct {
 /* Configuration includes */
 static struct includelist {
 	struct includelist	*next;
-	const char *name;
-} *conf_includes;
+	const char		*name;
+} *conf_includes = NULL;
 
 #undef	CB_CONFIG_ANY
 #undef	CB_CONFIG_INT
@@ -308,10 +308,9 @@ cb_load_conf_file (const char *conf_file)
 	struct includelist	*c, *cc;
 
 	const unsigned char	*x;
-	unsigned int	i;
 	FILE			*fp;
-	int				sub_ret, ret;
-	int				line;
+	int			sub_ret, ret;
+	int			i, line;
 	char			buff[COB_SMALL_BUFF];
 
 	for (i=0; conf_file[i] != 0 && conf_file[i] != SLASH_INT; i++);
@@ -338,7 +337,7 @@ cb_load_conf_file (const char *conf_file)
 	c = cob_malloc (sizeof(struct includelist));
 	c->next = NULL;
 	c->name = conf_file;
-	if (conf_includes != NULL) {
+	if (cc != NULL) {
 		cc->next = c;
 	} else {
 		conf_includes = c;
@@ -390,6 +389,8 @@ cb_load_conf_file (const char *conf_file)
 	/* remove current entry from list*/
 	if (cc) {
 		cc->next = NULL;
+	} else {
+		conf_includes = NULL;
 	}
 	cob_free (c);
 
