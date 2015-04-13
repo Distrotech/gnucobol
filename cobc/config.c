@@ -316,7 +316,7 @@ cb_load_conf_file (const char *conf_file)
 	for (i=0; conf_file[i] != 0 && conf_file[i] != SLASH_INT; i++);
 	if (conf_file[i] == 0) {			/* Just a name, No directory */
 		if (access(conf_file, F_OK) != 0) {	/* and file does not exist */
-			sprintf (filename, "%s%s%s", COB_CONFIG_DIR, SLASH_STR, conf_file);
+			sprintf (filename, "%s%s%s", cob_config_dir, SLASH_STR, conf_file);
 			if (access(filename, F_OK) == 0) {	/* and prefixed file exist */
 				conf_file = filename;		/* Prefix COB_CONFIG_DIR */
 			}

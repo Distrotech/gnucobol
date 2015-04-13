@@ -74,7 +74,7 @@ AT_DATA([prog.cob], [
 ])
 
 # check if override via -conf works
-AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -conf=cobol2002.conf prog.cob], [0], [],
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -conf=cobol2002.conf prog.cob], [1], [],
 [prog.cob: 4: Error: AUTHOR does not conform to COBOL 2002
 ])
 
@@ -109,7 +109,7 @@ AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -conf=$(pwd)/test.conf prog.cob], [0], [], []
 AT_CLEANUP
 
 
-AT_SETUP([cobc with -std and own configuration file via -conf])
+AT_SETUP([cobc with -std and -conf])
 AT_KEYWORDS([configuration misc])
 
 AT_DATA([test.conf], [
@@ -187,18 +187,8 @@ AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -conf=test.conf -cb_conf=author-paragraph:ok 
 AT_CLEANUP
 
 
-AT_SETUP([cobc configuration checks])
+AT_SETUP([cobc configuration: entries])
 AT_KEYWORDS([configuration misc])
-
-AT_DATA([test.conf], [
-include "default.conf"
-name: "Sample Conf"
-relax-level-hierarchy: yes
-])
-
-AT_DATA([defunc.conf], [
-include "notthere.conf"
-])
 
 AT_DATA([prog.cob], [
        IDENTIFICATION   DIVISION.
@@ -227,6 +217,17 @@ AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -cb_conf=include:notthere.conf prog.cob], [1]
 [Configuration Error
 cb_conf: 'include' not supported with -cb_conf
 ])
+
+AT_CLEANUP
+
+
+AT_SETUP([cobc configuration: conf missing])
+AT_KEYWORDS([configuration misc])
+
+AT_DATA([defunc.conf], [
+include "notthere.conf"
+])
+
 AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -conf=notthere.conf prog.cob], [1], [],
 [Configuration Error
 notthere.conf: No such file or directory
@@ -237,10 +238,59 @@ notthere.conf: No such file or directory
 defunc.conf: 2: Configuration file was included here.
 ])
 
+AT_CLEANUP
+
+
+AT_SETUP([cobc configuration: incomplete])
+AT_KEYWORDS([configuration misc])
+
+AT_DATA([test.conf], [
+name: "Sample Conf"
+])
+
 # check if incomplete configuration result in error
 AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -conf=test.conf prog.cob], [1], [],
 [Configuration Error
-test.conf: stuff
+test.conf: No definition of 'tab-width'
+test.conf: No definition of 'text-column'
+test.conf: No definition of 'word-length'
+test.conf: No definition of 'assign-clause'
+test.conf: No definition of 'binary-size'
+test.conf: No definition of 'binary-byteorder'
+test.conf: No definition of 'standard-define'
+test.conf: No definition of 'filename-mapping'
+test.conf: No definition of 'pretty-display'
+test.conf: No definition of 'binary-truncate'
+test.conf: No definition of 'complex-odo'
+test.conf: No definition of 'indirect-redefines'
+test.conf: No definition of 'larger-redefines-ok'
+test.conf: No definition of 'relaxed-syntax-check'
+test.conf: No definition of 'perform-osvs'
+test.conf: No definition of 'sticky-linkage'
+test.conf: No definition of 'relax-level-hierarchy'
+test.conf: No definition of 'cobol85-reserved'
+test.conf: No definition of 'hostsign'
+test.conf: No definition of 'accept-update'
+test.conf: No definition of 'accept-auto'
+test.conf: No definition of 'author-paragraph'
+test.conf: No definition of 'memory-size-clause'
+test.conf: No definition of 'multiple-file-tape-clause'
+test.conf: No definition of 'label-records-clause'
+test.conf: No definition of 'value-of-clause'
+test.conf: No definition of 'data-records-clause'
+test.conf: No definition of 'top-level-occurs-clause'
+test.conf: No definition of 'synchronized-clause'
+test.conf: No definition of 'goto-statement-without-name'
+test.conf: No definition of 'stop-literal-statement'
+test.conf: No definition of 'debugging-line'
+test.conf: No definition of 'padding-character-clause'
+test.conf: No definition of 'next-sentence-phrase'
+test.conf: No definition of 'eject-statement'
+test.conf: No definition of 'entry-statement'
+test.conf: No definition of 'move-noninteger-to-alphanumeric'
+test.conf: No definition of 'odo-without-to'
+test.conf: No definition of 'section-segments'
+test.conf: No definition of 'alter-statement'
 ])
 
 AT_CLEANUP
