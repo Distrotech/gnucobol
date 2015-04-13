@@ -127,12 +127,13 @@ cobcrun_setenv (const char * environment)
 #endif
 }
 
-void
+static void
 process_command_line (int argc, char *argv[])
 {
-	int			argnum, c, idx;
-
+	int			c, idx;
 #ifdef _WIN32
+	int			argnum;
+
 	/* Translate command line arguments from WIN to UNIX style */
 	argnum = 1;
 	while (++argnum <= argc) {

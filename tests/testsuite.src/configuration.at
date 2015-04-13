@@ -1,0 +1,246 @@
+## Copyright (C) 2014,2015 Simon Sobisch
+## 
+## This file is part of GNU Cobol.
+## 
+## The GNU Cobol compiler is free software: you can redistribute it
+## and/or modify it under the terms of the GNU General Public License
+## as published by the Free Software Foundation, either version 3 of the
+## License, or (at your option) any later version.
+## 
+## GNU Cobol is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+## 
+## You should have received a copy of the GNU General Public License
+## along with GNU Cobol.  If not, see <http://www.gnu.org/licenses/>.
+
+### GNU Cobol Test Suite
+
+
+AT_SETUP([cobc with standard configuration file])
+AT_KEYWORDS([configuration misc])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       AUTHOR. tester.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       PROCEDURE        DIVISION.
+           STOP RUN.
+])
+
+# default configuration permits this extension
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD prog.cob], [0], [],
+[prog.cob: 4: Warning: AUTHOR is obsolete in GNU Cobol
+])
+
+AT_CLEANUP
+
+
+AT_SETUP([cobc with configuration file via -std])
+AT_KEYWORDS([configuration misc])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       AUTHOR. tester.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       PROCEDURE        DIVISION.
+           STOP RUN.
+])
+
+# check if -std loads configuration file and if override works
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -std=cobol2002 prog.cob], [1], [],
+[prog.cob: 4: Error: AUTHOR does not conform to COBOL 2002
+])
+
+AT_CLEANUP
+
+
+AT_SETUP([cobc with standard configuration file via -conf])
+AT_KEYWORDS([configuration misc])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       AUTHOR. tester.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       PROCEDURE        DIVISION.
+           STOP RUN.
+])
+
+# check if override via -conf works
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -conf=cobol2002.conf prog.cob], [0], [],
+[prog.cob: 4: Error: AUTHOR does not conform to COBOL 2002
+])
+
+AT_CLEANUP
+
+
+AT_SETUP([cobc with own configuration file via -conf])
+AT_KEYWORDS([configuration misc])
+
+AT_DATA([test.conf], [
+include "default.conf"
+name: "Sample Conf"
+author-paragraph:                       ok
+])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       AUTHOR. tester.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       PROCEDURE        DIVISION.
+           STOP RUN.
+])
+
+# check if override via -conf works and if include works
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -conf=test.conf prog.cob], [0], [], [])
+
+# check if configuration file loading with full path works
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -conf=$(pwd)/test.conf prog.cob], [0], [], [])
+
+AT_CLEANUP
+
+
+AT_SETUP([cobc with -std and own configuration file via -conf])
+AT_KEYWORDS([configuration misc])
+
+AT_DATA([test.conf], [
+include "default.conf"
+name: "Sample Conf"
+author-paragraph:                       ok
+])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       AUTHOR. tester.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       PROCEDURE        DIVISION.
+           STOP RUN.
+])
+
+# check if override via -conf works and if include works
+AT_CHECK([$COMPILE_ONLY -conf=test.conf prog.cob], [0], [], [])
+
+AT_CLEANUP
+
+
+AT_SETUP([cobc with -cb_conf])
+AT_KEYWORDS([configuration misc])
+
+AT_DATA([test.conf], [
+include "default.conf"
+name: "Sample Conf"
+author-paragraph:   unconformable
+])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       AUTHOR. tester.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       PROCEDURE        DIVISION.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -cb_conf=author-paragraph:ok prog.cob], [0], [], [])
+
+AT_CLEANUP
+
+
+AT_SETUP([cobc with -cb_conf priority])
+AT_KEYWORDS([configuration misc])
+
+AT_DATA([test.conf], [
+include "default.conf"
+name: "Sample Conf"
+author-paragraph:   unconformable
+])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       AUTHOR. tester.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       PROCEDURE        DIVISION.
+           STOP RUN.
+])
+
+# -cb_conf must work
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -cb_conf=author-paragraph:ok prog.cob], [0], [], [])
+
+# -cb_conf must override all (no matter where it's used)
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -cb_conf=author-paragraph:ok -conf=test.conf prog.cob], [0], [], [])
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -conf=test.conf -cb_conf=author-paragraph:ok prog.cob], [0], [], [])
+
+AT_CLEANUP
+
+
+AT_SETUP([cobc configuration checks])
+AT_KEYWORDS([configuration misc])
+
+AT_DATA([test.conf], [
+include "default.conf"
+name: "Sample Conf"
+relax-level-hierarchy: yes
+])
+
+AT_DATA([defunc.conf], [
+include "notthere.conf"
+])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       AUTHOR. tester.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       PROCEDURE        DIVISION.
+           STOP RUN.
+])
+
+# conf entries must be clean
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -cb_conf=author-paragraphok prog.cob], [1], [],
+[Configuration Error
+cb_conf: Invalid configuration 'author-paragraphok'
+])
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -cb_conf=assign-clause:cobol2002 prog.cob], [1], [],
+[Configuration Error
+cb_conf: Unsupported value 'cobol2002' for configuration tag 'assign-clause'
+])
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -cb_conf=assign-clause:cobol-2002 prog.cob], [1], [],
+[Configuration Error
+cb_conf: Invalid value 'cobol-2002' for configuration tag 'assign-clause'
+])
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -cb_conf=include:notthere.conf prog.cob], [1], [],
+[Configuration Error
+cb_conf: 'include' not supported with -cb_conf
+])
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -conf=notthere.conf prog.cob], [1], [],
+[Configuration Error
+notthere.conf: No such file or directory
+])
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -conf=defunc.conf prog.cob], [1], [],
+[Configuration Error
+notthere.conf: No such file or directory
+defunc.conf: 2: Configuration file was included here.
+])
+
+# check if incomplete configuration result in error
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD -conf=test.conf prog.cob], [1], [],
+[Configuration Error
+test.conf: stuff
+])
+
+AT_CLEANUP

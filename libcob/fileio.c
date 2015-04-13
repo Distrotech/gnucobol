@@ -384,7 +384,6 @@ extern int extfh_relative_delete	(cob_file *);
 #ifdef	WITH_DB
 
 static DB_ENV		*bdb_env;
-static char		*bdb_home;
 static char		*bdb_buff;
 static const char	**bdb_data_dir;
 static void		*record_lock_object;

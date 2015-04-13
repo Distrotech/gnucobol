@@ -1,4 +1,13 @@
 
+2015-03-14  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
+
+	* atlocal.in, atlocal_win : Added setting of COB_RUNTIME_CONFIG
+	* moved tests for checking used binaries (cobc, cobcrun, extras) from
+	  testsuite.src/run_misc.at to testsuite.src/used_binaries.at
+	* moved tests for checking compiler configuration from
+	  testsuite.src/syn_misc.at to testsuite.src/configuration.at, updated
+	  tests and added new ones
+
 2014-12-01  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
 	* testsuite.src/syn_screen.at : Added first testsuite entries for

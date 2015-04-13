@@ -1,0 +1,112 @@
+## Copyright (C) 2014,2015 Simon Sobisch
+##
+## This file is part of GNU Cobol.
+##
+## The GNU Cobol compiler is free software: you can redistribute it
+## and/or modify it under the terms of the GNU General Public License
+## as published by the Free Software Foundation, either version 3 of the
+## License, or (at your option) any later version.
+##
+## GNU Cobol is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with GNU Cobol.  If not, see <http://www.gnu.org/licenses/>.
+
+### GNU Cobol Test Suite
+
+AT_SETUP([Compiler outputs])
+AT_KEYWORDS([runmisc cobc])
+
+AT_DATA([prog.cob],[
+        IDENTIFICATION DIVISION.
+        PROGRAM-ID. prog.
+        DATA DIVISION.
+        WORKING-STORAGE SECTION.
+        01 BLA PIC X(5) VALUE 'bluBb'.
+        PROCEDURE DIVISION.
+        DISPLAY BLA NO ADVANCING END-DISPLAY
+        STOP RUN.
+])
+
+AT_CHECK([$COBC -C prog.cob], [0], [], [])
+AT_CHECK([$COBC -c prog.c], [0], [], [])
+AT_CHECK([$COBC prog.$OBJECT_EXT])
+AT_CHECK([$COBCRUN prog], [0], [bluBb], [])
+AT_CHECK([$COBC -S prog.cob], [0], [], [])
+#AT_CHECK([$COBC prog.$ASM_EXT]) Currently breaking with MSC, deactivated
+AT_CHECK([$COBC -E prog.cob], [0], [], [])
+AT_CHECK([test -f prog.i], [0], [], [])
+AT_CLEANUP
+
+
+AT_SETUP([Source file not found])
+AT_KEYWORDS([runmisc])
+
+AT_CHECK([$COMPILE_ONLY_WITHOUTSTD prog.cob], [1], ,
+[cobc: prog.cob: No such file or directory
+])
+
+AT_CLEANUP
+
+
+AT_SETUP([Using full path for cobc])
+AT_KEYWORDS([runmisc])
+
+AT_DATA([prog.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      prog.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       PROCEDURE        DIVISION.
+           DISPLAY "OK" NO ADVANCING
+           END-DISPLAY.
+           EXIT PROGRAM.
+])
+
+AT_CHECK([$COMPILE "$(pwd)/prog.cob"], [0], , [])
+AT_CHECK([./prog], [0], [OK])
+
+AT_CLEANUP
+
+
+AT_SETUP([cobcrun validation])
+AT_KEYWORDS([runmisc])
+
+AT_DATA([callee.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      callee.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01 WRK-VAR       PIC X(5).
+       01 EXT-VAR       PIC X(5) EXTERNAL.
+       PROCEDURE        DIVISION.
+           DISPLAY EXT-VAR NO ADVANCING
+           END-DISPLAY.
+           MOVE "World" TO EXT-VAR.
+           EXIT PROGRAM.
+])
+
+AT_DATA([caller.cob], [
+       IDENTIFICATION   DIVISION.
+       PROGRAM-ID.      caller.
+       DATA             DIVISION.
+       WORKING-STORAGE  SECTION.
+       01 EXT-VAR       PIC X(5) EXTERNAL.
+       01 WRK-VAR       PIC X(5).
+       PROCEDURE        DIVISION.
+           MOVE "Hello" TO EXT-VAR.
+           CALL "callee"
+           END-CALL.
+           DISPLAY EXT-VAR NO ADVANCING
+           END-DISPLAY.
+           STOP RUN.
+])
+
+AT_CHECK([$COMPILE_MODULE callee.cob], [0], , [])
+AT_CHECK([$COMPILE_MODULE caller.cob], [0], , [])
+AT_CHECK([$COBCRUN caller], [0], [HelloWorld])
+
+AT_CLEANUP

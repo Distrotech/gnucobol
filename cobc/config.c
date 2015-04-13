@@ -301,16 +301,28 @@ cb_config_entry (char *buff, const char *fname, const int line)
 	return 0;
 }
 
-int
+static int
 cb_load_conf_file (const char *conf_file)
 {
+	char			filename[COB_MEDIUM_BUFF];
 	struct includelist	*c, *cc;
 
 	const unsigned char	*x;
+	unsigned int	i;
 	FILE			*fp;
 	int				sub_ret, ret;
 	int				line;
 	char			buff[COB_SMALL_BUFF];
+
+	for (i=0; conf_file[i] != 0 && conf_file[i] != SLASH_INT; i++);
+	if (conf_file[i] == 0) {			/* Just a name, No directory */
+		if (access(conf_file, F_OK) != 0) {	/* and file does not exist */
+			sprintf (filename, "%s%s%s", COB_CONFIG_DIR, SLASH_STR, conf_file);
+			if (access(filename, F_OK) == 0) {	/* and prefixed file exist */
+				conf_file = filename;		/* Prefix COB_CONFIG_DIR */
+			}
+		}
+	}
 
 	/* check for recursion */
 	c = cc = conf_includes;
@@ -366,7 +378,7 @@ cb_load_conf_file (const char *conf_file)
 			sub_ret = cb_load_conf_file (buff);
 			if (sub_ret == -1) {
 				ret = -1;
-				configuration_error (conf_file, 0,
+				configuration_error (conf_file, line,
 						    _("Configuration file was included here."));
 				break;
 			}
@@ -409,11 +421,13 @@ cb_load_conf (const char *fname, const int prefix_dir)
 	ret = cb_load_conf_file (name);
 
 	/* Checks for missing definitions */
-	for (i = 2U; i < CB_CONFIG_SIZE; i++) {
-		if (config_table[i].val == NULL) {
-			configuration_error (fname, 0, _("No definition of '%s'"),
-					config_table[i].name);
-			ret = -1;
+	if (ret == 0) {
+		for (i = 2U; i < CB_CONFIG_SIZE; i++) {
+			if (config_table[i].val == NULL) {
+				configuration_error (fname, 0, _("No definition of '%s'"),
+						config_table[i].name);
+				ret = -1;
+			}
 		}
 	}
 

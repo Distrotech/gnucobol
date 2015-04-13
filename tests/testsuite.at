@@ -25,6 +25,11 @@ AT_COLOR_TESTS
 
 AT_TESTED([cobc])
 
+## General tests of used binaries
+AT_BANNER([General tests of used binaries])
+m4_include([used_binaries.at])
+m4_include([configuration.at])
+
 ## Syntax tests
 AT_BANNER([Syntax tests])
 

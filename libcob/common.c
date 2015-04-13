@@ -155,10 +155,10 @@ static const char		*cob_source_statement = NULL;;
 static FILE			*cob_trace_file = NULL;
 static unsigned int		cob_source_line = 0;
 
-static char			*strbuff = NULL;
+static char				*strbuff = NULL;
 
-static int			cob_process_id = 0;
-static int			cob_temp_iteration = 0;
+static int		cob_process_id = 0;
+static int		cob_temp_iteration = 0;
 
 #if	defined(HAVE_SIGNAL_H) && defined(HAVE_SIG_ATOMIC_T)
 static volatile sig_atomic_t	sig_is_handled = 0;
@@ -268,7 +268,7 @@ cob_exit_common (void)
 	struct cob_alloc_cache	*y;
 	void 	*data;
 	char	*str;
-	int	i;
+	unsigned int	i;
 
 #ifdef	HAVE_SETLOCALE
 	if (cobglobptr->cob_locale_orig) {
@@ -341,8 +341,8 @@ cob_exit_common (void)
 			cob_free ((void *)(cobglobptr->cob_main_argv0));
 		}
 		cob_free (cobglobptr);
+		cobglobptr = NULL;
 	}
-	cobglobptr = NULL;
 	if (cobsetptr->cob_user_name) {
 		cob_free (cobsetptr->cob_user_name);
 		cobsetptr->cob_user_name = NULL;
@@ -4044,20 +4044,19 @@ var_print (const char *msg, const char *val, const char *default_val,
 	Expand a string with environment variable in it
 */
 char *				/* Return malloced string */
-cob_expand_env_string(
-	char	*strval)
+cob_expand_env_string (char *strval)
 {
-	int	i,j,k,envlen = 1280;
+	unsigned int	i,j,k,envlen = 1280;
 	char	*env,*str = strval;
 	char	ename[128],*penv;
 	env = cob_malloc(envlen);
-	if(env) {
+	if (env) {
 		for (j=k=0; strval[k] != 0; k++) {
 			if(j >= (envlen-128)) {		/* String almost full?; Expand it */
 				envlen += 256;
 				env = realloc(env,envlen);
 			}
-			if(strval[k] == '$'
+			if (strval[k] == '$'
 			&& strval[k+1] == '{') {	/* ${envname:default} */
 				k += 2;
 				for (i=0; strval[k] != '}' 
@@ -4067,11 +4066,11 @@ cob_expand_env_string(
 				}
 				ename[i++] = 0;
 				penv = getenv(ename);
-				if(penv == NULL) {
+				if (penv == NULL) {
 					if(strval[k] == ':') {	/* Copy 'default' value */
 						k++;
-						if(strval[k] == '-') k++;	/* ${name:-default} */
-						while(strval[k] != '}' && strval[k] != 0) {
+						if (strval[k] == '-') k++;	/* ${name:-default} */
+						while (strval[k] != '}' && strval[k] != 0) {
 							if(j >= (envlen-50)) {
 								envlen += 128;
 								env = realloc(env,envlen);
@@ -4085,7 +4084,7 @@ cob_expand_env_string(
 					}
 				}
 				if(penv != NULL) {
-					if((j + strlen(penv)) > (envlen - 128)) {
+					if((j + strlen(penv)) > (unsigned int)(envlen - 128)) {
 						envlen += strlen(penv) + 256;
 						env = realloc(env,envlen);
 					}
@@ -4097,7 +4096,7 @@ cob_expand_env_string(
 				if(strval[k] == '}')
 					k++;
 				k--;
-			} else if(!isspace(strval[k])) {
+			} else if(!isspace((unsigned char)strval[k])) {
 				env[j++] = strval[k];
 			}
 		}
@@ -4113,13 +4112,13 @@ static void
 set_value(char *data, int len, long val)
 {
 	if(len == sizeof(int)) {
-		*(int*)data = val;
+		*(int*)data = (int)val;
 	} else if(len == sizeof(short)) {
-		*(short*)data = val;
+		*(short*)data = (short)val;
 	} else if(len == sizeof(long)) {
 		*(long*)data = val;
 	} else {
-		*(char*)data = val;
+		*(char*)data = (char)val;
 	}
 }
 
@@ -4169,18 +4168,23 @@ set_config_val(char *value, int pos)
 
 	if((data_type & ENV_INT) 				/* Integer data */
 	|| (data_type & ENV_SIZE) ) {				/* Size: integer with K, M, G */
-		for (; *ptr != 0 && (isdigit(*ptr) || *ptr == ' '); ptr++) {
+		for (; *ptr != 0 && (isdigit((unsigned char)*ptr) || *ptr == ' '); ptr++) {
 			if(*ptr != ' ')
 				numval = (numval * 10) + (*ptr - '0');
 		}
 		if((data_type & ENV_SIZE)			/* Size: any K, M, G */
 		&& *ptr != 0) {
-			if(toupper(*ptr) == 'K')
+			switch(toupper((unsigned char)*ptr)) {
+			case 'K':
 				numval = numval * 1024;
-			else if(toupper(*ptr) == 'M')
+				break;
+			case 'M':
 				numval = numval * 1024 * 1024;
-			else if(toupper(*ptr) == 'G')
+				break;
+			case 'G':
 				numval = numval * 1024 * 1024 * 1024;
+				break;
+			}
 		}
 		if(gc_conf[pos].min_value > 0
 		&& numval < gc_conf[pos].min_value) {
@@ -4194,24 +4198,21 @@ set_config_val(char *value, int pos)
 						gc_conf[pos].env_name,gc_conf[pos].max_value,value); 
 			return 1;
 		}
-		set_value(data,data_len,numval);
+		set_value((char *)data,data_len,numval);
 
 	} else if((data_type & ENV_BOOL)) {	/* Boolean: Yes/No,True/False,... */
 		numval = -1;
-		switch(toupper(*ptr)) {
+		switch(toupper((unsigned char)*ptr)) {
 		case 'T':	/* True */
 		case 'Y':	/* Yes */
-		case 'J':	/* Ja */
 		case '1':
 			numval = 1;
 			break;
-		case 'O':	/* Oui */
-			if(toupper(ptr[1]) == 'N')	/* ON */
+		case 'O':	/* ON / OFF */
+			if(toupper((unsigned char)ptr[1]) == 'N')	/* ON */
 				numval = 1;
-			else if(toupper(ptr[1]) == 'F') /* OFF */
+			else if(toupper((unsigned char)ptr[1]) == 'F') /* OFF */
 				numval = 0;
-			else if(toupper(ptr[1]) == 'U') /* OUI */
-				numval = 1;
 			break;
 		case 'F':	/* False */
 		case 'N':	/* No */
@@ -4227,13 +4228,13 @@ set_config_val(char *value, int pos)
 		} else {
 			if((data_type & ENV_NOT))	/* Negate logic for actual setting */
 				numval = !numval;
-			set_value(data,data_len,numval);
+			set_value((char *)data,data_len,numval);
 		}
 
 	} else if((data_type & ENV_STR)
 		||(data_type & ENV_PATH)) {	/* String/Path to be stored as a string */
 		memcpy(&str,data,sizeof(char *));
-		if( str != NULL) {
+		if (str != NULL) {
 			cob_free((void*)str);
 		}
 		str = cob_expand_env_string(value);
@@ -4258,20 +4259,21 @@ get_config_val(char *value, int pos, char *orgvalue)
 	double	dval;
 	long	numval = 0;
 	int	i,data_type,data_loc,data_len;
-	data_type = gc_conf[pos].data_type;
-	data_loc  = gc_conf[pos].data_loc;
-	data_len  = gc_conf[pos].data_len;
+
+	data_type	= gc_conf[pos].data_type;
+	data_loc	= gc_conf[pos].data_loc;
+	data_len	= gc_conf[pos].data_len;
 
 	data = (void*)((char *)cobsetptr + data_loc);
 
 	strcpy(value,"Unknown");
 	strcpy(orgvalue,"");
 	if((data_type & ENV_INT)) {				/* Integer data */
-		numval = get_value(data,data_len);
+		numval = get_value((char *)data,data_len);
 		sprintf(value,"%ld",numval);
 
 	} else if((data_type & ENV_SIZE)) {			/* Size: integer with K, M, G */
-		numval = get_value(data,data_len);
+		numval = get_value((char *)data,data_len);
 		dval = numval;
 		if(numval > (1024 * 1024 * 1024)) {
 			if((numval % (1024 * 1024 * 1024)) == 0)
@@ -4293,7 +4295,7 @@ get_config_val(char *value, int pos, char *orgvalue)
 		}
 
 	} else if((data_type & ENV_BOOL)) {	/* Boolean: Yes/No,True/False,... */
-		numval = get_value(data,data_len);
+		numval = get_value((char *)data,data_len);
 		if((data_type & ENV_NOT))
 			numval = !numval;
 		if(numval)
@@ -4318,7 +4320,7 @@ get_config_val(char *value, int pos, char *orgvalue)
 	} else if((data_type & ENV_CHAR)) {	/* 'char' field inline */
 		if(*(char*)data == 0) {
 			strcpy(value,"Nul");
-		} else if(isprint(*(char*)data)) {
+		} else if(isprint(*(unsigned char*)data)) {
 			sprintf(value,"'%s'",(char*)data);
 		} else {
 			sprintf(value,"0x%02X",*(char*)data);
@@ -4368,28 +4370,28 @@ cb_config_entry (char *buf, int line)
 	for (j=strlen(buf); buf[j-1] == '\r' || buf[j-1] == '\n'; )	/* Remove CR LF */
 		buf[--j] = 0;
 
-	for (i=0; isspace(buf[i]); i++);
+	for (i=0; isspace((unsigned char)buf[i]); i++);
 	if (buf[i] == '!') {
 		bang = 1;
 		i++;
-		while(isspace(buf[i])) i++;
+		while(isspace((unsigned char)buf[i])) i++;
 	} else {
 		bang = 0;
 	}
 
-	for (j=0; buf[i] != ':' && !isspace(buf[i]) && buf[i] != '=' && buf[i] != '#'; )
+	for (j=0; buf[i] != ':' && !isspace((unsigned char)buf[i]) && buf[i] != '=' && buf[i] != '#'; )
 		keyword[j++] = buf[i++];
 	keyword[j] = 0;
 
 	strcpy(value,"");
-	while (isspace(buf[i]) || buf[i] == ':' || buf[i] == '=') i++;
+	while (isspace((unsigned char)buf[i]) || buf[i] == ':' || buf[i] == '=') i++;
 	if (buf[i] == '"' 
 	||  buf[i] == '\'') {
 		qt = buf[i++];
 		for (j=0; buf[i] != qt && buf[i] != 0; )
 			value[j++] = buf[i++];
 	} else {
-		for (j=0; !isspace(buf[i]) && buf[i] != '#' && buf[i] != 0; )
+		for (j=0; !isspace((unsigned char)buf[i]) && buf[i] != '#' && buf[i] != 0; )
 			value[j++] = buf[i++];
 	}
 	value[j] = 0;
@@ -4402,14 +4404,14 @@ cb_config_entry (char *buf, int line)
 	||  strcasecmp (keyword,"set") == 0) {
 		/* collect additional value and push into environment */
 		strcpy(value2,"");
-		while(isspace(buf[i]) || buf[i] == ':' || buf[i] == '=') i++;
+		while(isspace((unsigned char)buf[i]) || buf[i] == ':' || buf[i] == '=') i++;
 		if(buf[i] == '"' 
 		|| buf[i] == '\'') {
 			qt = buf[i++];
 			for (j=0; buf[i] != qt && buf[i] != 0; )
 				value2[j++] = buf[i++];
 		} else {
-			for (j=0; !isspace(buf[i]) && buf[i] != '#'; )
+			for (j=0; !isspace((unsigned char)buf[i]) && buf[i] != '#'; )
 				value2[j++] = buf[i++];
 		}
 		value2[j] = 0;
@@ -4537,15 +4539,18 @@ static int
 cob_load_config_file (const char *config_file, int isoptional)
 {
 	char			buff[COB_MEDIUM_BUFF], filename[COB_MEDIUM_BUFF];
-	int			sub_ret, ret, i;
+	int			sub_ret, ret;
+	unsigned int	i;
 	int			line;
 	FILE			*conf_fd;
 
-	for(i=0; config_file[i] != 0 && config_file[i] != SLASH_INT; i++);
-	if(config_file[i] == 0) {			/* Just a name, No directory */
-		if(access(config_file, F_OK) != 0) {	/* and file does not exist */
+	for (i=0; config_file[i] != 0 && config_file[i] != SLASH_INT; i++);
+	if (config_file[i] == 0) {			/* Just a name, No directory */
+		if (access(config_file, F_OK) != 0) {	/* and file does not exist */
 			sprintf (filename, "%s%s%s", COB_CONFIG_DIR, SLASH_STR, config_file);
-			config_file = filename;		/* Prefix COB_CONFIG_DIR */
+			if (access(filename, F_OK) == 0) {	/* and prefixed file exist */
+				config_file = filename;		/* Prefix COB_CONFIG_DIR */
+			}
 		}
 	}
 
@@ -4554,7 +4559,7 @@ cob_load_config_file (const char *config_file, int isoptional)
 	/* check for recursion */
 	for (i=0; i < cobsetptr->cob_config_num; i++) {
 		if (strcmp(cobsetptr->cob_config_file[i], config_file) == 0) {
-			cob_runtime_error (_("Recursive inclusion of %s !"),config_file);
+			cob_runtime_error (_("Recursive inclusion of %s !"), config_file);
 			return -2;
 		}
 	}
@@ -4563,13 +4568,14 @@ cob_load_config_file (const char *config_file, int isoptional)
 	conf_fd = fopen (config_file, "r");
 	if (conf_fd == NULL && !isoptional) {
 		fflush (stderr);
-		if(cobsetptr->cob_config_file)
+		if (cobsetptr->cob_config_file) {
 			cob_source_file = cobsetptr->cob_config_file[cobsetptr->cob_config_num-1];
-		cob_runtime_error (_("Unable to open %s"),config_file);
+	}
+		cob_runtime_error (_("Unable to open %s"), config_file);
 		cob_source_line = 0;
 		return -1;
 	}
-	if(conf_fd != NULL) {
+	if (conf_fd != NULL) {
 		if(cobsetptr->cob_config_file == NULL) {
 			cobsetptr->cob_config_file = cob_malloc( sizeof(char *));
 		} else {
@@ -4586,7 +4592,7 @@ cob_load_config_file (const char *config_file, int isoptional)
 	while ( (conf_fd != NULL)
 	&& 	(fgets (buff, COB_SMALL_BUFF, conf_fd) != NULL) ) {
 		line++;
-		for (i=0; isspace(buff[i]); i++);
+		for (i=0; isspace((unsigned char)buff[i]); i++);
 		if (buff[i] == 0
 		||  buff[i] == '#'
 		||  buff[i] == '\r'
@@ -4610,7 +4616,7 @@ cob_load_config_file (const char *config_file, int isoptional)
 		}
 		if (sub_ret < ret) ret = sub_ret;
 	}
-	if(conf_fd) {
+	if (conf_fd) {
 		fclose (conf_fd);
 		cobsetptr->cob_config_cur--;
 	}
@@ -4640,7 +4646,7 @@ cob_load_config (void)
 		isoptional = 1;			/* If not present, then just use env vars */
 	}
 
-	sprintf(varseq_dflt,"%d",WITH_VARSEQ);		/* Default comes from config.h */
+	sprintf (varseq_dflt, "%d", WITH_VARSEQ);		/* Default comes from config.h */
 	for (i=0; i < NUM_CONFIG; i++) {
 		gc_conf[i].data_type &= ~(STS_ENVSET|STS_CNFSET|STS_ENVCLR);	/* Clear status */
 	}
@@ -4776,7 +4782,7 @@ print_info (void)
 void
 print_runtime_env()
 {
-	int 	i,j,k,vl,dohdg,hdlen,plen;
+	unsigned int 	i,j,k,vl,dohdg,hdlen,plen;
 	char	value[COB_MEDIUM_BUFF],orgvalue[COB_MINI_BUFF];
 
 	strcpy(value,"todo");

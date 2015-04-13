@@ -1,4 +1,10 @@
 
+2015-04-12  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
+
+	* config.c: load configuration file from COB_CONFIG_DIR if file cannot be
+	  accessed in current directory, only check for missing definitions if
+	  configuration file loaded without errors
+
 2015-03-10  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
 	* config.c: support for multiple inclusion of conf files while
