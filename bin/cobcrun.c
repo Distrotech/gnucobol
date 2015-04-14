@@ -36,7 +36,7 @@
 
 static int arg_shift = 1;
 
-static const char short_options[] = "hirc:V";
+static const char short_options[] = "+hirc:V";
 
 #define	CB_NO_ARG	no_argument
 #define	CB_RQ_ARG	required_argument
@@ -143,54 +143,53 @@ process_command_line (int argc, char *argv[])
 	}
 #endif
 	
+	/* c = -1 if idx > argc or argv[idx] has non-option */
 	while ((c = cob_getopt_long_long (argc, argv, short_options,
 					  long_options, &idx, 1)) >= 0) {
-		if (c > 0) {
-			switch (c) {
-			case '?':
-				/* Unknown option or ambiguous */
+		switch (c) {
+		case '?':
+			/* Unknown option or ambiguous */
+			exit (1);
+		
+		case 'c':
+		case 'C':
+			/* --config=<file> */
+			if (strlen (cob_optarg) > COB_SMALL_MAX) {
+				fputs (_("Invalid configuration file name"), stderr);
+				putc ('\n', stderr);
+				fflush (stderr);
 				exit (1);
-			
-			case 'c':
-			case 'C':
-				/* --config=<file> */
-				if (strlen (cob_optarg) > COB_SMALL_MAX) {
-					fputs (_("Invalid configuration file name"), stderr);
-					putc ('\n', stderr);
-					fflush (stderr);
-					exit (1);
-				}
-				arg_shift++;
-				cobcrun_setenv ("COB_RUNTIME_CONFIG");
-				/* shift argument again if two part argument was used */
-				if (c == 'c') {
-					arg_shift++;
-				}
-				break;
-
-			case 'h':
-				/* --help */
-				cobcrun_print_usage (argv[0]);
-				exit (0);
-
-			case 'i':
-				/* --info */
-				print_info ();
-				exit (0);
-
-			case 'r':
-				/* --runtime-env */
-				cob_init (0, &argv[0]);
-				print_runtime_env ();
-				exit (0);
-
-			case 'V':
-				/* --version */
-				cobcrun_print_version ();
-				putchar ('\n');
-				print_version();
-				exit (0);
 			}
+			arg_shift++;
+			cobcrun_setenv ("COB_RUNTIME_CONFIG");
+			/* shift argument again if two part argument was used */
+			if (c == 'c') {
+				arg_shift++;
+			}
+			break;
+
+		case 'h':
+			/* --help */
+			cobcrun_print_usage (argv[0]);
+			exit (0);
+
+		case 'i':
+			/* --info */
+			print_info ();
+			exit (0);
+
+		case 'r':
+			/* --runtime-env */
+			cob_init (0, &argv[0]);
+			print_runtime_env ();
+			exit (0);
+
+		case 'V':
+			/* --version */
+			cobcrun_print_version ();
+			putchar ('\n');
+			print_version();
+			exit (0);
 		}
 	}
 }

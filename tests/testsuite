@@ -973,14 +973,14 @@ at_help_all="1;used_binaries.at:20;Compiler outputs;runmisc cobc;
 358;run_extensions.at:2524;System routine CBL_NOT;extensions;
 359;run_extensions.at:2550;System routine CBL_EQ;extensions;
 360;run_extensions.at:2577;System routine CBL_OC_GETOPT;extensions;
-361;run_extensions.at:2912;System routine CBL_COPY_FILE;;
-362;run_extensions.at:2946;System routines for directories;;
-363;run_extensions.at:2987;System routines for files;;
-364;run_extensions.at:3101;Conditional/define directives (1);extensions;
-365;run_extensions.at:3126;Conditional/define directives (2);extensions;
-366;run_extensions.at:3151;Conditional/define directives (3);extensions;
-367;run_extensions.at:3179;Conditional/define directives (4);extensions;
-368;run_extensions.at:3205;Conditional/define directives (5);extensions;
+361;run_extensions.at:3012;System routine CBL_COPY_FILE;;
+362;run_extensions.at:3046;System routines for directories;;
+363;run_extensions.at:3087;System routines for files;;
+364;run_extensions.at:3201;Conditional/define directives (1);extensions;
+365;run_extensions.at:3226;Conditional/define directives (2);extensions;
+366;run_extensions.at:3251;Conditional/define directives (3);extensions;
+367;run_extensions.at:3279;Conditional/define directives (4);extensions;
+368;run_extensions.at:3305;Conditional/define directives (5);extensions;
 369;run_returncode.at:23;RETURN-CODE moving;returncode;
 370;run_returncode.at:49;RETURN-CODE passing;returncode;
 371;run_returncode.at:101;RETURN-CODE nested;returncode;
@@ -31164,7 +31164,7 @@ cat >prog.cob <<'_ATEOF'
 
         IDENTIFICATION DIVISION.
         PROGRAM-ID. prog.
-      *> check combination long and short options
+      *> check combination of long and short options
         DATA DIVISION.
         WORKING-STORAGE SECTION.
            01 LO.
@@ -31183,42 +31183,63 @@ cat >prog.cob <<'_ATEOF'
 
             01 COUNTER PIC 9 VALUE 0.
         PROCEDURE DIVISION.
-            MOVE "jkl" TO SO.
+            MOVE "jkl"     TO SO.
 
-            MOVE "version" TO ONAME(1).
-            MOVE 0 TO HAS-VALUE(1).
-            MOVE "v" TO VAL(1).
+            MOVE "version" TO ONAME     (1).
+            MOVE 0         TO HAS-VALUE (1).
+            MOVE "v"       TO VAL       (1).
 
-            MOVE "verbose" TO ONAME(2).
-            MOVE 0 TO HAS-VALUE(2).
-            MOVE "V" TO VAL(2).
+            MOVE "verbose" TO ONAME     (2).
+            MOVE 0         TO HAS-VALUE (2).
+            MOVE "V"       TO VAL       (2).
 
-            PERFORM WITH TEST BEFORE UNTIL COUNTER > 5
-                CALL 'CBL_OC_GETOPT' USING
-                BY REFERENCE SO LO LONGIND
-                BY VALUE LONG-ONLY
-                BY REFERENCE RETURN-CHAR OPT-VAL
+            PERFORM WITH TEST AFTER
+                    VARYING COUNTER FROM 0 BY 1
+                    UNTIL RETURN-CODE = -1
+               CALL 'CBL_OC_GETOPT' USING
+                  BY REFERENCE SO LO LONGIND
+                  BY VALUE     LONG-ONLY
+                  BY REFERENCE RETURN-CHAR OPT-VAL
+               END-CALL
 
-                IF COUNTER = 0 AND RETURN-CHAR NOT = 'v' THEN
-                    DISPLAY '0-Error: ' RETURN-CHAR
-                END-IF
-                IF COUNTER = 1 AND RETURN-CHAR NOT = 'V' THEN
-                    DISPLAY '1-ERROR: ' RETURN-CHAR
-                END-IF
-                IF COUNTER = 2 AND RETURN-CHAR NOT = 'j' THEN
-                    DISPLAY '2-ERROR: ' RETURN-CHAR
-                END-IF
-                IF COUNTER = 3 AND RETURN-CHAR NOT = 'k' THEN
-                    DISPLAY '3-ERROR: ' RETURN-CHAR
-                END-IF
-                IF COUNTER = 4 AND RETURN-CHAR NOT = 'l' THEN
-                    DISPLAY '4-ERROR: ' RETURN-CHAR
-               END-IF
-
-               ADD 1 TO COUNTER
-            END-PERFORM
+               EVALUATE COUNTER
+                  WHEN 0
+                     IF RETURN-CHAR NOT = 'v' THEN
+                        DISPLAY '0-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 1
+                     IF RETURN-CHAR NOT = 'V' THEN
+                        DISPLAY '1-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 2
+                     IF RETURN-CHAR NOT = 'j' THEN
+                        DISPLAY '2-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 3
+                     IF RETURN-CHAR NOT = 'k' THEN
+                        DISPLAY '3-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 4
+                     IF RETURN-CHAR NOT = 'l' THEN
+                        DISPLAY '4-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 5
+                     IF RETURN-CODE NOT = -1 THEN
+                        MOVE RETURN-CODE TO RET-DISP
+                        DISPLAY 'last RETURN-CODE wrong: ' RET-DISP
+                        END-DISPLAY
+                     END-IF
+                     EXIT PERFORM
+               END-EVALUATE
+            END-PERFORM.
 
             MOVE 0 TO RETURN-CODE.
+
+            IF COUNTER NOT = 5 THEN
+               MOVE RETURN-CODE TO RET-DISP
+               DISPLAY 'CBL_OC_GETOPT returned -1 too early: ' COUNTER
+               END-DISPLAY
+            END-IF.
 
             STOP RUN.
 _ATEOF
@@ -31250,31 +31271,49 @@ cat >prog2.cob <<'_ATEOF'
 
             01 COUNTER PIC 9 VALUE 0.
         PROCEDURE DIVISION.
-            MOVE "version" TO ONAME(1).
-            MOVE 0 TO HAS-VALUE(1).
-            MOVE "v" TO VAL(1).
+            MOVE "version" TO ONAME     (1).
+            MOVE 0         TO HAS-VALUE (1).
+            MOVE "v"       TO VAL       (1).
 
-            MOVE "verbose" TO ONAME(2).
-            MOVE 0 to HAS-VALUE(2).
-            MOVE "V" TO VAL(2).
+            MOVE "verbose" TO ONAME     (2).
+            MOVE 0         TO HAS-VALUE (2).
+            MOVE "V"       TO VAL       (2).
 
-            PERFORM WITH TEST BEFORE UNTIL COUNTER > 2
-                CALL 'CBL_OC_GETOPT' USING
-                BY REFERENCE SO LO LONGIND
-                BY VALUE LONG-ONLY
-                BY REFERENCE RETURN-CHAR OPT-VAL
+            PERFORM WITH TEST AFTER
+                    VARYING COUNTER FROM 0 BY 1
+                    UNTIL RETURN-CODE = -1
+               CALL 'CBL_OC_GETOPT' USING
+                  BY REFERENCE SO LO LONGIND
+                  BY VALUE     LONG-ONLY
+                  BY REFERENCE RETURN-CHAR OPT-VAL
+               END-CALL
 
-                IF COUNTER = 0 AND RETURN-CHAR NOT = '?' THEN
-                    DISPLAY '0-ERROR: ' RETURN-CHAR
-                END-IF
-                IF COUNTER = 1 AND RETURN-CHAR NOT = 'v' THEN
-                    DISPLAY '1-ERROR: ' RETURN-CHAR
-                END-IF
-
-               ADD 1 TO COUNTER
-            END-PERFORM
+               EVALUATE COUNTER
+                  WHEN 0
+                     IF RETURN-CHAR NOT = '?' THEN
+                        DISPLAY '0-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 1
+                     IF RETURN-CHAR NOT = 'v' THEN
+                        DISPLAY '1-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 2
+                     IF RETURN-CODE NOT = -1 THEN
+                        MOVE RETURN-CODE TO RET-DISP
+                        DISPLAY 'last RETURN-CODE wrong: ' RET-DISP
+                        END-DISPLAY
+                     END-IF
+                     EXIT PERFORM
+               END-EVALUATE
+            END-PERFORM.
 
             MOVE 0 TO RETURN-CODE.
+
+            IF COUNTER NOT = 2 THEN
+               MOVE RETURN-CODE TO RET-DISP
+               DISPLAY 'CBL_OC_GETOPT returned -1 too early: ' COUNTER
+               END-DISPLAY
+            END-IF.
 
             STOP RUN.
 _ATEOF
@@ -31302,54 +31341,78 @@ cat >prog3.cob <<'_ATEOF'
 
             01 COUNTER PIC 9 VALUE 0.
         PROCEDURE DIVISION.
-            MOVE "j:k::l" TO SO.
+            MOVE "j:k::l"  TO SO.
 
-            MOVE "version" TO ONAME(1).
-            MOVE 1 TO HAS-VALUE(1).
-            MOVE "v" TO VAL(1).
+            MOVE "version" TO ONAME     (1).
+            MOVE 1         TO HAS-VALUE (1).
+            MOVE "v"       TO VAL       (1).
 
-            MOVE "verbose" TO ONAME(2).
-            MOVE 2 TO HAS-VALUE(2).
-            MOVE "V" TO VAL(2).
+            MOVE "verbose" TO ONAME     (2).
+            MOVE 2         TO HAS-VALUE (2).
+            MOVE "V"       TO VAL       (2).
 
-            MOVE "usage" TO ONAME(3).
-            MOVE 0 TO HAS-VALUE(3).
-            MOVE "u" TO VAL(3).
+            MOVE "usage"   TO ONAME     (3).
+            MOVE 0         TO HAS-VALUE (3).
+            MOVE "u"       TO VAL       (3).
 
-            PERFORM WITH TEST BEFORE UNTIL COUNTER > 6
-                CALL 'CBL_OC_GETOPT' USING
-                BY REFERENCE SO LO LONGIND
-                BY VALUE LONG-ONLY
-                BY REFERENCE RETURN-CHAR OPT-VAL
+            PERFORM WITH TEST AFTER
+                    VARYING COUNTER FROM 0 BY 1
+                    UNTIL RETURN-CODE = -1
+               CALL 'CBL_OC_GETOPT' USING
+                  BY REFERENCE SO LO LONGIND
+                  BY VALUE     LONG-ONLY
+                  BY REFERENCE RETURN-CHAR OPT-VAL
+               END-CALL
 
-                IF COUNTER = 0 AND OPT-VAL(1:4) NOT = 'lang' THEN
-                        DISPLAY '0-ERROR: ' OPT-VAL
-                END-IF
-                IF COUNTER = 1 AND
-                  (OPT-VAL(1:1) NOT = 'k' OR
-                   RETURN-CHAR  NOT = 'V' OR
-                   OPT-VAL(1:4)     = 'kang') THEN
-                        DISPLAY '1-ERROR: ' OPT-VAL ' ' RETURN-CHAR ' '
-                END-IF
-                IF COUNTER = 2 AND RETURN-CHAR NOT = 'u' THEN
-                        DISPLAY '2-ERROR: ' RETURN-CHAR
-                END-IF
-                IF COUNTER = 3 AND (OPT-VAL(1:1) NOT = '5' OR
-                RETURN-CHAR NOT = 'j') THEN
-                        DISPLAY '3-ERROR: ' RETURN-CHAR
-                END-IF
-                IF COUNTER = 4 AND (OPT-VAL(1:1) NOT = '6' OR
-                RETURN-CHAR NOT = 'k') THEN
-                        DISPLAY '4-ERROR: ' RETURN-CHAR
-                END-IF
-                IF COUNTER = 5 AND RETURN-CHAR NOT = 'l' THEN
-                        DISPLAY '5-ERROR: ' RETURN-CHAR
-                END-IF
-
-               ADD 1 TO COUNTER
-            END-PERFORM
+               EVALUATE COUNTER
+                  WHEN 0
+                     IF OPT-VAL(1:4) NOT = 'lang' THEN
+                        DISPLAY '0-ERROR: ' OPT-VAL END-DISPLAY
+                     END-IF
+                  WHEN 1
+                     IF (OPT-VAL(1:1) NOT = 'k' OR
+                         RETURN-CHAR  NOT = 'V' OR
+                         OPT-VAL(1:4)     = 'kang')  THEN
+                        DISPLAY '1-ERROR: ' OPT-VAL ' ' RETURN-CHAR
+                        END-DISPLAY
+                     END-IF
+                  WHEN 2
+                     IF RETURN-CHAR NOT = 'u' THEN
+                        DISPLAY '2-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 3
+                     IF OPT-VAL(1:1) NOT = '5' OR
+                        RETURN-CHAR  NOT = 'j' THEN
+                        DISPLAY '3-ERROR: ' OPT-VAL ' ' RETURN-CHAR
+                        END-DISPLAY
+                     END-IF
+                  WHEN 4
+                     IF OPT-VAL(1:1) NOT = '6' OR
+                        RETURN-CHAR  NOT = 'k' THEN
+                        DISPLAY '4-ERROR: ' OPT-VAL ' ' RETURN-CHAR
+                        END-DISPLAY
+                     END-IF
+                  WHEN 5
+                     IF RETURN-CHAR NOT = 'l' THEN
+                        DISPLAY '5-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 6
+                     IF RETURN-CODE NOT = -1 THEN
+                        MOVE RETURN-CODE TO RET-DISP
+                        DISPLAY 'last RETURN-CODE wrong: ' RET-DISP
+                        END-DISPLAY
+                     END-IF
+                     EXIT PERFORM
+               END-EVALUATE
+            END-PERFORM.
 
             MOVE 0 TO RETURN-CODE.
+
+            IF COUNTER NOT = 6 THEN
+               MOVE RETURN-CODE TO RET-DISP
+               DISPLAY 'CBL_OC_GETOPT returned -1 too early: ' COUNTER
+               END-DISPLAY
+            END-IF.
 
             STOP RUN.
 _ATEOF
@@ -31379,53 +31442,67 @@ cat >prog4.cob <<'_ATEOF'
 
             01 FLAG-VAL PIC X(4).
         procedure division.
-            MOVE "jkl" TO SO.
+            MOVE "jkl"       TO SO.
 
-            MOVE "static" TO ONAME(1).
-            MOVE 0 TO HAS-VALUE(1).
-            SET VALPOINT(1) TO ADDRESS OF FLAG-VAL.
-            MOVE '1' TO VAL(1).
+            MOVE "static"    TO ONAME     (1).
+            MOVE 0           TO HAS-VALUE (1).
+            SET  VALPOINT(1) TO ADDRESS OF FLAG-VAL.
+            MOVE '1'         TO VAL       (1).
 
-            MOVE "dynamic" TO ONAME(2).
-            MOVE 0 TO HAS-VALUE(2).
-            SET VALPOINT(2) TO ADDRESS OF FLAG-VAL.
-            MOVE '0' TO VAL(2).
+            MOVE "dynamic"   TO ONAME     (2).
+            MOVE 0           TO HAS-VALUE (2).
+            SET  VALPOINT(2) TO ADDRESS OF FLAG-VAL.
+            MOVE '0'         TO VAL       (2).
 
-            MOVE "usage" TO ONAME(3).
-            MOVE 1 TO HAS-VALUE(3).
-            MOVE 'u' TO VAL(3).
+            MOVE "usage"     TO ONAME     (3).
+            MOVE 1           TO HAS-VALUE (3).
+            MOVE 'u'         TO VAL       (3).
 
-            PERFORM WITH TEST BEFORE UNTIL COUNTER > 3
-                CALL 'CBL_OC_GETOPT' USING
-                BY REFERENCE SO LO LONGIND
-                BY VALUE LONG-ONLY
-                BY REFERENCE RETURN-CHAR OPT-VAL
+            PERFORM WITH TEST AFTER
+                    VARYING COUNTER FROM 0 BY 1
+                    UNTIL RETURN-CODE = -1
+               CALL 'CBL_OC_GETOPT' USING
+                  BY REFERENCE SO LO LONGIND
+                  BY VALUE     LONG-ONLY
+                  BY REFERENCE RETURN-CHAR OPT-VAL
+               END-CALL
 
-                MOVE RETURN-CODE TO RET-DISP
-
-                IF COUNTER = 0 AND (RETURN-CODE NOT = 0 OR
-                                    FLAG-VAL NOT = '1') THEN
-                    DISPLAY 'RETURN VALUE: ' RET-DISP ' ' FLAG-VAL
-                END-IF
-                IF COUNTER = 1 AND (RETURN-CODE NOT = 0 OR
-                                    FLAG-VAL NOT = '0') THEN
-                    DISPLAY 'RETURN VALUE: ' RET-DISP ' ' FLAG-VAL
-                END-IF
-                IF COUNTER = 2 AND (RETURN-CHAR NOT = 'u' OR
-                                    RETURN-CODE NOT = 2) THEN
-                    DISPLAY 'RETURN VALUE: ' RET-DISP ' ' FLAG-VAL
-                END-IF
-
-               ADD 1 TO COUNTER
-            END-PERFORM
-
-            IF RETURN-CODE NOT = -1
-               MOVE RETURN-CODE TO RET-DISP
-               DISPLAY 'last RETURN-CODE wrong ' RET-DISP
-               END-DISPLAY
-            END-IF
+               EVALUATE COUNTER
+                  WHEN 0
+                     IF RETURN-CODE NOT = 0 OR
+                        FLAG-VAL    NOT = '1' THEN
+                        DISPLAY '0-ERROR: ' RET-DISP ' ' FLAG-VAL
+                        END-DISPLAY
+                     END-IF
+                  WHEN 1
+                     IF RETURN-CODE NOT = 0 OR
+                        FLAG-VAL    NOT = '0' THEN
+                        DISPLAY '1-ERROR: ' RET-DISP ' ' FLAG-VAL
+                        END-DISPLAY
+                     END-IF
+                  WHEN 2
+                     IF RETURN-CHAR NOT = 'u' OR
+                        RETURN-CODE NOT = 2 THEN
+                        DISPLAY '2-ERROR: ' RET-DISP ' ' FLAG-VAL
+                        END-DISPLAY
+                     END-IF
+                  WHEN 3
+                     IF RETURN-CODE NOT = -1 THEN
+                        MOVE RETURN-CODE TO RET-DISP
+                        DISPLAY 'last RETURN-CODE wrong: ' RET-DISP
+                        END-DISPLAY
+                     END-IF
+                     EXIT PERFORM
+               END-EVALUATE
+            END-PERFORM.
 
             MOVE 0 TO RETURN-CODE.
+
+            IF COUNTER NOT = 3 THEN
+               MOVE RETURN-CODE TO RET-DISP
+               DISPLAY 'CBL_OC_GETOPT returned -1 too early: ' COUNTER
+               END-DISPLAY
+            END-IF.
 
             STOP RUN.
 _ATEOF
@@ -31456,76 +31533,99 @@ cat >prog5.cob <<'_ATEOF'
             01 FLAG-VAL PIC 9.
         PROCEDURE DIVISION.
             MOVE "super-long-option-with-more-than-25-bytes"
-            TO ONAME(1).
-            MOVE 0 TO HAS-VALUE(1).
+              TO ONAME(1).
+            MOVE 0   TO HAS-VALUE(1).
             MOVE '1' TO VAL(1).
 
             MOVE "stupid-long-option-with-more-than-25-bytes"
-            TO ONAME(2).
-            MOVE 0 TO HAS-VALUE(2).
+              TO ONAME(2).
+            MOVE 0   TO HAS-VALUE(2).
             MOVE '0' TO VAL(2).
 
-            PERFORM WITH TEST BEFORE UNTIL COUNTER > 2
-                CALL 'CBL_OC_GETOPT' USING
-                BY REFERENCE SO LO LONGIND
-                BY VALUE LONG-ONLY
-                BY REFERENCE RETURN-CHAR OPT-VAL
+            PERFORM WITH TEST AFTER
+                    VARYING COUNTER FROM 0 BY 1
+                    UNTIL RETURN-CODE = -1
+               CALL 'CBL_OC_GETOPT' USING
+                  BY REFERENCE SO LO LONGIND
+                  BY VALUE     LONG-ONLY
+                  BY REFERENCE RETURN-CHAR OPT-VAL
+               END-CALL
 
-      *>          MOVE RETURN-CODE TO RET-DISP
+               EVALUATE COUNTER
+                  WHEN 0
+                  WHEN 1
+                  WHEN 2
+                     CONTINUE
 
-      *>          IF COUNTER = 0 AND RETURN-CODE NOT = 1 THEN
-      *>              DISPLAY 'RETURN VALUE: ' RET-DISP ' ' FLAG-VAL
-      *>          END-IF
-            END-PERFORM
+      *>       MOVE RETURN-CODE TO RET-DISP
 
-      *>      MOVE 0 TO RETURN-CODE.
+      *>       IF COUNTER = 0 AND RETURN-CODE NOT = 1 THEN
+      *>          DISPLAY 'RETURN VALUE: ' RET-DISP ' ' FLAG-VAL
+      *>       END-IF
+                  WHEN 3
+                     IF RETURN-CODE NOT = -1 THEN
+                        MOVE RETURN-CODE TO RET-DISP
+                        DISPLAY 'last RETURN-CODE wrong: ' RET-DISP
+                        END-DISPLAY
+                     END-IF
+                     EXIT PERFORM
+               END-EVALUATE
+            END-PERFORM.
+
+            MOVE 0 TO RETURN-CODE.
+
+            IF COUNTER NOT = 3 THEN
+               MOVE RETURN-CODE TO RET-DISP
+               DISPLAY 'CBL_OC_GETOPT returned -1 too early: ' COUNTER
+               END-DISPLAY
+            END-IF.
 
             STOP RUN.
 _ATEOF
 
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:2894: \$COMPILE prog.cob"
-at_fn_check_prepare_dynamic "$COMPILE prog.cob" "run_extensions.at:2894"
+$as_echo "$at_srcdir/run_extensions.at:2994: \$COMPILE prog.cob"
+at_fn_check_prepare_dynamic "$COMPILE prog.cob" "run_extensions.at:2994"
 ( $at_check_trace; $COMPILE prog.cob
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2894"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2994"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:2895: ./prog --version --verbose -jkl"
-at_fn_check_prepare_trace "run_extensions.at:2895"
+$as_echo "$at_srcdir/run_extensions.at:2995: ./prog --version --verbose -jkl"
+at_fn_check_prepare_trace "run_extensions.at:2995"
 ( $at_check_trace; ./prog --version --verbose -jkl
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2895"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2995"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:2896: \$COMPILE_MODULE prog2.cob"
-at_fn_check_prepare_dynamic "$COMPILE_MODULE prog2.cob" "run_extensions.at:2896"
+$as_echo "$at_srcdir/run_extensions.at:2996: \$COMPILE_MODULE prog2.cob"
+at_fn_check_prepare_dynamic "$COMPILE_MODULE prog2.cob" "run_extensions.at:2996"
 ( $at_check_trace; $COMPILE_MODULE prog2.cob
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2896"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2996"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:2897: \$COBCRUN prog2 --ver --vers"
-at_fn_check_prepare_dynamic "$COBCRUN prog2 --ver --vers" "run_extensions.at:2897"
+$as_echo "$at_srcdir/run_extensions.at:2997: \$COBCRUN prog2 --ver --vers"
+at_fn_check_prepare_dynamic "$COBCRUN prog2 --ver --vers" "run_extensions.at:2997"
 ( $at_check_trace; $COBCRUN prog2 --ver --vers
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
@@ -31534,89 +31634,89 @@ echo >>"$at_stderr"; $as_echo "prog2: option \`--ver' is ambiguous
 " | \
   $at_diff - "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2897"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2997"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:2899: \$COMPILE prog3.cob"
-at_fn_check_prepare_dynamic "$COMPILE prog3.cob" "run_extensions.at:2899"
+$as_echo "$at_srcdir/run_extensions.at:2999: \$COMPILE prog3.cob"
+at_fn_check_prepare_dynamic "$COMPILE prog3.cob" "run_extensions.at:2999"
 ( $at_check_trace; $COMPILE prog3.cob
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2899"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2999"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:2900: ./prog3 --version=lang --verbose=k --usage -j 5 -k6 -l"
-at_fn_check_prepare_trace "run_extensions.at:2900"
+$as_echo "$at_srcdir/run_extensions.at:3000: ./prog3 --version=lang --verbose=k --usage -j 5 -k6 -l"
+at_fn_check_prepare_trace "run_extensions.at:3000"
 ( $at_check_trace; ./prog3 --version=lang --verbose=k --usage -j 5 -k6 -l
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2900"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3000"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:2901: \$COMPILE prog4.cob --free"
-at_fn_check_prepare_dynamic "$COMPILE prog4.cob --free" "run_extensions.at:2901"
+$as_echo "$at_srcdir/run_extensions.at:3001: \$COMPILE prog4.cob --free"
+at_fn_check_prepare_dynamic "$COMPILE prog4.cob --free" "run_extensions.at:3001"
 ( $at_check_trace; $COMPILE prog4.cob --free
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2901"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3001"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:2902: ./prog4 --static --dynamic --usage=boringandtoolongtext"
-at_fn_check_prepare_trace "run_extensions.at:2902"
+$as_echo "$at_srcdir/run_extensions.at:3002: ./prog4 --static --dynamic --usage=boringandtoolongtext"
+at_fn_check_prepare_trace "run_extensions.at:3002"
 ( $at_check_trace; ./prog4 --static --dynamic --usage=boringandtoolongtext
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2902"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3002"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 # Again a long and system specific error message which we ignore.
 # Return code 1 is sufficient as proof of hard return (as wanted).
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:2905: \$COMPILE prog5.cob"
-at_fn_check_prepare_dynamic "$COMPILE prog5.cob" "run_extensions.at:2905"
+$as_echo "$at_srcdir/run_extensions.at:3005: \$COMPILE prog5.cob"
+at_fn_check_prepare_dynamic "$COMPILE prog5.cob" "run_extensions.at:3005"
 ( $at_check_trace; $COMPILE prog5.cob
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2905"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3005"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:2906: ./prog5 --static"
-at_fn_check_prepare_trace "run_extensions.at:2906"
+$as_echo "$at_srcdir/run_extensions.at:3006: ./prog5 --static"
+at_fn_check_prepare_trace "run_extensions.at:3006"
 ( $at_check_trace; ./prog5 --static
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
-echo >>"$at_stderr"; $as_echo "prog5.cob: 35: libcob: Call to CBL_OC_GETOPT with wrong longoption size.
+echo >>"$at_stderr"; $as_echo "prog5.cob: 37: libcob: Call to CBL_OC_GETOPT with wrong longoption size.
 " | \
   $at_diff - "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 1 $at_status "$at_srcdir/run_extensions.at:2906"
+at_fn_check_status 1 $at_status "$at_srcdir/run_extensions.at:3006"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -31627,7 +31727,7 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_360
 #AT_START_361
-at_fn_group_banner 361 'run_extensions.at:2912' \
+at_fn_group_banner 361 'run_extensions.at:3012' \
   "System routine CBL_COPY_FILE" "                   " 3
 at_xfail=no
 (
@@ -31665,41 +31765,41 @@ _ATEOF
 
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:2939: \$COMPILE prog2.cob"
-at_fn_check_prepare_dynamic "$COMPILE prog2.cob" "run_extensions.at:2939"
+$as_echo "$at_srcdir/run_extensions.at:3039: \$COMPILE prog2.cob"
+at_fn_check_prepare_dynamic "$COMPILE prog2.cob" "run_extensions.at:3039"
 ( $at_check_trace; $COMPILE prog2.cob
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2939"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3039"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:2940: ./prog2"
-at_fn_check_prepare_trace "run_extensions.at:2940"
+$as_echo "$at_srcdir/run_extensions.at:3040: ./prog2"
+at_fn_check_prepare_trace "run_extensions.at:3040"
 ( $at_check_trace; ./prog2
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2940"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3040"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:2941: diff prog.cob prog3.cob"
-at_fn_check_prepare_trace "run_extensions.at:2941"
+$as_echo "$at_srcdir/run_extensions.at:3041: diff prog.cob prog3.cob"
+at_fn_check_prepare_trace "run_extensions.at:3041"
 ( $at_check_trace; diff prog.cob prog3.cob
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2941"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3041"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -31710,7 +31810,7 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_361
 #AT_START_362
-at_fn_group_banner 362 'run_extensions.at:2946' \
+at_fn_group_banner 362 'run_extensions.at:3046' \
   "System routines for directories" "                " 3
 at_xfail=no
 (
@@ -31753,41 +31853,41 @@ _ATEOF
 
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:2980: \$COMPILE prog.cob"
-at_fn_check_prepare_dynamic "$COMPILE prog.cob" "run_extensions.at:2980"
+$as_echo "$at_srcdir/run_extensions.at:3080: \$COMPILE prog.cob"
+at_fn_check_prepare_dynamic "$COMPILE prog.cob" "run_extensions.at:3080"
 ( $at_check_trace; $COMPILE prog.cob
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2980"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3080"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:2981: ./prog"
-at_fn_check_prepare_trace "run_extensions.at:2981"
+$as_echo "$at_srcdir/run_extensions.at:3081: ./prog"
+at_fn_check_prepare_trace "run_extensions.at:3081"
 ( $at_check_trace; ./prog
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:2981"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3081"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:2982: test -e abcd"
-at_fn_check_prepare_trace "run_extensions.at:2982"
+$as_echo "$at_srcdir/run_extensions.at:3082: test -e abcd"
+at_fn_check_prepare_trace "run_extensions.at:3082"
 ( $at_check_trace; test -e abcd
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 1 $at_status "$at_srcdir/run_extensions.at:2982"
+at_fn_check_status 1 $at_status "$at_srcdir/run_extensions.at:3082"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -31798,7 +31898,7 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_362
 #AT_START_363
-at_fn_group_banner 363 'run_extensions.at:2987' \
+at_fn_group_banner 363 'run_extensions.at:3087' \
   "System routines for files" "                      " 3
 at_xfail=no
 (
@@ -31912,34 +32012,34 @@ _ATEOF
 
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:3090: \$COMPILE prog.cob"
-at_fn_check_prepare_dynamic "$COMPILE prog.cob" "run_extensions.at:3090"
+$as_echo "$at_srcdir/run_extensions.at:3190: \$COMPILE prog.cob"
+at_fn_check_prepare_dynamic "$COMPILE prog.cob" "run_extensions.at:3190"
 ( $at_check_trace; $COMPILE prog.cob
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3090"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3190"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:3091: \$COMPILE prog2.cob"
-at_fn_check_prepare_dynamic "$COMPILE prog2.cob" "run_extensions.at:3091"
+$as_echo "$at_srcdir/run_extensions.at:3191: \$COMPILE prog2.cob"
+at_fn_check_prepare_dynamic "$COMPILE prog2.cob" "run_extensions.at:3191"
 ( $at_check_trace; $COMPILE prog2.cob
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3091"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3191"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:3092: ./prog"
-at_fn_check_prepare_trace "run_extensions.at:3092"
+$as_echo "$at_srcdir/run_extensions.at:3192: ./prog"
+at_fn_check_prepare_trace "run_extensions.at:3192"
 ( $at_check_trace; ./prog
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
@@ -31950,20 +32050,20 @@ WARNING - Call to CBL_OPEN_FILE with wrong access mode: 55
 " | \
   $at_diff - "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3092"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3192"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:3096: ./prog2"
-at_fn_check_prepare_trace "run_extensions.at:3096"
+$as_echo "$at_srcdir/run_extensions.at:3196: ./prog2"
+at_fn_check_prepare_trace "run_extensions.at:3196"
 ( $at_check_trace; ./prog2
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3096"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3196"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -31974,7 +32074,7 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_363
 #AT_START_364
-at_fn_group_banner 364 'run_extensions.at:3101' \
+at_fn_group_banner 364 'run_extensions.at:3201' \
   "Conditional/define directives (1)" "              " 3
 at_xfail=no
 (
@@ -32002,21 +32102,21 @@ _ATEOF
 
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:3120: \$COMPILE prog.cob"
-at_fn_check_prepare_dynamic "$COMPILE prog.cob" "run_extensions.at:3120"
+$as_echo "$at_srcdir/run_extensions.at:3220: \$COMPILE prog.cob"
+at_fn_check_prepare_dynamic "$COMPILE prog.cob" "run_extensions.at:3220"
 ( $at_check_trace; $COMPILE prog.cob
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3120"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3220"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:3121: ./prog"
-at_fn_check_prepare_trace "run_extensions.at:3121"
+$as_echo "$at_srcdir/run_extensions.at:3221: ./prog"
+at_fn_check_prepare_trace "run_extensions.at:3221"
 ( $at_check_trace; ./prog
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
@@ -32024,7 +32124,7 @@ $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 echo >>"$at_stdout"; $as_echo "OK" | \
   $at_diff - "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3121"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3221"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -32035,7 +32135,7 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_364
 #AT_START_365
-at_fn_group_banner 365 'run_extensions.at:3126' \
+at_fn_group_banner 365 'run_extensions.at:3226' \
   "Conditional/define directives (2)" "              " 3
 at_xfail=no
 (
@@ -32063,21 +32163,21 @@ _ATEOF
 
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:3145: \$COMPILE -DACTIVATE prog.cob"
-at_fn_check_prepare_dynamic "$COMPILE -DACTIVATE prog.cob" "run_extensions.at:3145"
+$as_echo "$at_srcdir/run_extensions.at:3245: \$COMPILE -DACTIVATE prog.cob"
+at_fn_check_prepare_dynamic "$COMPILE -DACTIVATE prog.cob" "run_extensions.at:3245"
 ( $at_check_trace; $COMPILE -DACTIVATE prog.cob
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3145"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3245"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:3146: ./prog"
-at_fn_check_prepare_trace "run_extensions.at:3146"
+$as_echo "$at_srcdir/run_extensions.at:3246: ./prog"
+at_fn_check_prepare_trace "run_extensions.at:3246"
 ( $at_check_trace; ./prog
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
@@ -32085,7 +32185,7 @@ $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 echo >>"$at_stdout"; $as_echo "OK" | \
   $at_diff - "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3146"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3246"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -32096,7 +32196,7 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_365
 #AT_START_366
-at_fn_group_banner 366 'run_extensions.at:3151' \
+at_fn_group_banner 366 'run_extensions.at:3251' \
   "Conditional/define directives (3)" "              " 3
 at_xfail=no
 (
@@ -32127,21 +32227,21 @@ _ATEOF
 
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:3173: \$COMPILE -DACTIVATE2 prog.cob"
-at_fn_check_prepare_dynamic "$COMPILE -DACTIVATE2 prog.cob" "run_extensions.at:3173"
+$as_echo "$at_srcdir/run_extensions.at:3273: \$COMPILE -DACTIVATE2 prog.cob"
+at_fn_check_prepare_dynamic "$COMPILE -DACTIVATE2 prog.cob" "run_extensions.at:3273"
 ( $at_check_trace; $COMPILE -DACTIVATE2 prog.cob
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3173"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3273"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:3174: ./prog"
-at_fn_check_prepare_trace "run_extensions.at:3174"
+$as_echo "$at_srcdir/run_extensions.at:3274: ./prog"
+at_fn_check_prepare_trace "run_extensions.at:3274"
 ( $at_check_trace; ./prog
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
@@ -32149,7 +32249,7 @@ $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 echo >>"$at_stdout"; $as_echo "OK" | \
   $at_diff - "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3174"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3274"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -32160,7 +32260,7 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_366
 #AT_START_367
-at_fn_group_banner 367 'run_extensions.at:3179' \
+at_fn_group_banner 367 'run_extensions.at:3279' \
   "Conditional/define directives (4)" "              " 3
 at_xfail=no
 (
@@ -32189,28 +32289,28 @@ _ATEOF
 
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:3199: \$COMPILE -DACTIVATE2 prog.cob"
-at_fn_check_prepare_dynamic "$COMPILE -DACTIVATE2 prog.cob" "run_extensions.at:3199"
+$as_echo "$at_srcdir/run_extensions.at:3299: \$COMPILE -DACTIVATE2 prog.cob"
+at_fn_check_prepare_dynamic "$COMPILE -DACTIVATE2 prog.cob" "run_extensions.at:3299"
 ( $at_check_trace; $COMPILE -DACTIVATE2 prog.cob
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3199"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3299"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:3200: ./prog"
-at_fn_check_prepare_trace "run_extensions.at:3200"
+$as_echo "$at_srcdir/run_extensions.at:3300: ./prog"
+at_fn_check_prepare_trace "run_extensions.at:3300"
 ( $at_check_trace; ./prog
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
 $at_check_filter
 at_fn_diff_devnull "$at_stderr" || at_failed=:
 at_fn_diff_devnull "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3200"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3300"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 
@@ -32221,7 +32321,7 @@ $at_traceon; }
 read at_status <"$at_status_file"
 #AT_STOP_367
 #AT_START_368
-at_fn_group_banner 368 'run_extensions.at:3205' \
+at_fn_group_banner 368 'run_extensions.at:3305' \
   "Conditional/define directives (5)" "              " 3
 at_xfail=no
 (
@@ -32249,8 +32349,8 @@ _ATEOF
 
 
 { set +x
-$as_echo "$at_srcdir/run_extensions.at:3224: \$COMPILE -DACTIVATE2 prog.cob"
-at_fn_check_prepare_dynamic "$COMPILE -DACTIVATE2 prog.cob" "run_extensions.at:3224"
+$as_echo "$at_srcdir/run_extensions.at:3324: \$COMPILE -DACTIVATE2 prog.cob"
+at_fn_check_prepare_dynamic "$COMPILE -DACTIVATE2 prog.cob" "run_extensions.at:3324"
 ( $at_check_trace; $COMPILE -DACTIVATE2 prog.cob
 ) >>"$at_stdout" 2>>"$at_stderr"
 at_status=$? at_failed=false
@@ -32259,7 +32359,7 @@ at_fn_diff_devnull "$at_stderr" || at_failed=:
 echo >>"$at_stdout"; $as_echo "OK
 " | \
   $at_diff - "$at_stdout" || at_failed=:
-at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3224"
+at_fn_check_status 0 $at_status "$at_srcdir/run_extensions.at:3324"
 $at_failed && at_fn_log_failure
 $at_traceon; }
 

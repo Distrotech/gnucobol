@@ -1148,50 +1148,47 @@ Now we have the tools to run CBL_OC_GETOPT within the procedure division.@*
 
 @example
         procedure division.
-            move "version" to optionname(1).
-            move 0 to has-value(1).
-            move "v" to return-value(1).
+            move "version" to optionname   (1).
+            move 0         to has-value    (1).
+            move "v"       to return-value (1).
             
-            move "verbose" to optionname(2).
-            move 0 to has-value(2).
-            move "V" to return-value(2).
+            move "verbose" to optionname   (2).
+            move 0         to has-value    (2).
+            move "V"       to return-value (2).
         
-            perform with test before until counter > 5
+            perform with test after until return-code = -1
                 call 'CBL_OC_GETOPT' using 
-                by reference shortoptions longoptions longind
-                by value long-only
-                by reference return-char opt-val
+                   by reference shortoptions longoptions longind
+                   by value long-only
+                   by reference return-char opt-val
                 end-call
             
                 display return-char end-display
-                display opt-val end-display
-                
-                add 1 to counter end-add
+                display opt-val     end-display
             end-perform
             stop run.
 
 @end example
 
 @*@*
-The example shows how we initialize all parameters and call the routine. We call 
-getopt 6 times as we have 5 options to recognize and one additional call just to 
-see that getopt returns '-1' in this case.@*@*
+The example shows how we initialize all parameters and call the routine until
+as CBL_OC_GETOPT doesn't find any option, returning '-1' in this case.@*@*
 The return-char might contain the following:
 @itemize @bullet
 @item regular character if an option was recognized
-@item '?' @ @ if we have got an undefined option 
-@item '1' @ @ if got a non-option
+@item '?' @ @ if we have got an undefined or ambiguous option 
+@item '1' @ @ if got a non-option (only if first byte of so is '-')
 @item '0' @ @ if valpoint != NULL and we are writing the return value to the specified address
-@item '-1' @ if we don't have any more options
+@item '-1' @ if we don't have any more options (or reach the first non-option  if first byte of so is '+')
 @end itemize
 @*@*
 The return-codes of CBL_OC_GETOPT are: 
 @itemize @bullet
-@item '1' @ @ if we've got a non-option
-@item '0' @ @ if valpoint != NULL and we are writing the return value to the specified address
-@item '-1' @ if we don't have any more options
-@item '2' @ @ if we have got an truncated option value in opt-val (because opt-val was too small)
-@item '3' @ @ if we got a regular answer from getopt
+@item 1 @ @ if we've got a non-option (only if first byte of so is '-')
+@item 0 @ @ if valpoint != NULL and we are writing the return value to the specified address
+@item -1 @ if we don't have any more options (or reach the first non-option  if first byte of so is '+')
+@item 2 @ @ if we have got an truncated option value in opt-val (because opt-val was too small)
+@item 3 @ @ if we got a regular answer from getopt
 @end itemize
 @*@*
 

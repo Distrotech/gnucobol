@@ -249,13 +249,16 @@ static const char *_getopt_initialize (const char *optstring)
 
   if (optstring[0] == '-')
     {
+      ordering = RETURN_IN_ORDER;
       ++optstring;
     }
   else if (optstring[0] == '+')
     {
+      ordering = REQUIRE_ORDER;
       ++optstring;
     }
-  ordering = PERMUTE;
+  else
+      ordering = PERMUTE;
 
   return optstring;
 }

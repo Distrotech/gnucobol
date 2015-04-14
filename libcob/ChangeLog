@@ -1,4 +1,10 @@
 
+2015-04-14  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
+
+	* cobgetopt.c (_getopt_initialize): re-added support for GNU extensions
+	  '+'/'-' in optstring[0], '+' => forcing POSIX correct behaviour (stop at
+	  first non-option), '-' => report non-options as argument of option code=1
+
 2015-03-14  Ron Norman <rjn@inglenet.com> 
 
 	* common.c has new code for table driven processing of runtime.cfg

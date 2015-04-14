@@ -2580,7 +2580,7 @@ AT_KEYWORDS([extensions])
 AT_DATA([prog.cob], [
         IDENTIFICATION DIVISION.
         PROGRAM-ID. prog.
-      *> check combination long and short options
+      *> check combination of long and short options
         DATA DIVISION.
         WORKING-STORAGE SECTION.
            01 LO.
@@ -2599,42 +2599,63 @@ AT_DATA([prog.cob], [
             
             01 COUNTER PIC 9 VALUE 0.
         PROCEDURE DIVISION.
-            MOVE "jkl" TO SO.
+            MOVE "jkl"     TO SO.
             
-            MOVE "version" TO ONAME(1).
-            MOVE 0 TO HAS-VALUE(1).
-            MOVE "v" TO VAL(1).
+            MOVE "version" TO ONAME     (1).
+            MOVE 0         TO HAS-VALUE (1).
+            MOVE "v"       TO VAL       (1).
             
-            MOVE "verbose" TO ONAME(2).
-            MOVE 0 TO HAS-VALUE(2).
-            MOVE "V" TO VAL(2).
+            MOVE "verbose" TO ONAME     (2).
+            MOVE 0         TO HAS-VALUE (2).
+            MOVE "V"       TO VAL       (2).
         
-            PERFORM WITH TEST BEFORE UNTIL COUNTER > 5
-                CALL 'CBL_OC_GETOPT' USING 
-                BY REFERENCE SO LO LONGIND
-                BY VALUE LONG-ONLY
-                BY REFERENCE RETURN-CHAR OPT-VAL
+            PERFORM WITH TEST AFTER
+                    VARYING COUNTER FROM 0 BY 1
+                    UNTIL RETURN-CODE = -1
+               CALL 'CBL_OC_GETOPT' USING 
+                  BY REFERENCE SO LO LONGIND
+                  BY VALUE     LONG-ONLY
+                  BY REFERENCE RETURN-CHAR OPT-VAL
+               END-CALL
             
-                IF COUNTER = 0 AND RETURN-CHAR NOT = 'v' THEN
-                    DISPLAY '0-Error: ' RETURN-CHAR
-                END-IF
-                IF COUNTER = 1 AND RETURN-CHAR NOT = 'V' THEN
-                    DISPLAY '1-ERROR: ' RETURN-CHAR
-                END-IF
-                IF COUNTER = 2 AND RETURN-CHAR NOT = 'j' THEN
-                    DISPLAY '2-ERROR: ' RETURN-CHAR
-                END-IF
-                IF COUNTER = 3 AND RETURN-CHAR NOT = 'k' THEN
-                    DISPLAY '3-ERROR: ' RETURN-CHAR
-                END-IF
-                IF COUNTER = 4 AND RETURN-CHAR NOT = 'l' THEN
-                    DISPLAY '4-ERROR: ' RETURN-CHAR
-               END-IF
-                
-               ADD 1 TO COUNTER
-            END-PERFORM
+               EVALUATE COUNTER
+                  WHEN 0
+                     IF RETURN-CHAR NOT = 'v' THEN
+                        DISPLAY '0-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 1
+                     IF RETURN-CHAR NOT = 'V' THEN
+                        DISPLAY '1-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 2
+                     IF RETURN-CHAR NOT = 'j' THEN
+                        DISPLAY '2-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 3
+                     IF RETURN-CHAR NOT = 'k' THEN
+                        DISPLAY '3-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 4
+                     IF RETURN-CHAR NOT = 'l' THEN
+                        DISPLAY '4-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 5
+                     IF RETURN-CODE NOT = -1 THEN
+                        MOVE RETURN-CODE TO RET-DISP
+                        DISPLAY 'last RETURN-CODE wrong: ' RET-DISP
+                        END-DISPLAY
+                     END-IF
+                     EXIT PERFORM
+               END-EVALUATE
+            END-PERFORM.
 
             MOVE 0 TO RETURN-CODE.
+            
+            IF COUNTER NOT = 5 THEN
+               MOVE RETURN-CODE TO RET-DISP
+               DISPLAY 'CBL_OC_GETOPT returned -1 too early: ' COUNTER
+               END-DISPLAY
+            END-IF.
 
             STOP RUN.
 ])
@@ -2664,31 +2685,49 @@ AT_DATA([prog2.cob], [
             
             01 COUNTER PIC 9 VALUE 0.
         PROCEDURE DIVISION.
-            MOVE "version" TO ONAME(1).
-            MOVE 0 TO HAS-VALUE(1).
-            MOVE "v" TO VAL(1).
+            MOVE "version" TO ONAME     (1).
+            MOVE 0         TO HAS-VALUE (1).
+            MOVE "v"       TO VAL       (1).
             
-            MOVE "verbose" TO ONAME(2).
-            MOVE 0 to HAS-VALUE(2).
-            MOVE "V" TO VAL(2).
+            MOVE "verbose" TO ONAME     (2).
+            MOVE 0         TO HAS-VALUE (2).
+            MOVE "V"       TO VAL       (2).
         
-            PERFORM WITH TEST BEFORE UNTIL COUNTER > 2
-                CALL 'CBL_OC_GETOPT' USING 
-                BY REFERENCE SO LO LONGIND
-                BY VALUE LONG-ONLY
-                BY REFERENCE RETURN-CHAR OPT-VAL
+            PERFORM WITH TEST AFTER
+                    VARYING COUNTER FROM 0 BY 1
+                    UNTIL RETURN-CODE = -1
+               CALL 'CBL_OC_GETOPT' USING 
+                  BY REFERENCE SO LO LONGIND
+                  BY VALUE     LONG-ONLY
+                  BY REFERENCE RETURN-CHAR OPT-VAL
+               END-CALL
             
-                IF COUNTER = 0 AND RETURN-CHAR NOT = '?' THEN
-                    DISPLAY '0-ERROR: ' RETURN-CHAR
-                END-IF
-                IF COUNTER = 1 AND RETURN-CHAR NOT = 'v' THEN
-                    DISPLAY '1-ERROR: ' RETURN-CHAR
-                END-IF
-                      
-               ADD 1 TO COUNTER
-            END-PERFORM
+               EVALUATE COUNTER
+                  WHEN 0
+                     IF RETURN-CHAR NOT = '?' THEN
+                        DISPLAY '0-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 1
+                     IF RETURN-CHAR NOT = 'v' THEN
+                        DISPLAY '1-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 2
+                     IF RETURN-CODE NOT = -1 THEN
+                        MOVE RETURN-CODE TO RET-DISP
+                        DISPLAY 'last RETURN-CODE wrong: ' RET-DISP
+                        END-DISPLAY
+                     END-IF
+                     EXIT PERFORM
+               END-EVALUATE
+            END-PERFORM.
 
             MOVE 0 TO RETURN-CODE.
+            
+            IF COUNTER NOT = 2 THEN
+               MOVE RETURN-CODE TO RET-DISP
+               DISPLAY 'CBL_OC_GETOPT returned -1 too early: ' COUNTER
+               END-DISPLAY
+            END-IF.
 
             STOP RUN.
 ])
@@ -2714,54 +2753,78 @@ AT_DATA([prog3.cob], [
             
             01 COUNTER PIC 9 VALUE 0.
         PROCEDURE DIVISION.
-            MOVE "j:k::l" TO SO.
+            MOVE "j:k::l"  TO SO.
 
-            MOVE "version" TO ONAME(1).
-            MOVE 1 TO HAS-VALUE(1).
-            MOVE "v" TO VAL(1).
+            MOVE "version" TO ONAME     (1).
+            MOVE 1         TO HAS-VALUE (1).
+            MOVE "v"       TO VAL       (1).
 
-            MOVE "verbose" TO ONAME(2).
-            MOVE 2 TO HAS-VALUE(2).
-            MOVE "V" TO VAL(2).
+            MOVE "verbose" TO ONAME     (2).
+            MOVE 2         TO HAS-VALUE (2).
+            MOVE "V"       TO VAL       (2).
 
-            MOVE "usage" TO ONAME(3).
-            MOVE 0 TO HAS-VALUE(3).
-            MOVE "u" TO VAL(3).
-
-            PERFORM WITH TEST BEFORE UNTIL COUNTER > 6
-                CALL 'CBL_OC_GETOPT' USING
-                BY REFERENCE SO LO LONGIND
-                BY VALUE LONG-ONLY
-                BY REFERENCE RETURN-CHAR OPT-VAL
-
-                IF COUNTER = 0 AND OPT-VAL(1:4) NOT = 'lang' THEN
-                        DISPLAY '0-ERROR: ' OPT-VAL
-                END-IF
-                IF COUNTER = 1 AND 
-                  (OPT-VAL(1:1) NOT = 'k' OR 
-                   RETURN-CHAR  NOT = 'V' OR 
-                   OPT-VAL(1:4)     = 'kang') THEN
-                        DISPLAY '1-ERROR: ' OPT-VAL ' ' RETURN-CHAR ' '
-                END-IF
-                IF COUNTER = 2 AND RETURN-CHAR NOT = 'u' THEN
-                        DISPLAY '2-ERROR: ' RETURN-CHAR
-                END-IF
-                IF COUNTER = 3 AND (OPT-VAL(1:1) NOT = '5' OR 
-                RETURN-CHAR NOT = 'j') THEN
-                        DISPLAY '3-ERROR: ' RETURN-CHAR
-                END-IF
-                IF COUNTER = 4 AND (OPT-VAL(1:1) NOT = '6' OR 
-                RETURN-CHAR NOT = 'k') THEN
-                        DISPLAY '4-ERROR: ' RETURN-CHAR
-                END-IF
-                IF COUNTER = 5 AND RETURN-CHAR NOT = 'l' THEN
-                        DISPLAY '5-ERROR: ' RETURN-CHAR
-                END-IF
-
-               ADD 1 TO COUNTER
-            END-PERFORM
+            MOVE "usage"   TO ONAME     (3).
+            MOVE 0         TO HAS-VALUE (3).
+            MOVE "u"       TO VAL       (3).
+        
+            PERFORM WITH TEST AFTER
+                    VARYING COUNTER FROM 0 BY 1
+                    UNTIL RETURN-CODE = -1
+               CALL 'CBL_OC_GETOPT' USING 
+                  BY REFERENCE SO LO LONGIND
+                  BY VALUE     LONG-ONLY
+                  BY REFERENCE RETURN-CHAR OPT-VAL
+               END-CALL
+            
+               EVALUATE COUNTER
+                  WHEN 0
+                     IF OPT-VAL(1:4) NOT = 'lang' THEN
+                        DISPLAY '0-ERROR: ' OPT-VAL END-DISPLAY
+                     END-IF
+                  WHEN 1
+                     IF (OPT-VAL(1:1) NOT = 'k' OR 
+                         RETURN-CHAR  NOT = 'V' OR 
+                         OPT-VAL(1:4)     = 'kang')  THEN
+                        DISPLAY '1-ERROR: ' OPT-VAL ' ' RETURN-CHAR
+                        END-DISPLAY
+                     END-IF
+                  WHEN 2
+                     IF RETURN-CHAR NOT = 'u' THEN
+                        DISPLAY '2-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 3
+                     IF OPT-VAL(1:1) NOT = '5' OR 
+                        RETURN-CHAR  NOT = 'j' THEN
+                        DISPLAY '3-ERROR: ' OPT-VAL ' ' RETURN-CHAR
+                        END-DISPLAY
+                     END-IF
+                  WHEN 4
+                     IF OPT-VAL(1:1) NOT = '6' OR 
+                        RETURN-CHAR  NOT = 'k' THEN
+                        DISPLAY '4-ERROR: ' OPT-VAL ' ' RETURN-CHAR
+                        END-DISPLAY
+                     END-IF
+                  WHEN 5
+                     IF RETURN-CHAR NOT = 'l' THEN
+                        DISPLAY '5-ERROR: ' RETURN-CHAR END-DISPLAY
+                     END-IF
+                  WHEN 6
+                     IF RETURN-CODE NOT = -1 THEN
+                        MOVE RETURN-CODE TO RET-DISP
+                        DISPLAY 'last RETURN-CODE wrong: ' RET-DISP
+                        END-DISPLAY
+                     END-IF
+                     EXIT PERFORM
+               END-EVALUATE
+            END-PERFORM.
 
             MOVE 0 TO RETURN-CODE.
+            
+            IF COUNTER NOT = 6 THEN
+               MOVE RETURN-CODE TO RET-DISP
+               DISPLAY 'CBL_OC_GETOPT returned -1 too early: ' COUNTER
+               END-DISPLAY
+            END-IF.
 
             STOP RUN.
 ])
@@ -2789,53 +2852,67 @@ AT_DATA([prog4.cob], [
 
             01 FLAG-VAL PIC X(4).
         procedure division.
-            MOVE "jkl" TO SO.
+            MOVE "jkl"       TO SO.
 
-            MOVE "static" TO ONAME(1).
-            MOVE 0 TO HAS-VALUE(1).
-            SET VALPOINT(1) TO ADDRESS OF FLAG-VAL.
-            MOVE '1' TO VAL(1).
+            MOVE "static"    TO ONAME     (1).
+            MOVE 0           TO HAS-VALUE (1).
+            SET  VALPOINT(1) TO ADDRESS OF FLAG-VAL.
+            MOVE '1'         TO VAL       (1).
 
-            MOVE "dynamic" TO ONAME(2).
-            MOVE 0 TO HAS-VALUE(2).
-            SET VALPOINT(2) TO ADDRESS OF FLAG-VAL.
-            MOVE '0' TO VAL(2).
+            MOVE "dynamic"   TO ONAME     (2).
+            MOVE 0           TO HAS-VALUE (2).
+            SET  VALPOINT(2) TO ADDRESS OF FLAG-VAL.
+            MOVE '0'         TO VAL       (2).
 
-            MOVE "usage" TO ONAME(3).
-            MOVE 1 TO HAS-VALUE(3).
-            MOVE 'u' TO VAL(3).
-
-            PERFORM WITH TEST BEFORE UNTIL COUNTER > 3
-                CALL 'CBL_OC_GETOPT' USING
-                BY REFERENCE SO LO LONGIND
-                BY VALUE LONG-ONLY
-                BY REFERENCE RETURN-CHAR OPT-VAL
-
-                MOVE RETURN-CODE TO RET-DISP
-                
-                IF COUNTER = 0 AND (RETURN-CODE NOT = 0 OR 
-                                    FLAG-VAL NOT = '1') THEN
-                    DISPLAY 'RETURN VALUE: ' RET-DISP ' ' FLAG-VAL
-                END-IF
-                IF COUNTER = 1 AND (RETURN-CODE NOT = 0 OR 
-                                    FLAG-VAL NOT = '0') THEN
-                    DISPLAY 'RETURN VALUE: ' RET-DISP ' ' FLAG-VAL
-                END-IF
-                IF COUNTER = 2 AND (RETURN-CHAR NOT = 'u' OR 
-                                    RETURN-CODE NOT = 2) THEN
-                    DISPLAY 'RETURN VALUE: ' RET-DISP ' ' FLAG-VAL
-                END-IF
-
-               ADD 1 TO COUNTER
-            END-PERFORM
-
-            IF RETURN-CODE NOT = -1
-               MOVE RETURN-CODE TO RET-DISP
-               DISPLAY 'last RETURN-CODE wrong ' RET-DISP
-               END-DISPLAY
-            END-IF
+            MOVE "usage"     TO ONAME     (3).
+            MOVE 1           TO HAS-VALUE (3).
+            MOVE 'u'         TO VAL       (3).
+        
+            PERFORM WITH TEST AFTER
+                    VARYING COUNTER FROM 0 BY 1
+                    UNTIL RETURN-CODE = -1
+               CALL 'CBL_OC_GETOPT' USING 
+                  BY REFERENCE SO LO LONGIND
+                  BY VALUE     LONG-ONLY
+                  BY REFERENCE RETURN-CHAR OPT-VAL
+               END-CALL
+            
+               EVALUATE COUNTER
+                  WHEN 0
+                     IF RETURN-CODE NOT = 0 OR 
+                        FLAG-VAL    NOT = '1' THEN
+                        DISPLAY '0-ERROR: ' RET-DISP ' ' FLAG-VAL
+                        END-DISPLAY
+                     END-IF
+                  WHEN 1
+                     IF RETURN-CODE NOT = 0 OR 
+                        FLAG-VAL    NOT = '0' THEN
+                        DISPLAY '1-ERROR: ' RET-DISP ' ' FLAG-VAL
+                        END-DISPLAY
+                     END-IF
+                  WHEN 2
+                     IF RETURN-CHAR NOT = 'u' OR 
+                        RETURN-CODE NOT = 2 THEN
+                        DISPLAY '2-ERROR: ' RET-DISP ' ' FLAG-VAL
+                        END-DISPLAY
+                     END-IF
+                  WHEN 3
+                     IF RETURN-CODE NOT = -1 THEN
+                        MOVE RETURN-CODE TO RET-DISP
+                        DISPLAY 'last RETURN-CODE wrong: ' RET-DISP
+                        END-DISPLAY
+                     END-IF
+                     EXIT PERFORM
+               END-EVALUATE
+            END-PERFORM.
 
             MOVE 0 TO RETURN-CODE.
+            
+            IF COUNTER NOT = 3 THEN
+               MOVE RETURN-CODE TO RET-DISP
+               DISPLAY 'CBL_OC_GETOPT returned -1 too early: ' COUNTER
+               END-DISPLAY
+            END-IF.
 
             STOP RUN.
 ])
@@ -2864,29 +2941,52 @@ AT_DATA([prog5.cob], [
             01 FLAG-VAL PIC 9.
         PROCEDURE DIVISION.
             MOVE "super-long-option-with-more-than-25-bytes" 
-            TO ONAME(1).
-            MOVE 0 TO HAS-VALUE(1).
+              TO ONAME(1).
+            MOVE 0   TO HAS-VALUE(1).
             MOVE '1' TO VAL(1).
 
             MOVE "stupid-long-option-with-more-than-25-bytes" 
-            TO ONAME(2).
-            MOVE 0 TO HAS-VALUE(2).
+              TO ONAME(2).
+            MOVE 0   TO HAS-VALUE(2).
             MOVE '0' TO VAL(2).
-
-            PERFORM WITH TEST BEFORE UNTIL COUNTER > 2
-                CALL 'CBL_OC_GETOPT' USING
-                BY REFERENCE SO LO LONGIND
-                BY VALUE LONG-ONLY
-                BY REFERENCE RETURN-CHAR OPT-VAL
-
-      *>          MOVE RETURN-CODE TO RET-DISP
-                
-      *>          IF COUNTER = 0 AND RETURN-CODE NOT = 1 THEN
-      *>              DISPLAY 'RETURN VALUE: ' RET-DISP ' ' FLAG-VAL
-      *>          END-IF
-            END-PERFORM
+        
+            PERFORM WITH TEST AFTER
+                    VARYING COUNTER FROM 0 BY 1
+                    UNTIL RETURN-CODE = -1
+               CALL 'CBL_OC_GETOPT' USING 
+                  BY REFERENCE SO LO LONGIND
+                  BY VALUE     LONG-ONLY
+                  BY REFERENCE RETURN-CHAR OPT-VAL
+               END-CALL
             
-      *>      MOVE 0 TO RETURN-CODE.
+               EVALUATE COUNTER
+                  WHEN 0
+                  WHEN 1
+                  WHEN 2
+                     CONTINUE
+
+      *>       MOVE RETURN-CODE TO RET-DISP
+                
+      *>       IF COUNTER = 0 AND RETURN-CODE NOT = 1 THEN
+      *>          DISPLAY 'RETURN VALUE: ' RET-DISP ' ' FLAG-VAL
+      *>       END-IF
+                  WHEN 3
+                     IF RETURN-CODE NOT = -1 THEN
+                        MOVE RETURN-CODE TO RET-DISP
+                        DISPLAY 'last RETURN-CODE wrong: ' RET-DISP
+                        END-DISPLAY
+                     END-IF
+                     EXIT PERFORM
+               END-EVALUATE
+            END-PERFORM.
+
+            MOVE 0 TO RETURN-CODE.
+            
+            IF COUNTER NOT = 3 THEN
+               MOVE RETURN-CODE TO RET-DISP
+               DISPLAY 'CBL_OC_GETOPT returned -1 too early: ' COUNTER
+               END-DISPLAY
+            END-IF.
 
             STOP RUN.
 ])
@@ -2903,7 +3003,7 @@ AT_CHECK([./prog4 --static --dynamic --usage=boringandtoolongtext], [0], [])
 # Again a long and system specific error message which we ignore. 
 # Return code 1 is sufficient as proof of hard return (as wanted).
 AT_CHECK([$COMPILE prog5.cob], [0], , [])
-AT_CHECK([./prog5 --static], [1], [], [prog5.cob: 35: libcob: Call to CBL_OC_GETOPT with wrong longoption size.
+AT_CHECK([./prog5 --static], [1], [], [prog5.cob: 37: libcob: Call to CBL_OC_GETOPT with wrong longoption size.
 ])
 
 AT_CLEANUP

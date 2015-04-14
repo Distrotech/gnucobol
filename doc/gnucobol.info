@@ -1112,25 +1112,23 @@ Now we have the tools to run CBL_OC_GETOPT within the procedure
 division.
 
              procedure division.
-                 move "version" to optionname(1).
-                 move 0 to has-value(1).
-                 move "v" to return-value(1).
+                 move "version" to optionname   (1).
+                 move 0         to has-value    (1).
+                 move "v"       to return-value (1).
 
-                 move "verbose" to optionname(2).
-                 move 0 to has-value(2).
-                 move "V" to return-value(2).
+                 move "verbose" to optionname   (2).
+                 move 0         to has-value    (2).
+                 move "V"       to return-value (2).
 
-                 perform with test before until counter > 5
+                 perform with test after until return-code = -1
                      call 'CBL_OC_GETOPT' using
-                     by reference shortoptions longoptions longind
-                     by value long-only
-                     by reference return-char opt-val
+                        by reference shortoptions longoptions longind
+                        by value long-only
+                        by reference return-char opt-val
                      end-call
 
                      display return-char end-display
-                     display opt-val end-display
-
-                     add 1 to counter end-add
+                     display opt-val     end-display
                  end-perform
                  stop run.
 
@@ -1138,26 +1136,28 @@ division.
 
 
    The example shows how we initialize all parameters and call the
-routine.  We call getopt 6 times as we have 5 options to recognize and
-one additional call just to see that getopt returns '-1' in this case.
+routine until as CBL_OC_GETOPT doesn't find any option, returning '-1'
+in this case.
 
 The return-char might contain the following:
    * regular character if an option was recognized
-   * '?'   if we have got an undefined option
-   * '1'   if got a non-option
+   * '?'   if we have got an undefined or ambiguous option
+   * '1'   if got a non-option (only if first byte of so is '-')
    * '0'   if valpoint != NULL and we are writing the return value to
      the specified address
-   * '-1'  if we don't have any more options
+   * '-1'  if we don't have any more options (or reach the first
+     non-option if first byte of so is '+')
 
 
    The return-codes of CBL_OC_GETOPT are:
-   * '1'   if we've got a non-option
-   * '0'   if valpoint != NULL and we are writing the return value to
-     the specified address
-   * '-1'  if we don't have any more options
-   * '2'   if we have got an truncated option value in opt-val (because
+   * 1   if we've got a non-option (only if first byte of so is '-')
+   * 0   if valpoint != NULL and we are writing the return value to the
+     specified address
+   * -1  if we don't have any more options (or reach the first
+     non-option if first byte of so is '+')
+   * 2   if we have got an truncated option value in opt-val (because
      opt-val was too small)
-   * '3'   if we got a regular answer from getopt
+   * 3   if we got a regular answer from getopt
 
 
 
@@ -2360,12 +2360,12 @@ Node: Debug28214
 Node: Debug Options28375
 Node: System routines28718
 Node: CBL_OC_GETOPT28890
-Node: Appendix A32845
-Node: Appendix B38735
-Node: Appendix C40391
-Node: Appendix D50088
-Node: Appendix E52503
-Node: Appendix F53456
-Node: Appendix G54792
+Node: Appendix A33001
+Node: Appendix B38891
+Node: Appendix C40547
+Node: Appendix D50244
+Node: Appendix E52659
+Node: Appendix F53612
+Node: Appendix G54948
 
 End Tag Table
