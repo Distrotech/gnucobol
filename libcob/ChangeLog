@@ -1,4 +1,8 @@
 
+2015-05-12  Ron Norman
+	* common.c: changed to be more specific about acceptable values for
+	  runtime Boolean options
+
 2015-04-14  Simon 'sf-mensch/human' Sobisch <sf-mensch@users.sf.net>
 
 	* cobgetopt.c (_getopt_initialize): re-added support for GNU extensions

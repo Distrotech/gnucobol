@@ -4202,27 +4202,26 @@ set_config_val(char *value, int pos)
 
 	} else if((data_type & ENV_BOOL)) {	/* Boolean: Yes/No,True/False,... */
 		numval = -1;
-		switch(toupper((unsigned char)*ptr)) {
-		case 'T':	/* True */
-		case 'Y':	/* Yes */
-		case '1':
-			numval = 1;
-			break;
-		case 'O':	/* ON / OFF */
-			if(toupper((unsigned char)ptr[1]) == 'N')	/* ON */
-				numval = 1;
-			else if(toupper((unsigned char)ptr[1]) == 'F') /* OFF */
-				numval = 0;
-			break;
-		case 'F':	/* False */
-		case 'N':	/* No */
-		case '0':
-			numval = 0;
-			break;
-		default:
-			break;
+		if(isdigit((unsigned char)*ptr)) {
+			numval = atoi(ptr);		/* 0 or 1 */
+		} else 
+		if(strcasecmp(ptr,"true") == 0
+		|| strcasecmp(ptr,"t") == 0
+		|| strcasecmp(ptr,"on") == 0
+		|| strcasecmp(ptr,"yes") == 0
+		|| strcasecmp(ptr,"y") == 0) {
+			numval = 1;			/* True value */
+		} else
+		if(strcasecmp(ptr,"false") == 0
+		|| strcasecmp(ptr,"f") == 0
+		|| strcasecmp(ptr,"off") == 0
+		|| strcasecmp(ptr,"no") == 0
+		|| strcasecmp(ptr,"n") == 0) {
+			numval = 0;			/* False value */
 		}
-		if(numval == -1) {
+
+		if(numval != 1
+		&& numval != 0) {
 			cob_runtime_error (_("%s should be 'true' or 'false'; '%s' is invalid"),gc_conf[pos].env_name,ptr); 
 			return 1;
 		} else {
@@ -4634,7 +4633,7 @@ cob_load_config (void)
 {
 	char		*env;
 	char		conf_file[COB_SMALL_BUFF];
-	int		isoptional = 1, sts, i;
+	int		isoptional = 1, sts, i, j;
 
 	
 	/* Get the name for the configuration file */
@@ -4660,7 +4659,19 @@ cob_load_config (void)
 		if(gc_conf[i].default_val
 		&& !(gc_conf[i].data_type & STS_CNFSET)
 		&& !(gc_conf[i].data_type & STS_ENVSET)) {
-			set_config_val((char*)gc_conf[i].default_val,i);
+			for (j=0; j < NUM_CONFIG; j++) {	/* Any alias present? */
+				if(j != i
+				&& gc_conf[i].data_loc == gc_conf[j].data_loc) 
+					break;
+			}
+			if(j < NUM_CONFIG) {
+				if(!(gc_conf[j].data_type & STS_CNFSET)
+				&& !(gc_conf[j].data_type & STS_ENVSET)) {	/* alias not defined? */
+					set_config_val((char*)gc_conf[i].default_val,i);
+				}
+			} else {
+				set_config_val((char*)gc_conf[i].default_val,i);/*Set default value */
+			}
 		}
 	}
 
